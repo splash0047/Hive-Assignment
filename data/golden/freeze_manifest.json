@@ -1,0 +1,24 @@
+{
+  "frozen_at": "2026-09-09T15:21:30.031840Z",
+  "file_name": "golden_eval.csv",
+  "sha256": "cd9b3cca186e633da4a15ec36cea6dea12c07703c1d042a93f8e312d66639445",
+  "total_examples": 200,
+  "escalation_rate": 0.165,
+  "splits": {
+    "calibration": 100,
+    "locked_test": 100
+  },
+  "intent_distribution": {
+    "playback_technical_issue": 24,
+    "subscription_billing": 22,
+    "login_account_access": 18,
+    "plan_discount_management": 18,
+    "device_connectivity": 18,
+    "content_playlist_availability": 18,
+    "cancellation_refund": 18,
+    "how_to_feature_request": 18,
+    "security_compromised_account": 16,
+    "other_unclear": 16,
+    "service_outage": 14
+  }
+}

@@ -1,0 +1,26 @@
+# Submission Checklist
+
+- [ ] One brand selected and justified
+- [ ] Runnable pipeline
+- [ ] README reproduces headline results in < 15 minutes
+- [ ] 150-250 human-labelled golden examples
+- [ ] Sampling/labeling methodology documented
+- [ ] Calibration vs locked test separation
+- [ ] Trivial baseline
+- [ ] Simple baseline
+- [ ] Final system
+- [ ] Automated intent metrics
+- [ ] Automated escalation metrics
+- [ ] Retrieval/evidence metrics
+- [ ] LLM-as-judge rubric
+- [ ] Human-vs-judge agreement evidence
+- [ ] Five real failure modes
+- [ ] Mandatory misleading-headline-number section
+- [ ] One-more-week section
+- [ ] 10-15 item decision log
+- [ ] Dataset/model/code citations
+- [ ] No secrets
+- [ ] No full raw dataset committed
+- [ ] Clean clone/setup tested
+- [ ] Report <= 6 pages if using separate report
+- [ ] Repo link and report ready for submission form

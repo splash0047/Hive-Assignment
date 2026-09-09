@@ -1,0 +1,10 @@
+project:
+  seed: 42
+
+evaluation:
+  fast_mode: true
+  use_frozen_artifacts: true
+  use_cached_generation: true
+  use_cached_judge_scores: true
+  regenerate_figures: true
+  bootstrap_samples: 5000

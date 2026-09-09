@@ -1,0 +1,201 @@
+example_id,tweet_id,text,intent_label,escalation_label,escalation_reason,risk_tags,context_needed,split,annotator_notes
+ex_001,101,I forgot my password and the reset link is not arriving in my inbox or spam.,login_account_access,False,,,False,calibration,Password reset email delivery issue
+ex_002,102,Locked out of my account because I lost my 2FA phone number.,login_account_access,True,Requires human identity check and 2FA recovery,security,False,locked_test,2FA device lost
+ex_003,103,Can't log in on my desktop app but mobile app works fine.,login_account_access,False,,,False,calibration,Client-specific login issue
+ex_004,104,Keep getting 'Incorrect username or password' error even after resetting.,login_account_access,False,,,False,locked_test,Repeated bad credentials
+ex_005,105,How do I change the email address associated with my Spotify account?,login_account_access,False,,,False,calibration,Standard email update request
+ex_006,106,Facebook login button is giving a redirect error 500.,login_account_access,False,,,False,locked_test,Social SSO error
+ex_007,107,I am locked out and need immediate access for a party tonight please help!,login_account_access,False,,,False,calibration,Urgent account access request
+ex_008,108,My account says it's disabled. What does this mean?,login_account_access,True,Account disabled requires backend policy verification,account_status,False,locked_test,Disabled account status
+ex_009,109,Apple ID sign in is looping back to login screen.,login_account_access,False,,,False,calibration,Sign in with Apple loop
+ex_010,110,Not receiving verification code on my registered mobile number.,login_account_access,False,,,False,locked_test,SMS OTP delivery failure
+ex_011,111,Created an account via Google but want to set a standalone password.,login_account_access,False,,,False,calibration,SSO password setup
+ex_012,112,Can't sign in while traveling abroad in Japan.,login_account_access,False,,,False,locked_test,14-day travel restriction for Free accounts
+ex_013,113,"Account username is a random string of numbers, can I change it?",login_account_access,False,,,False,calibration,Auto-generated username question
+ex_014,114,Someone removed my email address and I cannot log back in.,login_account_access,True,Potential takeover / unauthorized email change,security,False,locked_test,Email hijack symptom
+ex_015,115,Captcha is broken on the web login page in Firefox.,login_account_access,False,,,False,calibration,Web captcha display bug
+ex_016,116,How do I log out of all devices remotely?,login_account_access,False,,,False,locked_test,Sign out everywhere feature
+ex_017,117,"Signed up years ago with a deleted university email, need to switch it.",login_account_access,True,Dead email address prevents self-service reset,account_recovery,False,calibration,Inaccessible registered email
+ex_018,118,Session expired error every 10 minutes on web player.,login_account_access,False,,,False,locked_test,Cookie / session timeout bug
+ex_019,201,Why was I charged $11.99 twice this month on my Mastercard?,subscription_billing,True,Double billing requires private transaction lookup,billing,False,calibration,Double charge complaint
+ex_020,202,My bank card was charged but my account still shows Spotify Free.,subscription_billing,True,Payment received without entitlement upgrade,billing,False,locked_test,Payment uncredited
+ex_021,203,Payment failed for monthly renewal with error code 03.,subscription_billing,False,,billing,False,calibration,Declined card error
+ex_022,204,How do I update my expired credit card on file?,subscription_billing,False,,,False,locked_test,Billing payment method update
+ex_023,205,Can I pay for Spotify Premium with PayPal in Canada?,subscription_billing,False,,,False,calibration,Payment method availability
+ex_024,206,Where can I download tax receipts / invoices for my accounting?,subscription_billing,False,,,False,locked_test,Invoice receipt download
+ex_025,207,I was charged in USD instead of my local currency GBP.,subscription_billing,False,,billing,False,calibration,Currency mismatch
+ex_026,208,My monthly charge increased by $1 without prior notice.,subscription_billing,False,,,False,locked_test,Price change inquiry
+ex_027,209,There is a fraudulent $10.99 charge from Spotify on my stolen debit card.,subscription_billing,True,Card theft and fraud report,fraud|security,False,calibration,Stolen card fraud
+ex_028,210,Paying through iTunes/Apple billing but want to switch to direct credit card.,subscription_billing,False,,,False,locked_test,Billing provider migration
+ex_029,211,Card got charged after free trial ended even though I thought I cancelled.,subscription_billing,True,Post-trial billing dispute,billing,False,calibration,Trial auto-renew dispute
+ex_030,212,Can I use a prepaid Visa gift card to pay for Premium?,subscription_billing,False,,,False,locked_test,Prepaid card policy
+ex_031,213,I have two charges on my Amex from Spotify UK and Spotify US.,subscription_billing,True,Cross-regional duplicate charge,billing,False,calibration,Two active accounts suspected
+ex_032,214,How does the annual subscription billing cycle work?,subscription_billing,False,,,False,locked_test,Annual plan billing question
+ex_033,215,Zip code verification failing when entering new debit card.,subscription_billing,False,,,False,calibration,AVS zip check failure
+ex_034,216,I demand a full refund or I will file a credit card chargeback immediately!,subscription_billing,True,Chargeback and dispute threat,billing|legal,False,locked_test,Chargeback threat
+ex_035,217,Mobile carrier billing with Vodafone stopped working.,subscription_billing,False,,,False,calibration,Carrier billing partner issue
+ex_036,218,Got an email saying my payment method is about to expire.,subscription_billing,False,,,False,locked_test,Payment expiration notice inquiry
+ex_037,219,Can I split the payment between two cards?,subscription_billing,False,,,False,calibration,Split payment inquiry
+ex_038,220,Why does my bill have extra sales tax added?,subscription_billing,False,,,False,locked_test,State sales tax inquiry
+ex_039,221,Pending authorization hold on my bank account for $1.,subscription_billing,False,,,False,calibration,Pre-auth hold explanation
+ex_040,222,You guys charged me 4 times in a row! Give my money back!,subscription_billing,True,Severe multiple billing error,billing,False,locked_test,Multiple duplicate transactions
+ex_041,301,How do I invite family members to my Family plan?,plan_discount_management,False,,,False,calibration,Family plan invitation steps
+ex_042,302,SheerID failed to verify my university student status for the student discount.,plan_discount_management,False,,,False,locked_test,Student discount SheerID verification
+ex_043,303,My partner and I live at the same address but Duo plan says address mismatch.,plan_discount_management,False,,,False,calibration,Duo address verification error
+ex_044,304,Can I switch from individual Premium to Premium Family without losing playlists?,plan_discount_management,False,,,False,locked_test,Plan upgrade playlist preservation
+ex_045,305,How many members can join a Spotify Family plan?,plan_discount_management,False,,,False,calibration,Family plan member limit inquiry
+ex_046,306,Kids app pin code reset for Family plan sub-account.,plan_discount_management,False,,,False,locked_test,Spotify Kids pin reset
+ex_047,307,How do I renew my student discount for another year?,plan_discount_management,False,,,False,calibration,Annual student discount re-verification
+ex_048,308,Is Hulu still included in the student plan?,plan_discount_management,False,,,False,locked_test,Student plan bundle inclusion
+ex_049,309,How do I remove an old member from our Family plan?,plan_discount_management,False,,,False,calibration,Removing family plan member
+ex_050,310,Does Premium Duo include separate accounts or one shared account?,plan_discount_management,False,,,False,locked_test,Duo separate account explanation
+ex_051,311,Invited friend to Duo but link says 'invite expired'.,plan_discount_management,False,,,False,calibration,Expired invite token
+ex_052,312,Can Family plan members live in different cities?,plan_discount_management,False,,,False,locked_test,Family plan co-residence terms
+ex_053,313,How do I downgrade from Family to Individual plan?,plan_discount_management,False,,,False,calibration,Plan downgrade instructions
+ex_054,314,High school students eligible for the student plan discount?,plan_discount_management,False,,,False,locked_test,Student eligibility criteria
+ex_055,315,Military or veteran discount available?,plan_discount_management,False,,,False,calibration,Military discount availability
+ex_056,316,Family plan invite link loops back to home page without accepting.,plan_discount_management,False,,,False,locked_test,Invite redemption glitch
+ex_057,317,What happens to remaining individual premium days when joining Family?,plan_discount_management,False,,,False,calibration,Prorated credit explanation
+ex_058,318,Duo plan address auto-complete cannot find our apartment number.,plan_discount_management,False,,,False,locked_test,Google maps address lookup issue
+ex_059,401,Spotify app keeps crashing on launch on iOS 17.2.,playback_technical_issue,False,,,False,calibration,iOS crash on startup
+ex_060,402,Songs pause after 5 seconds on every single track.,playback_technical_issue,False,,,False,locked_test,Immediate pause bug
+ex_061,403,Downloaded songs refuse to play offline when in airplane mode.,playback_technical_issue,False,,,False,calibration,Offline download playback failure
+ex_062,404,Songs skipping rapidly through entire album without playing.,playback_technical_issue,False,,,False,locked_test,Rapid song skipping glitch
+ex_063,405,How do I perform a clean reinstall of the desktop client on Windows 11?,playback_technical_issue,False,,,False,calibration,Clean reinstall instructions
+ex_064,406,Getting error message 'Spotify can't play this right now' on local files.,playback_technical_issue,False,,,False,locked_test,Local files playback error
+ex_065,407,Audio is distorted and sounds like slow motion robot voices.,playback_technical_issue,False,,,False,calibration,Audio sample rate distortion
+ex_066,408,Black screen on startup on macOS Sonoma.,playback_technical_issue,False,,,False,locked_test,Mac hardware acceleration blank screen
+ex_067,409,Volume normalizer is making all quiet acoustic songs sound muffled.,playback_technical_issue,False,,,False,calibration,Normalize volume setting
+ex_068,410,Offline downloads took up 40GB and won't delete even when toggled off.,playback_technical_issue,False,,,False,locked_test,Storage cache cleanup
+ex_069,411,Battery draining 30% per hour in background on Samsung Galaxy S23.,playback_technical_issue,False,,,False,calibration,Android background battery drain
+ex_070,412,Equalizer settings reset every time I close the app.,playback_technical_issue,False,,,False,locked_test,Equalizer persistence bug
+ex_071,413,High resolution lossless audio toggle missing in settings.,playback_technical_issue,False,,,False,calibration,HiFi lossless availability inquiry
+ex_072,414,Gapless playback not working between songs on live concert album.,playback_technical_issue,False,,,False,locked_test,Gapless playback toggle
+ex_073,415,App freezes completely when searching for any artist.,playback_technical_issue,False,,,False,calibration,Search index freeze
+ex_074,416,Songs stop playing as soon as my phone screen turns off.,playback_technical_issue,False,,,False,locked_test,OS battery optimization killing app
+ex_075,417,Web player says 'Protected content playback is not enabled' in Chrome.,playback_technical_issue,False,,,False,calibration,Widevine DRM disabled in browser
+ex_076,418,Local MP3 files synced from computer won't play on my iPhone.,playback_technical_issue,False,,,False,locked_test,Local files sync over local WiFi network
+ex_077,419,Podcasts lose playback position when switching between devices.,playback_technical_issue,False,,,False,calibration,Podcast resume timestamp sync
+ex_078,420,Playback stops randomly and says someone else is playing music.,playback_technical_issue,True,Potential unauthorized remote playback,security,False,locked_test,Concurrent playback conflict
+ex_079,421,Audio crackles when crossfade is enabled between tracks.,playback_technical_issue,False,,,False,calibration,Crossfade audio buffer glitch
+ex_080,422,Car Thing device stuck on boot logo screen.,playback_technical_issue,False,,,False,locked_test,Car Thing firmware bootloop
+ex_081,423,Downloads stuck on 'Waiting to download' on home WiFi.,playback_technical_issue,False,,,False,calibration,Download queue stalled
+ex_082,424,Smart shuffle turns itself on automatically every time I play a playlist.,playback_technical_issue,False,,,False,locked_test,Smart shuffle default behavior
+ex_083,501,Spotify Connect cannot discover my Sonos speakers on the local WiFi.,device_connectivity,False,,,False,calibration,Sonos Spotify Connect discovery
+ex_084,502,Apple CarPlay keeps disconnecting after playing one track.,device_connectivity,False,,,False,locked_test,CarPlay connection drops
+ex_085,503,Alexa Echo says 'I cannot find that on Spotify' even though linked.,device_connectivity,False,,,False,calibration,Alexa skill default music provider
+ex_086,504,Bluetooth stutter in my car stereo on Android Auto.,device_connectivity,False,,,False,locked_test,Android Auto bluetooth stutter
+ex_087,505,PS5 Spotify app gives error code CE-108255-1 on launch.,device_connectivity,False,,,False,calibration,PlayStation console crash code
+ex_088,506,Cannot cast music to Google Nest Hub / Chromecast.,device_connectivity,False,,,False,locked_test,Chromecast target unreachable
+ex_089,507,Apple Watch app won't stream music without iPhone nearby.,device_connectivity,False,,,False,calibration,Apple Watch standalone streaming/downloads
+ex_090,508,Smart TV Samsung Tizen app stuck on black loading screen.,device_connectivity,False,,,False,locked_test,Smart TV app freeze
+ex_091,509,How do I remove an old Bluetooth speaker from my Connect devices list?,device_connectivity,False,,,False,calibration,Clearing stale Spotify Connect devices
+ex_092,510,Garmin smartwatch sync with Spotify offline playlists failing.,device_connectivity,False,,,False,locked_test,Wearable sync failure
+ex_093,511,Roku player audio cutting out every 30 seconds.,device_connectivity,False,,,False,calibration,Roku TV app audio drops
+ex_094,512,Discord rich presence status is not showing what I am playing.,device_connectivity,False,,,False,locked_test,Discord account connection sync
+ex_095,513,Bose QC45 headphones volume controls not changing Spotify volume.,device_connectivity,False,,,False,calibration,Headphone hardware control sync
+ex_096,514,DJ controller Pioneer integration not connecting to Spotify.,device_connectivity,False,,,False,locked_test,DJ software third-party API deprecation
+ex_097,515,Xbox Series X background music stops when launching a game.,device_connectivity,False,,,False,calibration,Xbox background audio toggle
+ex_098,516,Siri voice command 'Play music on Spotify' plays Apple Music instead.,device_connectivity,False,,,False,locked_test,Siri default audio player setting
+ex_099,517,LG WebOS TV app asks to pair code every single day.,device_connectivity,False,,,False,calibration,Smart TV persistent auth failure
+ex_100,518,Car Thing device deprecation: will I receive a refund?,device_connectivity,True,Hardware sunsetting and financial compensation inquiry,billing,False,locked_test,Car Thing sunset refund
+ex_101,601,Why is Neil Young's discography greyed out and unplayable?,content_playlist_availability,False,,,False,calibration,Licensing / artist removal
+ex_102,602,Accidentally deleted my workout playlist with 500 songs! Can I recover it?,content_playlist_availability,False,,,False,locked_test,Playlist restore self-service
+ex_103,603,Lyrics button disappeared from the mobile player interface.,content_playlist_availability,False,,,False,calibration,Musixmatch lyrics availability/tier
+ex_104,604,Explicit songs are being censored or skipped even with explicit toggle on.,content_playlist_availability,False,,,False,locked_test,Explicit filter setting
+ex_105,605,Why does an album have clean radio edit versions instead of original?,content_playlist_availability,False,,,False,calibration,Album version selection
+ex_106,606,A song in my playlist was replaced with a cover version automatically.,content_playlist_availability,False,,,False,locked_test,Catalog re-linking behavior
+ex_107,607,Why are certain tracks unavailable in Germany compared to UK?,content_playlist_availability,False,,,False,calibration,Geographical licensing restrictions
+ex_108,608,Where did the 'Discover Weekly' playlist move in the new library UI?,content_playlist_availability,False,,,False,locked_test,Made For You hub navigation
+ex_109,609,Friend made a collaborative playlist with me but I cannot add songs.,content_playlist_availability,False,,,False,calibration,Collaborative playlist permissions
+ex_110,610,Audiobooks: why do I only have 15 hours of listening time on Premium?,content_playlist_availability,False,,,False,locked_test,Audiobook 15hr monthly allotment
+ex_111,611,"Artist uploaded wrong audio file to new single, how to report metadata error?",content_playlist_availability,False,,,False,calibration,Broken metadata reporting
+ex_112,612,Can I sort playlist songs by release date on mobile?,content_playlist_availability,False,,,False,locked_test,Playlist custom sort options
+ex_113,613,My Daily Mix playlists have not refreshed for 3 weeks.,content_playlist_availability,False,,,False,calibration,Algo playlist generation stalled
+ex_114,614,Explicit toggle is locked and greyed out in account settings.,content_playlist_availability,False,,,False,locked_test,Family plan manager restriction
+ex_115,615,How do I make my private playlist public so my friends can search it?,content_playlist_availability,False,,,False,calibration,Playlist privacy setting
+ex_116,616,Podcast episode shows 'This content is not available in your region'.,content_playlist_availability,False,,,False,locked_test,Podcast regional license
+ex_117,617,Liked Songs count is wrong by over 200 tracks.,content_playlist_availability,False,,,False,calibration,Liked songs cache sync
+ex_118,618,Can I recover a playlist that was deleted 4 months ago?,content_playlist_availability,False,,,False,locked_test,90-day restore window limitation
+ex_119,701,I want to cancel my Spotify Premium subscription right now.,cancellation_refund,False,,,False,calibration,Standard subscription cancellation
+ex_120,702,I cancelled 3 months ago but you are still billing me every month. Refund me!,cancellation_refund,True,Billing dispute after claimed cancellation,billing,False,locked_test,Post-cancellation ongoing charges
+ex_121,703,How do I cancel if I subscribed through my Apple ID subscription manager?,cancellation_refund,False,,,False,calibration,Apple in-app purchase cancellation steps
+ex_122,704,Will I lose all my created playlists if I cancel Premium and use Free?,cancellation_refund,False,,,False,locked_test,Playlist retention after downgrade
+ex_123,705,"Accidentally bought annual plan instead of monthly, can I get a refund?",cancellation_refund,True,Immediate refund request for annual purchase,billing,False,calibration,Accidental annual commitment refund
+ex_124,706,There is no 'Cancel Premium' button on my account page!,cancellation_refund,False,,,False,locked_test,Third-party partner billing (carrier/Apple)
+ex_125,707,How long does a refund take to show up in my bank account?,cancellation_refund,False,,,False,calibration,5-10 business day refund timeframe
+ex_126,708,"If I cancel today, do I get to use Premium until the end of my billing period?",cancellation_refund,False,,,False,locked_test,Access until end of billing cycle
+ex_127,709,Cancel my subscription immediately and delete my credit card information.,cancellation_refund,False,,,False,calibration,Cancel and remove payment details
+ex_128,710,"I haven't used Spotify for 6 months, can I get a refund for those months?",cancellation_refund,True,Retroactive non-usage refund exception request,billing,False,locked_test,Retroactive non-usage refund
+ex_129,711,How do I cancel my subscription with Roku billing?,cancellation_refund,False,,,False,calibration,Roku channel store cancellation
+ex_130,712,Under UK consumer law 14-day cooling off period I request full refund.,cancellation_refund,True,Statutory cooling-off legal refund claim,billing|legal,False,locked_test,Statutory 14-day refund right
+ex_131,713,My account was billed today right after I clicked cancel.,cancellation_refund,True,Timing race condition on renewal charge,billing,False,calibration,Renewal charge during cancellation
+ex_132,714,Can I pause my subscription for 2 months while I am on vacation?,cancellation_refund,False,,,False,locked_test,Subscription pause feature availability
+ex_133,715,Cancel my account and close it permanently.,cancellation_refund,False,,,False,calibration,Account closure vs subscription cancel
+ex_134,716,I was promised a refund 2 weeks ago by support and still haven't received it.,cancellation_refund,True,Delayed refund escalation,billing,False,locked_test,Unreceived refund tracking
+ex_135,717,Does cancelling Premium delete my downloaded songs?,cancellation_refund,False,,,False,calibration,Offline files expire upon downgrade
+ex_136,718,Can I reactivate my cancelled Premium subscription at any time?,cancellation_refund,False,,,False,locked_test,Reactivation instructions
+ex_137,801,"Someone hacked my account, changed the email, and is listening to weird music!",security_compromised_account,True,Account takeover and unauthorized email swap,security,False,calibration,Account takeover
+ex_138,802,Got an email saying my password was changed from an IP in Russia. Wasn't me!,security_compromised_account,True,Suspicious geographical password change,security,False,locked_test,Unauthorized password modification
+ex_139,803,Someone deleted all my playlists and replaced profile picture with scam ads.,security_compromised_account,True,Malicious vandalization of account,security,False,calibration,Account vandalism
+ex_140,804,My listening history has hundreds of French rap songs I never listened to.,security_compromised_account,True,Unauthorized background bot stream farming,security,False,locked_test,Stream farming intrusion
+ex_141,805,Stranger added themselves as manager of my Family plan and kicked me out!,security_compromised_account,True,Hostile family plan takeover,security,False,calibration,Family plan hijack
+ex_142,806,Received phishing email claiming my Spotify account is suspended. Is this real?,security_compromised_account,False,,security,False,locked_test,Phishing email verification
+ex_143,807,Someone is using my credit card to buy Spotify subscriptions for other people.,security_compromised_account,True,Third-party payment card fraud,fraud|security,False,calibration,Third-party card compromise
+ex_144,808,"My account has been compromised, please freeze it immediately!",security_compromised_account,True,Urgent freeze request,security,False,locked_test,Emergency account lock
+ex_145,809,Two factor authentication code sent to me but I didn't try to log in.,security_compromised_account,True,Credential stuffing attack detected,security,False,calibration,Unsolicited 2FA challenge
+ex_146,810,Unknown device 'Web Player Chrome Windows' active on Spotify Connect.,security_compromised_account,True,Unauthorized active session,security,False,locked_test,Rogue active session
+ex_147,811,I think my account was leaked in a data breach.,security_compromised_account,False,,security,False,calibration,Breach inquiry password advice
+ex_148,812,Someone changed my country settings and now all my songs are locked.,security_compromised_account,True,Account takeover with country change,security,False,locked_test,Unauthorized region change
+ex_149,813,My Spotify account was sold on a dark web forum! Help!,security_compromised_account,True,Dark web credential sale,security,False,calibration,Stolen account credential resale
+ex_150,814,Hackers bypassed my password reset by changing linked Facebook account.,security_compromised_account,True,SSO account compromise,security,False,locked_test,Social account hijack link
+ex_151,815,How do I know if someone else has access to my account?,security_compromised_account,False,,,False,calibration,Security audit instructions
+ex_152,816,Can I set up hardware security key (YubiKey) for Spotify login?,security_compromised_account,False,,,False,locked_test,FIDO/Hardware key feature support
+ex_153,901,How do I turn on crossfade between songs on desktop?,how_to_feature_request,False,,,False,calibration,Crossfade setting instructions
+ex_154,902,Please bring back the old heart / like button instead of the plus icon!,how_to_feature_request,False,,,False,locked_test,UI feedback / feature complaint
+ex_155,903,How can I see my Spotify Wrapped if I missed it in December?,how_to_feature_request,False,,,False,calibration,Wrapped availability explanation
+ex_156,904,How do I share a song to Instagram Stories with background artwork?,how_to_feature_request,False,,,False,locked_test,Instagram stories share feature
+ex_157,905,Can we please get folder support for organizing playlists on mobile?,how_to_feature_request,False,,,False,calibration,Mobile playlist folders feature request
+ex_158,906,How do I view friend activity sidebar on Mac desktop app?,how_to_feature_request,False,,,False,locked_test,Friend activity toggle
+ex_159,907,How do I block an artist so they never play on my radio or mixes?,how_to_feature_request,False,,,False,calibration,Don't play this artist feature
+ex_160,908,Is there a sleep timer feature so music stops after 30 minutes?,how_to_feature_request,False,,,False,locked_test,Sleep timer walkthrough
+ex_161,909,How do I download my personal listening data archive (GDPR package)?,how_to_feature_request,False,,,False,calibration,Privacy data download tool
+ex_162,910,Can I transfer my Liked Songs to another Spotify account?,how_to_feature_request,False,,,False,locked_test,Playlist transfer between accounts
+ex_163,911,How do I create a Blend playlist with my friend?,how_to_feature_request,False,,,False,calibration,Spotify Blend invite walkthrough
+ex_164,912,Where can I find the equalizer setting in iOS app?,how_to_feature_request,False,,,False,locked_test,Equalizer menu path
+ex_165,913,Can you add spatial audio or Dolby Atmos support like Apple Music?,how_to_feature_request,False,,,False,calibration,Dolby Atmos feature request
+ex_166,914,How do I change my display name on my public profile?,how_to_feature_request,False,,,False,locked_test,Profile name edit steps
+ex_167,915,How do I exclude a playlist from my taste profile so it doesn't skew Wrapped?,how_to_feature_request,False,,,False,calibration,Exclude from taste profile
+ex_168,916,Can I listen together with friends remotely in real time?,how_to_feature_request,False,,,False,locked_test,Jam / Group session feature
+ex_169,917,How do I clear my search history on mobile?,how_to_feature_request,False,,,False,calibration,Clear search cache
+ex_170,918,Is there a light mode theme available for desktop?,how_to_feature_request,False,,,False,locked_test,Dark mode / Light mode theme availability
+ex_171,1001,Is Spotify down right now? Nothing loads for anyone on Twitter!,service_outage,False,,,False,calibration,Outage status inquiry
+ex_172,1002,Getting HTTP 500 internal server error across the web player in US East.,service_outage,False,,,False,locked_test,Server error code reporting
+ex_173,1003,Is there a service disruption affecting European login servers?,service_outage,False,,,False,calibration,Regional auth disruption
+ex_174,1004,Spotify status page says all systems operational but thousands of users down!,service_outage,False,,,False,locked_test,Status page discrepancy
+ex_175,1005,"Search API seems completely down, returning error 503.",service_outage,False,,,False,calibration,503 service unavailable
+ex_176,1006,Is there an outage with Facebook login integration currently?,service_outage,False,,,False,locked_test,Third-party SSO outage
+ex_177,1007,"App logged everyone out worldwide right now, what happened?",service_outage,False,,,False,calibration,Global session drop incident
+ex_178,1008,Are payment processing servers down for credit card renewals?,service_outage,False,,,False,locked_test,Payment gateway outage
+ex_179,1009,Web player certificates expired causing security warning SSL error.,service_outage,False,,security,False,calibration,SSL cert expiration incident
+ex_180,1010,All podcast feeds throwing 504 gateway timeout.,service_outage,False,,,False,locked_test,Gateway timeout on podcasts
+ex_181,1011,Why is the backend taking 2 minutes to load my library?,service_outage,False,,,False,calibration,Backend latency / degraded performance
+ex_182,1012,"Downdetector is spiking with 50,000 reports, is engineering aware?",service_outage,False,,,False,locked_test,Outage spike awareness
+ex_183,1013,Streaming servers offline in Australia region.,service_outage,False,,,False,calibration,Regional CDN outage
+ex_184,1014,Is the desktop app experiencing an outage after today's patch?,service_outage,False,,,False,locked_test,Post-release regression incident
+ex_185,1101,Hello??? Anyone there???,other_unclear,False,,,True,calibration,Greeting without substantive inquiry
+ex_186,1102,Fix your broken app right now!!!!,other_unclear,False,,,True,locked_test,Vague complaint without details
+ex_187,1103,Why is it not working?,other_unclear,False,,,True,calibration,Zero diagnostic context
+ex_188,1104,Hey check out my new single on Spotify! Stream link here!,other_unclear,False,,,False,locked_test,Self-promotional spam
+ex_189,1105,Yo @SpotifyCares,other_unclear,False,,,True,calibration,Single mention ping
+ex_190,1106,Your customer service is the worst on earth garbage company,other_unclear,True,Extreme customer frustration requiring escalation,sentiment,False,locked_test,Aggressive feedback
+ex_191,1107,I am going to take you to small claims court for negligence!,other_unclear,True,Legal threat,legal,False,calibration,Legal threat without details
+ex_192,1108,Is Drake dropping an album at midnight tonight?,other_unclear,False,,,False,locked_test,Out-of-scope artist gossip inquiry
+ex_193,1109,Merci beaucoup pour votre aide passée!,other_unclear,False,,,False,calibration,Non-English thank you message
+ex_194,1110,Test 1 2 3 please ignore,other_unclear,False,,,False,locked_test,Test message
+ex_195,1111,???,other_unclear,False,,,True,calibration,Punctuation only
+ex_196,1112,Can someone from customer support respond immediately?,other_unclear,False,,,True,locked_test,Call for support without question
+ex_197,1113,Worst update ever roll it back,other_unclear,False,,,True,calibration,Unspecified update complaint
+ex_198,1114,How much does a Spotify stock share cost today?,other_unclear,False,,,False,locked_test,Investor / financial query out of scope
+ex_199,1115,Job opening in customer support available?,other_unclear,False,,,False,calibration,Hiring inquiry
+ex_200,1116,Help me please it won't work on my thing,other_unclear,False,,,True,locked_test,Extreme vagueness without device or issue

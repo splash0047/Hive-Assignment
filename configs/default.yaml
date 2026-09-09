@@ -1,0 +1,47 @@
+project:
+  seed: 42
+  brand: null
+  taxonomy_version: v1
+
+data:
+  raw_csv: data/raw/twcs.csv
+  max_brand_pairs: 30000
+  discovery_sample_size: 4000
+  retrieval_corpus_size: 20000
+  min_reply_chars: 12
+
+intent:
+  embedding_model: sentence-transformers/all-MiniLM-L6-v2
+  n_clusters_candidates: [8, 10, 12, 14]
+  classifier: logistic_regression
+  class_weight: balanced
+
+retrieval:
+  top_k: 6
+  same_intent_filter: true
+  min_similarity: 0.40
+
+routing:
+  min_intent_confidence: 0.22
+  min_top_retrieval_similarity: 0.50
+  min_confidence_margin: 0.05
+  escalate_on_validator_failure: true
+
+generation:
+  provider: env
+  model: null
+  temperature: 0.1
+  max_reply_chars: 450
+  prompt_version: v1
+  cache: true
+
+judge:
+  provider: env
+  model: null
+  temperature: 0.0
+  rubric_version: v1
+  cache: true
+
+evaluation:
+  bootstrap_samples: 5000
+  fast_mode: false

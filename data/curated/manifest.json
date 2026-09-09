@@ -1,0 +1,20 @@
+{
+  "metadata": {
+    "brand": "SpotifyCares",
+    "seed": 42,
+    "total_pairs": 43,
+    "corpus_pairs": 43
+  },
+  "files": {
+    "brand_pairs": {
+      "path": "data\\curated\\brand_pairs.parquet",
+      "sha256": "c573a078d65662e924c96c976ba640d7cd867dbcc01f45804fc6946f52474776",
+      "size_bytes": 14565
+    },
+    "historical_corpus": {
+      "path": "data\\curated\\historical_corpus.parquet",
+      "sha256": "c573a078d65662e924c96c976ba640d7cd867dbcc01f45804fc6946f52474776",
+      "size_bytes": 14565
+    }
+  }
+}
