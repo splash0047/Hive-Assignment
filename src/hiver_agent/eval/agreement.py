@@ -126,9 +126,7 @@ def compute_ordinal_agreement(
 
     weighted_kappa: float | None = None
     if len(np.unique(h)) >= 2 and len(np.unique(j)) >= 2:
-        kappa_raw = float(
-            cohen_kappa_score(h, j, labels=[1, 2, 3, 4, 5], weights="quadratic")
-        )
+        kappa_raw = float(cohen_kappa_score(h, j, labels=[1, 2, 3, 4, 5], weights="quadratic"))
         if not np.isnan(kappa_raw):
             weighted_kappa = round(kappa_raw, 4)
 
