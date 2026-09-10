@@ -4,232 +4,218 @@
 **Dataset**: Customer Support on Twitter (TWCS) — sourced from Kaggle  
 **Selected Brand**: `SpotifyCares`  
 **Repository**: `hiver-support-agent`  
-**Evaluation Freeze Hash**: `639047bde6ff3b818b68fbf85b96127038760b42046ec36c8b9d5873e971210f`
+**Current Golden Artifact SHA-256**: `a20769810e4ad3d53b0f8bead77ca0ff3308247898fe7cc278a28d13b45b4ae5`  
+**Manual-review status**: **PENDING candidate confirmation**
 
 ---
 
 ## 1. Problem Framing
 
-Customer support workflows require high trust, verifiable factual grounding, and graceful fallback. When an automated agent provides incorrect or ungrounded instructions (e.g. hallucinating refund policies or misdiagnosing security intrusions), the business cost far exceeds that of a delayed human response.
+Customer-support automation has asymmetric risk: an incorrect or ungrounded answer about billing, account access, fraud, or security can be more costly than escalating the query to a person. The system therefore optimizes for **safety-first selective automation**, not maximum coverage.
 
-### Chosen Brand
-`SpotifyCares` was chosen as the operational support domain. Unlike retail or telecom brands that predominantly deflect conversations to private direct messages (DM) or telephone queues, Spotify customer support agents frequently resolve software, connectivity, billing, and account issues directly and publicly with actionable troubleshooting steps.
+`SpotifyCares` was selected because TWCS contains a large number of public Spotify support interactions with useful troubleshooting precedents. The intended behavior is:
 
-### Definition of "Good"
-A trustworthy AI support agent must:
-1. Accurately identify customer intent from noisy, informal user messages.
-2. Retrieve grounded precedent from verified historical brand resolutions.
-3. Draft concise, empathetic replies strictly faithful to the retrieved evidence without inventing policies.
-4. Deterministically escalate ambiguous, risky, or ungrounded queries to human operators.
+1. identify the customer's intent;
+2. retrieve relevant historical support evidence;
+3. detect risky or under-specified cases;
+4. either draft an evidence-grounded answer or explicitly escalate;
+5. retain an auditable reason and evidence identifiers.
 
-### Deliberate Non-Goals
-To prioritize explainability, evaluation rigor, and reproducibility:
-- **No ungrounded multi-agent graph**: Avoided heavy frameworks (LangChain/CrewAI) in favor of transparent, inspectable Python modules.
-- **No remote vector DB server**: Used local exact FAISS inner-product search (`IndexFlatIP`) with zero cloud dependencies.
-- **No frontend UI prior to evaluation**: Focused engineering entirely on data integrity, offline evaluation benchmarks, and deterministic safety rules.
+The system deliberately avoids a black-box multi-agent loop and a remote vector database. Its core components are inspectable Python modules, a linear intent classifier on sentence embeddings, exact FAISS retrieval, deterministic routing rules, and a provider abstraction for generation/judging.
 
-### Primary Success Metric
-**Safety-first coverage**: Maximize the share of queries handled automatically while holding the unsafe auto-handle rate below 2% and maintaining escalation recall above 90%.
+### Primary success criterion
+
+Maximize auto-handle coverage while keeping the unsafe auto-handle rate below 2% and escalation recall above 90% on the frozen locked-test benchmark.
 
 ---
 
-## 2. Data Curation, Brand Selection, and Intent Taxonomy
+## 2. Data, Taxonomy, and Evaluation Split
 
-### Dataset Provenance
-All evaluation data is sourced from the **Customer Support on Twitter (TWCS)** dataset (Kaggle, 2.8M tweets). Thread reconstruction uses `in_response_to_tweet_id` chaining. No synthetic examples are present in the golden set.
+All benchmark examples come from the Customer Support on Twitter dataset. Thread reconstruction uses `in_response_to_tweet_id` relationships.
 
-- **Total SpotifyCares pairs extracted**: 26,480 conversation turns
-- **Historical retrieval corpus**: 3,000 sampled pairs (deterministic seed=42)
+- SpotifyCares support pairs extracted: **26,480**
+- Historical retrieval corpus: **3,000** real pairs, deterministic seed 42
+- Intent taxonomy: **11 labels**, taxonomy v2
+- Golden candidate set: **200** real TWCS customer messages
+- Calibration partition: **50**
+- Locked-test partition: **150**
+- Current escalation prevalence: **45.5%**
 
-### Brand Profiling Benchmark
-We profiled candidate support handles across TWCS to quantify pair yield and deflection behavior:
+The 11 intents are:
 
-| Brand | Outbound Vol | Usable Pairs | Generic Handoff / DM % | Median Reply Chars | Selection Assessment |
-|---|---:|---:|---:|---:|---|
-| **SpotifyCares** | **45,210** | **26,480** | **~18%** | **~140** | **SELECTED**: High volume, rich technical public resolutions |
-| AmazonHelp | 169,840 | 28,100 | 82.6% | 118 | Rejected: Extreme private DM deflection |
-| AppleSupport | 106,700 | 22,450 | 79.1% | 124 | Rejected: Deflects to iOS hardware support / phone |
-| Uber_Support | 56,120 | 14,200 | 88.5% | 98 | Rejected: Rigid template redirects |
+`login_account_access`, `subscription_billing`, `plan_discount_management`, `playback_technical_issue`, `device_connectivity`, `content_playlist_availability`, `cancellation_refund`, `security_compromised_account`, `how_to_feature_request`, `feedback_complaint`, and `unsupported_ambiguous_inquiry`.
 
-### Intent Taxonomy Discovery
-Using KMeans unsupervised clustering ($k=10$–$12$) on 4,000 customer queries and manual qualitative merging — then finalized against the golden set — we established taxonomy **v2** with exactly the 11 labels used in training and evaluation.
+### Important annotation-provenance note
 
-**Taxonomy v2 (11 labels):**
-`login_account_access`, `subscription_billing`, `plan_discount_management`, `playback_technical_issue`, `device_connectivity`, `content_playlist_availability`, `cancellation_refund`, `security_compromised_account`, `how_to_feature_request`, `feedback_complaint`, `unsupported_ambiguous_inquiry`
+The repository contains an interactive `scripts/human_review_golden.py` workflow that is designed to require the candidate to inspect each of the 200 examples and confirm or edit intent, escalation, reason, risk tags, context requirement, and a rationale.
 
-Artifact: `data/curated/intent_taxonomy.json` (`version: v2`).
+The **current** `golden_eval.csv` has candidate-style review notes, but those notes were populated through a **non-interactive input driver**. That procedure is useful as a proxy/engineering exercise, but it is **not evidence of independent candidate-human review**. Therefore this report does **not** claim that the current 200-row artifact satisfies the human-review requirement. Genuine candidate confirmation remains required before final submission.
 
-### Golden Evaluation Dataset
-We constructed and froze a verified 200-example golden evaluation dataset (`data/golden/golden_eval.csv`) drawn from real TWCS SpotifyCares conversations, then **human-reviewed (v1)** under `data/golden/labeling_guidelines.md` via `scripts/human_review_golden.py` (25 escalation labels corrected; notes record review rationale):
+The current file hash is:
 
-- **Total Examples**: 200 (real TWCS tweets, not synthetic)
-- **Calibration Split**: 50 examples (used for threshold tuning and baseline training)
-- **Locked Test Split**: 150 examples (strictly quarantined; zero threshold tuning)
-- **Escalation Prevalence**: ~45.5% after human review (security, billing lookup, refunds, missing context)
-- **Immutable SHA-256**: `639047bde6ff3b818b68fbf85b96127038760b42046ec36c8b9d5873e971210f`
+`a20769810e4ad3d53b0f8bead77ca0ff3308247898fe7cc278a28d13b45b4ae5`
+
+A hash proves artifact identity, not who performed the annotation.
 
 ---
 
 ## 3. System Architecture
 
-```
-                       +-------------------------+
-                       | Incoming Customer Query |
-                       +------------+------------+
-                                    |
-                    +---------------+---------------+
-                    |                               |
-                    v                               v
-         [Text Cleaning & Norm]         [Regex Risk Assessor]
-                    |                               |
-                    v                               |
-      [SentenceTransformer (MiniLM)]                |
-                    |                               |
-                    v                               |
-       [Logistic Intent Classifier]                 |
-       (Top Intent, Conf, Margin)                   |
-                    |                               |
-                    v                               |
-        [Exact FAISS Cosine Search]                 |
-       (Top-k historical precedents)                |
-                    |                               |
-                    +---------------+---------------+
-                                    |
-                                    v
-                     +-----------------------------+
-                     | Deterministic Escalation    |
-                     | Gate (Risk, Conf, Sim)      |
-                     +--------------+--------------+
-                                    |
-                    +---------------+---------------+
-                    |                               |
-             [Failed Checks]                 [Passed Checks]
-                    v                               v
-          +-------------------+           +-------------------+
-          |     ESCALATE      |           |  Grounded Prompt  |
-          | (Human Routing +  |           |     Synthesis     |
-          | Audit Log Reason) |           +---------+---------+
-          +-------------------+                     |
-                                                    v
-                                          +-------------------+
-                                          | Post-Gen Validator|
-                                          +---------+---------+
-                                                    |
-                                         +----------+----------+
-                                         |                     |
-                                      [Valid]              [Invalid]
-                                         v                     v
-                                  +-------------+       +-------------+
-                                  | AUTO_HANDLE |       |  ESCALATE   |
-                                  +-------------+       +-------------+
+```text
+Incoming query
+    |
+    +--> text normalization
+    |
+    +--> MiniLM embedding -> Logistic Regression intent prediction
+    |
+    +--> deterministic risk assessment
+    |
+    +--> exact FAISS cosine retrieval over historical support pairs
+    |
+    +--> routing gate
+           |
+           +--> ESCALATE: risk / ambiguity / low confidence / weak evidence
+           |
+           +--> AUTO_HANDLE candidate
+                    |
+                    +--> evidence-grounded generation
+                    +--> post-generation validation
+                    +--> AUTO_HANDLE or ESCALATE
 ```
 
-### Key Components
-1. **Classifier**: `all-MiniLM-L6-v2` 384-dimensional embeddings fed into a balanced, regularized Logistic Regression classifier. Trained on 50 calibration examples (real TWCS tweets).
-2. **Retrieval**: FAISS `IndexFlatIP` over unit-normalized embeddings of 3,000 historical support pairs with intent-gating and test-partition leakage exclusion.
-3. **Escalation Rules**: Multi-tiered decision policy evaluating:
-   - Security/Fraud/Legal risk patterns (regex)
-   - Minimum intent confidence ($\ge 0.25$)
-   - Ambiguity margin ($\ge 0.03$)
-   - Minimum retrieval similarity ($\ge 0.55$)
-   - Post-generation format and length validation
-4. **LLM Provider**: Abstract adapter supporting Google Gemini API (`gemini-flash-lite-latest`) with exponential back-off on rate limits, and a deterministic MockLLMProvider for CI/offline reproduction.
+### Components
+
+1. **Intent classifier** — `all-MiniLM-L6-v2` embeddings with regularized Logistic Regression.
+2. **Retrieval** — local FAISS `IndexFlatIP` over normalized historical examples.
+3. **Routing** — explicit checks for risk, classifier confidence/margin, retrieval similarity, and post-generation validity.
+4. **Generation/Judge provider** — live provider required for the full evaluation path; the deterministic mock provider is restricted to offline smoke/CI paths.
+5. **Reproduction split** — `evaluate --fast` is a smoke test; `hiver-agent reproduce` reports the committed frozen metrics.
 
 ---
 
-## 4. Evaluation and Empirical Results
+## 4. Current Automated Benchmark
 
-### Core Benchmark: Intent Classification (Locked Test Set, $N=150$)
+The following values are the currently committed automated benchmark in `artifacts/eval/baseline_comparison.json`. They are retained as the current locked-test result, but they must be recomputed if genuine candidate review changes any labels.
 
-All three models trained on the **50-example calibration split** and evaluated on the **150-example locked test split**:
+### Intent classification — locked test, N=150
 
-| Model Architecture | Accuracy | Macro-F1 | Weighted-F1 | Inference Latency |
+| Model | Accuracy | Macro-F1 | Weighted-F1 |
+|---|---:|---:|---:|
+| Majority class | 12.0% | 0.0195 | 0.0257 |
+| TF-IDF + Logistic Regression | 48.0% | 0.4248 | 0.4523 |
+| MiniLM + Logistic Regression | **60.7%** | **0.5639** | **0.5836** |
+
+### End-to-end routing comparison
+
+| System | Intent Macro-F1 | Auto Coverage | Escalation Recall | False Auto Rate |
 |---|---:|---:|---:|---:|
-| **Trivial Majority Class** | 12.0% | 0.019 | 0.026 | $<0.1$ ms |
-| **Simple Baseline (TF-IDF + LogReg)** | 48.0% | 0.425 | 0.452 | $0.8$ ms |
-| **Final System (MiniLM + LogReg)** | **60.7%** | **0.564** | **0.584** | $12.4$ ms |
+| Always escalate | 0.019 | 0.0% | 100.0% | 0.0% |
+| TF-IDF + naive rule | 0.425 | 33.3% | 61.2% | 17.3% |
+| MiniLM + FAISS + safety gate | **0.564** | **3.3%** | **97.0%** | **1.3%** |
 
-*MiniLM achieves 29x improvement in Macro-F1 over majority class and a 33% relative gain over TF-IDF baseline. With only 50 training examples, this demonstrates strong few-shot generalization via pre-trained sentence embeddings.*
+The final system is intentionally conservative: only 5 of 150 locked-test cases are auto-handled at the current operating point. This sacrifices coverage in exchange for substantially higher escalation recall and a lower false-auto rate than the simple baseline.
 
-### End-to-End System Comparison (Locked Test Set, $N=150$)
+### What these numbers do and do not establish
 
-| System Architecture | Intent Macro-F1 | Auto Coverage | Escalation Recall | False Auto Rate |
-|---|---:|---:|---:|---:|
-| **Trivial: Always Escalate** | 0.019 | 0.0% | 100.0% | 0.0% |
-| **Simple: TF-IDF + Naive Rule** | 0.425 | 33.3% | 61.2% | **17.3%** |
-| **Proposed: MiniLM + FAISS + Safety Gate** | **0.564** | 3.3% | **97.0%** | **1.3%** |
-
-### Headline System Metrics (Locked Test Partition, $N=150$)
-
-Evaluation with 5,000 bootstrap resamples yielded:
-
-| Metric | Score | 95% Bootstrap CI |
-|---|---:|:---:|
-| **Total Test Queries** | 150 | — |
-| **Auto-Handle Rate (Coverage)** | **3.3%** | **[0.7%, 6.7%]** |
-| **Intent Classification Accuracy** | **60.7%** | **[52.7%, 68.0%]** |
-| **Intent Macro-F1** | **0.564** | **[0.476, 0.630]** |
-| **Escalation Recall (Safety)** | **97.0%** | **[92.5%, 100.0%]** |
-| **Escalation F1** | **0.477** | **[0.387, 0.559]** |
-| **Grounded Acceptance Rate** | **80.0%** | **[40.0%, 100.0%]** |
-| **Unsafe Auto-Handle Rate** | **1.3%** | **[0.0%, 3.3%]** |
-
-### Automated Judge Rubric & Inter-Annotator Agreement
-The LLM-as-Judge (Gemini `gemini-flash-lite-latest`) evaluates each auto-handled reply on:
-- **Groundedness** (1-5): Factual consistency with historical evidence
-- **Helpfulness** (1-5): Actionability of guidance
-- **Correctness** (1-5): Technical accuracy
-- **Tone** (1-5): Brand voice and politeness
-- **Safety** (1-5): Absence of credential requests or risky advice
-- Acceptance rule: $\ge 4$ on Groundedness, Correctness, Safety; $\ge 3$ on Helpfulness.
-- Parse failures / incomplete JSON fail **closed** (`overall_accept=False`, status treated as INVALID).
-
-Human-to-Judge calibration on **50** final-system study items (real FAISS evidence; reply never used as its own evidence):
-- Binary agreement: **76.0%**
-- Cohen's κ: **0.110** (slight agreement; human annotator is stricter on forced drafts for gold-escalate cases)
-- Artifact: `artifacts/eval/judge_human_agreement.json` (+ `judge_study_items.csv`)
-
-A believable κ with documented disagreements is preferred over an unsupported κ = 1.0.
+They show the behavior of the committed system against the current frozen labels. They do **not** prove production safety, policy freshness, or real-world issue resolution. TWCS is historical data, retrieval similarity is only a proxy for evidence relevance, and the test set is small.
 
 ---
 
-## 5. Mandatory Critique: What These Numbers Really Mean
+## 5. LLM Judge Study and Human-Agreement Status
 
-A senior engineer must remain transparent about evaluation proxies:
+The judge rubric scores Groundedness, Helpfulness, Correctness, Tone, and Safety, with parsing failures treated fail-closed.
 
-1. **Very Conservative Coverage (3.3%)**: The system auto-handles only 5 of 150 queries. This is a direct consequence of training the MiniLM classifier on only 50 calibration examples, resulting in lower classifier confidence across the board. The retrieval similarity threshold (0.55) combined with low classifier confidence causes most queries to be routed to escalation. The simple TF-IDF baseline achieves 33.3% coverage precisely because it has no evidence-grounding gate — but at the cost of a **17.3% false auto-handle rate**, which is unacceptable in a real support context.
+The current study contains **50** evidence-grounded candidate drafts and uses real FAISS-retrieved evidence; the reply is never inserted as its own supporting evidence. However, the study composition is important:
 
-2. **Precision vs. Recall Trade-off**: The proposed system explicitly prioritizes **recall of dangerous queries** (97.0% escalation recall) over automation rate. The 2 unsafe auto-handles (1.3%) were edge-case decisions exposed by the human-reviewed gold labels.
+- **1** item is an actual auto-handled final-system reply;
+- **49** items are forced evidence-grounded drafts for queries that the routing gate escalated.
 
-3. **50-Example Training Bottleneck**: With only 50 calibration examples across 11 intents (~4.5 per class), the classifier is intentionally few-shot. Expanding to 200-500 labelled examples per intent would meaningfully increase both F1 and coverage while maintaining safety.
+Accordingly, the study should be described as an **evidence-grounded candidate-draft study**, not as 50 served/final-system outputs.
 
-4. **Offline Proxy vs Live Resolution**: High cosine similarity with historical text does not prove the customer's problem was truly solved in the physical world.
+The frozen study also records that candidate-draft generation fell back to deterministic mock templates after sustained live-generation rate-limit/time-out failures, while the judge side was produced with the live Gemini judge. This limitation is intentionally disclosed rather than hidden.
 
-5. **Historical Policy Drift**: TWCS covers 2014-2020. Replies may describe deprecated features or removed third-party integrations. Real deployment requires continuous documentation syncing.
+### Current proxy comparison
 
----
+A non-interactive driver populated candidate-style score rows and produced:
 
-## 6. What I Would Build With One More Week
+- sample size: **50**
+- proxy-vs-judge binary agreement: **78%**
+- Cohen's κ: **0.028**
 
-1. **Active Learning Feedback Loop**: Stream escalated customer queries back into an annotation queue to continuously expand the training set on hard class boundaries.
-2. **Cross-Encoder Reranker**: Add a light cross-encoder (e.g. `ms-marco-MiniLM-L-6-v2`) to re-score the top-6 FAISS candidates for higher precision at low retrieval similarity thresholds.
-3. **Multi-Turn State Machine**: Enable the agent to ask single clarification questions (e.g. *"What device are you on?"*) before triggering full human escalation.
-4. **Expanded Calibration Set**: Label 100-200 additional calibration examples per intent to increase classifier confidence and unlock meaningful auto-handle coverage.
-5. **Temporal Policy Auditing**: Implement automated checks that flag historical answers referencing outdated links or deprecated third-party partnerships.
+These values are retained for debugging/reproducibility but **must not be reported as human-vs-judge agreement**. Independent candidate scoring with `scripts/human_score_judge_study.py` is still required. The agreement artifact is marked `PROXY_ONLY_NOT_HUMAN_AGREEMENT` until that happens.
 
----
-
-## 7. References
-
-- Charuagada et al. (2017). *Customer Support on Twitter* (TWCS dataset). Kaggle.
-- Reimers & Gurevych (2019). *Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks*. EMNLP.
-- Johnson, J. et al. (2017). *Billion-scale similarity search with GPUs*. IEEE Transactions on Big Data. (FAISS)
-- Landis & Koch (1977). *The measurement of observer agreement for categorical data*. Biometrics 33:159-174. (κ interpretation)
+A low κ alongside high raw agreement is plausible in an imbalanced accept/reject study, but interpretation should only be made after genuine human labels exist.
 
 ---
 
-## 8. Conclusion
+## 6. Main Failure Modes and Limitations
 
-The Hiver AI Support Agent satisfies the assignment's primary objective: **it is small, completely explainable, evaluation-first, and safety-oriented**. Every decision—from intent discovery to deterministic risk routing—is backed by real TWCS data, statistical baselines, 95% bootstrap confidence intervals, and an auditable decision trail. A 150-example locked test cannot prove absolute safety; the system is empirically evaluated on a frozen benchmark with an explicit unsafe-auto-handle rate.
+The detailed failure analysis lives in `docs/FAILURE_ANALYSIS.md`. The most important limitations are:
 
-The headline numbers are honest: 3.3% auto-handle coverage with 97.0% escalation recall on 150 real customer queries. These figures reflect the deliberate conservatism of an evaluation-first system trained on minimal labeled data. A technically simpler result with real evidence is worth more than an impressive-looking result built on synthetic artifacts a reviewer can disprove by opening two files.
+1. **Very low automation coverage** — the safety gate auto-handles only 3.3% of the locked test.
+2. **Few-shot classifier training** — 50 calibration examples across 11 intents limits confidence and class coverage.
+3. **Retrieval is a proxy** — a semantically similar historical answer can still be outdated or inappropriate for the current account state.
+4. **Historical policy drift** — TWCS contains older replies and links that may no longer reflect current Spotify behavior.
+5. **Judge-study composition** — most study replies are forced drafts for escalated cases rather than actually served responses.
+6. **Human-evaluation requirement still open** — candidate-style notes generated by an automated driver are not independent human review.
+
+---
+
+## 7. What I Would Build With One More Week
+
+1. Expand the manually labelled calibration set to improve classifier confidence and useful coverage.
+2. Add a lightweight cross-encoder reranker for better top-k evidence precision.
+3. Add a one-turn clarification path before escalation for missing-context cases.
+4. Add temporal/policy freshness checks for historical support evidence and links.
+5. Run a genuine candidate-human retrieval relevance audit and an independent human-vs-judge study.
+6. Report per-dimension judge agreement in addition to binary agreement once real human scores exist.
+
+---
+
+## 8. Reproduction and Quality Gates
+
+```bash
+uv sync
+uv run ruff check .
+uv run ruff format --check .
+uv run pytest -q
+```
+
+The PR branch has passed GitHub Actions on Python 3.12: Ruff lint passed, Ruff formatting reported all 73 files formatted, and all **29 tests** passed.
+
+For smoke-only evaluation:
+
+```bash
+uv run hiver-agent evaluate --fast
+```
+
+For the current committed frozen automated metrics:
+
+```bash
+uv run hiver-agent reproduce
+```
+
+For the required genuine candidate-human review:
+
+```bash
+uv run python scripts/human_review_golden.py
+uv run python scripts/human_score_judge_study.py
+```
+
+---
+
+## 9. References
+
+- Customer Support on Twitter (TWCS), Kaggle / thoughtvector
+- Reimers & Gurevych (2019), *Sentence-BERT*
+- Johnson et al., FAISS
+- Cohen's κ for inter-rater agreement
+- scikit-learn, pandas, SentenceTransformers, FAISS, Typer, Rich, uv
+
+---
+
+## 10. Conclusion
+
+The engineering pipeline is now reproducible, fail-closed for live evaluation, explicit about smoke versus frozen-metric paths, and covered by a green CI run. The current automated benchmark is **3.3% auto-handle coverage, 97.0% escalation recall, 1.3% false-auto rate, and 0.564 intent Macro-F1** on the 150-row locked test.
+
+The remaining blocker is evaluation provenance, not code execution: the final submission should only claim a human-reviewed golden set and human-vs-judge agreement after the candidate has personally performed those reviews. Until then, the repository intentionally labels those requirements as pending rather than overstating the evidence.
