@@ -20,13 +20,13 @@
 | **7** | **Trivial Baseline** | **PASS** | Majority: 12.0% acc / 0.0195 Macro-F1. |
 | **8** | **Simple Baseline** | **PASS** | TF-IDF + LogReg + naive rule end-to-end metrics in `baseline_comparison.json`. |
 | **9** | **Final System** | **PASS** | MiniLM 60.7% / 0.564 Macro-F1; currently frozen pipeline coverage 3.3%, escalation recall 97.0%. Recompute after final human labels if any labels change. |
-| **10–13** | **Automated metrics + judge rubric** | **PASS** | Metrics + fail-closed judge parser. |
-| **14** | **Human-vs-Judge Agreement Evidence** | **PENDING** | `judge_study_items.csv` uses real FAISS evidence and the judge side is available. The current 78% / κ=0.028 artifact was populated through a non-interactive driver and must not be presented as human-vs-judge agreement. Independent candidate scoring is still required. |
+| **10–13** | **Automated metrics + judge rubric** | **PASS** | Metrics + fail-closed judge parser. Agreement tooling now reports binary agreement plus per-dimension exact agreement, within-one-point agreement, quadratic-weighted κ, Spearman correlation, and disagreement examples once genuine manual scores are supplied. |
+| **14** | **Human-vs-Judge Agreement Evidence** | **PENDING** | `judge_study_items.csv` uses real FAISS evidence and the judge side is available. The current 78% / κ=0.028 artifact was populated through a non-interactive driver and is explicitly marked proxy-only; independent candidate scoring is still required. |
 | **15** | **Five Real Failure Modes** | **PASS** | `docs/FAILURE_ANALYSIS.md`. |
-| **16–18** | **Misleading headline / one-more-week / decision log** | **PASS** | REPORT §§5–6; decision log present. |
+| **16–18** | **Misleading headline / one-more-week / decision log** | **PASS** | REPORT §§5–7; decision log present. |
 | **19** | **Citations** | **PASS** | README + REPORT references. |
-| **20–21** | **No secrets / no raw TWCS** | **PASS** | `.env` ignored; raw dataset not committed. |
-| **22** | **Tests + CI** | **PASS** | PR head `693a7a4` passed GitHub Actions: Ruff check passed, Ruff format check reported 73 files formatted, and `pytest -q` passed 29 tests. |
+| **20–21** | **No secrets / no raw TWCS** | **PASS** | `.env` ignored; raw dataset not committed; resumable manual-review progress files are gitignored. |
+| **22** | **Tests + CI** | **PASS** | PR head `f3be030` passed GitHub Actions on Python 3.12: Ruff lint passed, Ruff format reported all 73 files formatted, and `pytest -q` passed all 30 tests. |
 | **23** | **Report length** | **PASS** | `docs/REPORT.md` remains concise. |
 | **24** | **Repository Ready for Final Submission** | **PENDING** | Engineering/CI checks are green. Final readiness still requires genuine candidate-human review of the 200 golden rows and 50 judge-study rows, followed by metric/report reconciliation if labels or scores change. |
 
