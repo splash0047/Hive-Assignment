@@ -135,7 +135,9 @@ def main() -> None:
         if escalate == "s":
             continue
 
-        current_reason = "" if pd.isna(row.get("escalation_reason")) else str(row.get("escalation_reason"))
+        current_reason = (
+            "" if pd.isna(row.get("escalation_reason")) else str(row.get("escalation_reason"))
+        )
         reason = _ask("Escalation reason (blank if AUTO_HANDLE)", current_reason)
         if reason == "q":
             _save(df)
