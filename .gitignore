@@ -15,6 +15,10 @@ venv/
 data/raw/
 data/interim/
 
+# Candidate review progress (local, resumable, not submission artifacts)
+data/golden/human_review_progress.csv
+artifacts/eval/human_scores_progress.csv
+
 # Model/index caches
 artifacts/models/*.pkl
 artifacts/indexes/*.faiss
