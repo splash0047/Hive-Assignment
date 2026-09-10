@@ -46,17 +46,15 @@ def review_row(row: pd.Series) -> dict:
     context_needed = False
     note_bits = [f"Human-reviewed v1; TWCS tweet #{row['tweet_id']}"]
 
-    # --- Intent sanity (minimal remaps only when clearly wrong) ---
     if intent == "unsupported_ambiguous_inquiry" and _has(
         text, r"\b(password|log ?in|sign ?in|reset)\b"
     ):
         if len(text.split()) <= 6:
-            pass  # keep ambiguous if ultra-terse
+            pass
         else:
             intent = "login_account_access"
             note_bits.append("intent remapped to login_account_access")
 
-    # --- Escalation policy ---
     if intent == "security_compromised_account" or _has(
         text,
         r"\b(hacked|compromis|unauthorized|stolen|someone else|changed my email|"
@@ -87,7 +85,6 @@ def review_row(row: pd.Series) -> dict:
             tags = []
             note_bits.append("self-serve how-to cancel; public guidance OK")
         else:
-            # Default: cancel requests often need account confirmation
             escalate = True
             reason = REASON["private"]
             tags = ["account_access"]
@@ -99,7 +96,6 @@ def review_row(row: pd.Series) -> dict:
         if intent in ("subscription_billing", "cancellation_refund") or _has(
             text, r"\b(charged|invoice|receipt|deducted|payment|billing|premium)\b"
         ):
-            # Almost all billing needs ledger lookup
             escalate = True
             reason = REASON["payment"]
             tags = ["payment"]
@@ -179,7 +175,6 @@ def review_row(row: pd.Series) -> dict:
         elif intent == "plan_discount_management" and _has(
             text, r"\b(sheerid|student|family|verification failed|address)\b"
         ):
-            # student verification failures often need human
             if _has(text, r"\b(failed|rejected|not verif|can't verif|cannot verif)\b"):
                 escalate = True
                 reason = REASON["private"]
@@ -193,7 +188,6 @@ def review_row(row: pd.Series) -> dict:
             note_bits.append("scoped technical issue; historical public resolutions OK")
 
     else:
-        # Fallback
         if len(text.split()) < 5:
             escalate = True
             reason = REASON["context"]
@@ -204,12 +198,12 @@ def review_row(row: pd.Series) -> dict:
             reason = str(row.get("escalation_reason") or "")
             note_bits.append("fallback: retained prior label after review")
 
-    # Normalize empty reason when not escalating
     if not escalate:
         reason = ""
-        # auto-handle should not carry security/payment risk tags unless noted
-        if tags and tags != ["none"] and any(
-            t in tags for t in ("security", "fraud", "payment", "refund", "legal")
+        if (
+            tags
+            and tags != ["none"]
+            and any(t in tags for t in ("security", "fraud", "payment", "refund", "legal"))
         ):
             escalate = True
             reason = reason or REASON["policy"]
