@@ -1,7 +1,7 @@
 project:
   seed: 42
   brand: SpotifyCares
-  taxonomy_version: v1
+  taxonomy_version: v2
 
 data:
   raw_csv: data/raw/twcs.csv

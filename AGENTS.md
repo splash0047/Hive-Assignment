@@ -30,7 +30,7 @@ The evaluator will likely care more about:
 12. Any model/provider-specific behavior must be hidden behind a small interface.
 13. Generated answers must contain evidence IDs referencing historical examples.
 14. If evidence is weak, conflicting, unsafe, or missing, the system should escalate instead of hallucinating.
-15. Keep a `--fast` evaluation mode that reproduces headline metrics in under 15 minutes.
+15. Keep `evaluate --fast` as an offline smoke test (MockLLM, truncated split). Keep `hiver-agent reproduce` as the deterministic path that prints frozen headline metrics from committed artifacts in under 15 minutes.
 16. Do not build a frontend until all required deliverables are complete.
 17. At the end of each phase:
     - run tests;

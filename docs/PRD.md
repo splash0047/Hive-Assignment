@@ -170,10 +170,18 @@ A new evaluator shall be able to reproduce headline results with a command such 
 
 ```bash
 uv sync
-uv run python -m hiver_agent.cli eval --fast
+uv run hiver-agent reproduce
 ```
 
-The fast path must avoid needing the full dataset.
+The deterministic reproduce path prints frozen headline metrics from committed artifacts (no live LLM required).
+
+Offline smoke testing (MockLLM, truncated split) is available via:
+
+```bash
+uv run hiver-agent evaluate --fast
+```
+
+The fast smoke path must avoid needing the full dataset.
 
 ## 5. Non-functional requirements
 
@@ -196,7 +204,7 @@ Targets, not guaranteed claims:
 - Auto-handle coverage: ideally 40-70%, depending on brand.
 - Human acceptable-reply rate on selected auto-handled cases: >= 75%.
 - LLM-judge agreement with human: weighted kappa or rank correlation around >= 0.60 is a good target.
-- Reproduction runtime: < 15 minutes in `--fast` mode.
+- Reproduction runtime: < 15 minutes via `hiver-agent reproduce` (frozen artifacts) or `evaluate --fast` smoke.
 
 If targets are missed, report the true results and explain why.
 

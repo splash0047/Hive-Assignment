@@ -1,0 +1,14 @@
+{
+  "n": 50,
+  "method": "Final-system classifier + FAISS retrieval + grounded draft + live Gemini judge. Reply text is never inserted as its own evidence. When the routing gate escalates, a forced evidence-grounded draft is still generated so hard cases enter the judge study.",
+  "generation_note": "Drafts for this frozen study used MockLLM evidence-conditioned templates after live Gemini generation hit sustained 429/timeouts; judge scores were produced with live Gemini against the retrieved evidence blob.",
+  "files": {
+    "study_items": "artifacts/eval/judge_study_items.csv",
+    "judge_scores": "artifacts/eval/judge_scores.csv",
+    "human_scores": "artifacts/eval/human_scores.csv",
+    "agreement": "artifacts/eval/judge_human_agreement.json"
+  },
+  "auto_handle_count": 1,
+  "escalate_count": 49,
+  "forced_draft_count": 49
+}

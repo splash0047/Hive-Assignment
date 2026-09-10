@@ -47,8 +47,13 @@ def compute_human_judge_agreement(
     agree_count = int(np.sum(h == j))
     pct = agree_count / n
 
-    # sklearn returns NaN when only one class is present (undefined chance agreement).
-    # Never invent κ=1.0 for empty, single-class, or failed computations.
+    # Reject undefined kappa before calling sklearn (avoids NaN + warning spam).
+    if len(set(map(str, human_labels))) < 2 or len(set(map(str, judge_labels))) < 2:
+        raise ValueError(
+            "Cohen's kappa is undefined for this label distribution "
+            "(need variation in both human and judge labels)."
+        )
+
     kappa_raw = float(cohen_kappa_score(h, j))
     if np.isnan(kappa_raw):
         raise ValueError(

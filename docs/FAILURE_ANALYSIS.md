@@ -82,7 +82,7 @@ Our evaluation identified **5 distinct failure modes** across 150 real queries:
 
 ## Architectural Lessons & Interview Takeaways
 
-1. **Defense in Depth Works**: 96 of 98 true-escalation queries were successfully routed to human agents (escalation recall 95.8%). The two unsafe auto-handles are genuine edge cases exposed only by real annotated data.
+1. **Defense in Depth Works**: True-escalation queries are overwhelmingly routed to human agents (escalation recall **97.0%** after human-reviewed gold labels). The remaining unsafe auto-handles are genuine edge cases exposed only by real annotated data.
 
 2. **50 Training Examples Is a Real Bottleneck**: The primary root cause of 3.3% coverage is the under-trained classifier. The MiniLM embeddings are powerful but Logistic Regression needs more examples per class to build confident boundaries. Expanding to 200+ calibration examples is the highest-ROI next step.
 

@@ -154,7 +154,7 @@ def evaluate(
     from hiver_agent.config import resolve_path
     from hiver_agent.eval.judge import SupportJudge
     from hiver_agent.eval.runner import run_evaluation_suite
-    from hiver_agent.generation.provider import MockLLMProvider, get_llm_provider
+    from hiver_agent.generation.provider import MockLLMProvider
     from hiver_agent.intents.classifier import SentenceEmbeddingClassifier
     from hiver_agent.retrieval.index import FaissIndex
     from hiver_agent.retrieval.retrieve import RetrievalEngine
@@ -229,7 +229,12 @@ def evaluate(
     )
 
     # 4. Providers
-    llm = MockLLMProvider() if fast and not rerun_llm else get_llm_provider(cfg.generation.provider)
+    if fast and not rerun_llm:
+        llm = MockLLMProvider()
+    else:
+        from hiver_agent.generation.provider import require_live_llm_provider
+
+        llm = require_live_llm_provider(cfg.generation.provider)
     judge = SupportJudge(llm)
 
     # 5. Run evaluation
@@ -308,6 +313,62 @@ def demo(
         body += f'\n[bold green]Draft Reply:[/]\n"{output.reply}"'
 
     console.print(Panel(body, title="Agent Response", expand=False))
+
+
+@app.command()
+def reproduce() -> None:
+    """Print frozen headline metrics from committed evaluation artifacts (no LLM calls)."""
+    import json
+
+    from hiver_agent.config import resolve_path
+
+    baseline = resolve_path("artifacts/eval/baseline_comparison.json")
+    agreement = resolve_path("artifacts/eval/judge_human_agreement.json")
+    freeze = resolve_path("data/golden/freeze_manifest.json")
+
+    if not baseline.exists():
+        console.print(f"[bold red]Missing frozen metrics:[/] {baseline}")
+        raise typer.Exit(code=1)
+
+    data = json.loads(baseline.read_text(encoding="utf-8"))
+    systems = data.get("systems", {})
+    models = data.get("models", {})
+    proposed = systems.get("proposed_agent_pipeline", {})
+    minilm = models.get("minilm_logistic", {})
+
+    console.print("[bold green]Frozen headline metrics (from committed artifacts)[/]")
+    if freeze.exists():
+        man = json.loads(freeze.read_text(encoding="utf-8"))
+        console.print(f"Golden freeze SHA-256: {man.get('sha256')}")
+        console.print(
+            f"Split: calibration={man.get('splits', {}).get('calibration')} / "
+            f"locked_test={man.get('splits', {}).get('locked_test')}"
+        )
+
+    console.print(
+        f"MiniLM intent accuracy={minilm.get('accuracy')}  macro_f1={minilm.get('macro_f1')}"
+    )
+    console.print(
+        "Proposed system: "
+        f"coverage={proposed.get('auto_coverage')}  "
+        f"esc_recall={proposed.get('escalation_recall')}  "
+        f"false_auto={proposed.get('false_auto_rate')}  "
+        f"intent_macro_f1={proposed.get('intent_macro_f1')}"
+    )
+
+    if agreement.exists():
+        agr = json.loads(agreement.read_text(encoding="utf-8"))
+        console.print(
+            f"Judge-human agreement: {agr.get('percent_agreement')} "
+            f"(kappa={agr.get('cohen_kappa')}, N={agr.get('sample_size')})"
+        )
+    else:
+        console.print("[yellow]judge_human_agreement.json not found[/]")
+
+    console.print(
+        "\n[dim]Note: `evaluate --fast` is an offline smoke test only. "
+        "This command is the deterministic headline reproduction path.[/]"
+    )
 
 
 if __name__ == "__main__":

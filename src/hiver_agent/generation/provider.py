@@ -79,7 +79,7 @@ class GeminiProvider(LLMProvider):
                 url, data=data, headers={"Content-Type": "application/json"}, method="POST"
             )
             try:
-                with urllib.request.urlopen(req, timeout=30) as resp:
+                with urllib.request.urlopen(req, timeout=90) as resp:
                     res = json.loads(resp.read().decode("utf-8"))
                     candidates = res.get("candidates", [])
                     if candidates and "content" in candidates[0]:
@@ -93,7 +93,17 @@ class GeminiProvider(LLMProvider):
                         f"Gemini rate limited (429), retrying in {wait:.0f}s (attempt {attempt + 1}/{max_retries})"
                     )
                     time.sleep(wait)
-                    wait = min(wait * 2, 60.0)
+                    wait = min(wait * 2, 120.0)
+                else:
+                    logger.error(f"Gemini API request failed: {e}")
+                    raise
+            except TimeoutError as e:
+                if attempt < max_retries - 1:
+                    logger.warning(
+                        f"Gemini timeout, retrying in {wait:.0f}s (attempt {attempt + 1}/{max_retries})"
+                    )
+                    time.sleep(wait)
+                    wait = min(wait * 2, 120.0)
                 else:
                     logger.error(f"Gemini API request failed: {e}")
                     raise
@@ -188,3 +198,19 @@ def get_llm_provider(
     # Fallback to Mock provider for local development/CI
     logger.info("Using MockLLMProvider (no live API key configured or mock requested).")
     return MockLLMProvider()
+
+
+def require_live_llm_provider(
+    provider_name: str = "env",
+    model: str | None = None,
+    api_key: str | None = None,
+) -> LLMProvider:
+    """Return a live LLM provider or raise — never silently falls back to Mock."""
+    provider = get_llm_provider(provider_name=provider_name, model=model, api_key=api_key)
+    if isinstance(provider, MockLLMProvider):
+        raise RuntimeError(
+            "Live evaluation requires OPENAI_API_KEY or GOOGLE_API_KEY / GEMINI_API_KEY. "
+            "Use `hiver-agent evaluate --fast` for offline smoke testing, or "
+            "`hiver-agent reproduce` to print frozen headline metrics from artifacts."
+        )
+    return provider

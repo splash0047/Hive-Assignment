@@ -4,9 +4,9 @@ AI customer support agent for **SpotifyCares** built for the Hiver SDE Intern ta
 
 ## Headline Result
 
-> **3.3% auto-handle coverage on the locked human-labeled test partition (N=150), with 95.8% escalation recall and 1.3% unsafe auto-handle rate.**  
+> **3.3% auto-handle coverage on the locked human-labeled test partition (N=150), with 97.0% escalation recall and 1.3% unsafe auto-handle rate.**  
 > Intent Macro-F1: **0.564** (MiniLM) vs **0.425** (TF-IDF) vs **0.019** (majority).  
-> Judge–human binary agreement: **86%** (Cohen's κ = **0.41**, N=50).
+> Judge–human binary agreement: **76%** (Cohen's κ = **0.11**, N=50) on final-system drafts with real retrieved evidence.
 
 These numbers come from committed artifacts under `artifacts/eval/` on real TWCS SpotifyCares tweets — not from the offline mock smoke path.
 
@@ -48,11 +48,16 @@ uv run pytest -q
 ### Offline Smoke Check (not the headline)
 ```bash
 # Fast path: first 30 locked_test rows + MockLLM. Verifies the pipeline runs.
-# It does NOT reproduce submission metrics — those are frozen in artifacts/eval/.
+# It does NOT reproduce submission metrics.
 uv run hiver-agent evaluate --fast
 ```
 
-### Inspect Frozen Headline Metrics
+### Reproduce Frozen Headline Metrics (< 1 Minute, no API key)
+```bash
+uv run hiver-agent reproduce
+```
+
+### Inspect Frozen Artifacts
 ```bash
 # Locked-test system vs baselines (intent + end-to-end)
 type artifacts\eval\baseline_comparison.json   # Windows
@@ -91,15 +96,15 @@ Frozen on the **locked test partition (N=150)**. Source: `artifacts/eval/baselin
 | System | Intent Macro-F1 | Auto Coverage | Escalation Recall | False Auto Rate |
 |---|---:|---:|---:|---:|
 | Trivial: always escalate | 0.019 | 0.0% | 100.0% | 0.0% |
-| Simple: TF-IDF + naive rule | 0.425 | 33.3% | 60.4% | 12.7% |
-| Proposed: MiniLM + FAISS + safety gate | **0.564** | **3.3%** | **95.8%** | **1.3%** |
+| Simple: TF-IDF + naive rule | 0.425 | 33.3% | 61.2% | 17.3% |
+| Proposed: MiniLM + FAISS + safety gate | **0.564** | **3.3%** | **97.0%** | **1.3%** |
 
 ### Headline System Metrics (Locked Test, N=150)
 | Metric | Score |
 |---|---:|
 | Auto-Handle Rate (Coverage) | **3.3%** |
 | Intent Accuracy | **60.7%** |
-| Escalation Recall (Safety) | **95.8%** |
+| Escalation Recall (Safety) | **97.0%** |
 | Grounded Acceptance Rate (auto-handled only) | **80.0%** |
 | Unsafe Auto-Handle Rate | **1.3%** |
 
@@ -107,8 +112,8 @@ Frozen on the **locked test partition (N=150)**. Source: `artifacts/eval/baselin
 | Metric | Value |
 |---|---:|
 | Sample size | 50 |
-| Binary agreement | 86.0% |
-| Cohen's κ | 0.407 |
+| Binary agreement | 76.0% |
+| Cohen's κ | 0.110 |
 
 ---
 
@@ -126,23 +131,29 @@ uv run hiver-agent profile-brands --top-n 10
 # 3. Build curated brand pairs and historical retrieval corpus (real TWCS pairs)
 uv run python scripts/build_curated_data.py
 
-# 4. Generate and freeze 200-example golden evaluation dataset (real tweet IDs)
+# 4. Sample golden candidates, then human-review + freeze labels
 uv run python scripts/generate_golden_eval.py
+uv run python scripts/human_review_golden.py
 
-# 5. Evaluate baseline classifiers / systems against final model
-uv run python scripts/evaluate_baselines.py
-
-# 6. Calibrate routing thresholds on calibration partition
-uv run python scripts/calibrate_thresholds.py
-
-# 7. Train final classifier and build FAISS vector index
+# 5. Train final classifier and build FAISS vector index (required before calibrate/baselines)
 uv run hiver-agent train
 
-# 8. Run full locked-test evaluation (requires OPENAI_API_KEY or GOOGLE_API_KEY for live judge)
+# 6. Calibrate routing thresholds on calibration partition (writes threshold_calibration.json)
+uv run python scripts/calibrate_thresholds.py
+# Confirm configs/default.yaml matches the selected thresholds.
+
+# 7. Evaluate baseline classifiers / end-to-end systems on locked_test
+uv run python scripts/evaluate_baselines.py
+
+# 8. Full locked-test evaluation (REQUIRES OPENAI_API_KEY or GOOGLE_API_KEY; no silent Mock fallback)
 uv run hiver-agent evaluate
 
-# 9. Recompute judge–human agreement from committed score CSVs
-uv run python scripts/evaluate_judge_agreement.py
+# 9. Build judge study from final-system outputs + real retrieved evidence, then score
+uv run python scripts/build_judge_study.py
+uv run python scripts/human_score_judge_study.py
+
+# 10. Print frozen headline metrics
+uv run hiver-agent reproduce
 ```
 
 ---
@@ -153,8 +164,8 @@ uv run python scripts/evaluate_judge_agreement.py
 |---|---|---|
 | `data/curated/brand_pairs.parquet` | 26,480 SpotifyCares support pairs | Reconstructed from TWCS via `in_response_to_tweet_id` |
 | `data/curated/historical_corpus.parquet` | 3,000 retrieval pairs (seed=42) | Subsample of real brand pairs, generic DM handoffs excluded |
-| `data/curated/intent_taxonomy.json` | 11-intent taxonomy | Clustering + manual merge; see `docs/REPORT.md` |
-| `data/golden/golden_eval.csv` | 200 labeled examples (50 calib / 150 locked test) | Real TWCS tweet IDs; freeze hash in `freeze_manifest.json` |
+| `data/curated/intent_taxonomy.json` | 11-intent taxonomy **v2** | Matches golden-set labels exactly |
+| `data/golden/golden_eval.csv` | 200 labeled examples (50 calib / 150 locked test) | Real TWCS tweet IDs; human-reviewed v1; freeze in `freeze_manifest.json` |
 
 Raw TWCS (`data/raw/twcs.csv`) is gitignored (~493 MB). Download with `scripts/download_data.py`.
 

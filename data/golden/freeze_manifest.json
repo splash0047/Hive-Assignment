@@ -1,9 +1,9 @@
 {
-  "frozen_at": "2026-09-10T06:22:26.745039Z",
+  "frozen_at": "2026-09-10T18:01:54.042339Z",
   "file_name": "golden_eval.csv",
-  "sha256": "5b1ce27af8ed031d4b7399a0d2248bcd58f3f44e8c13b650e4aaf34e694ecef1",
+  "sha256": "639047bde6ff3b818b68fbf85b96127038760b42046ec36c8b9d5873e971210f",
   "total_examples": 200,
-  "escalation_rate": 0.34,
+  "escalation_rate": 0.455,
   "splits": {
     "locked_test": 150,
     "calibration": 50

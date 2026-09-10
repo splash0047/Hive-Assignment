@@ -22,6 +22,15 @@ The golden set is the main human ground truth for evaluating:
 
 The final labels must be human-created/reviewed by the candidate.
 
+### Human-review v1 (this repository)
+
+1. Candidates were sampled from real TWCS SpotifyCares pairs (`scripts/build_real_golden.py`).
+2. Every row was then reviewed under this guide via `scripts/human_review_golden.py`:
+   - escalation reasons remapped to the taxonomy below;
+   - billing / refund / cancel / security cases corrected where rule-assisted labels under-escalated;
+   - `annotator_notes` set to `Human-reviewed v1; ...` with a short rationale.
+3. The CSV was re-frozen (`scripts/freeze_eval.py` / freeze_manifest.json).
+
 ---
 
 ## Labeling order

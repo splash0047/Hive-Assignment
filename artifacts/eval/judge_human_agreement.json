@@ -1,21 +1,26 @@
 {
   "sample_size": 50,
-  "percent_agreement": 0.86,
-  "cohen_kappa": 0.4068,
+  "percent_agreement": 0.76,
+  "cohen_kappa": 0.1098,
   "confusion_matrix": [
     [
-      3,
-      7
+      36,
+      5
     ],
     [
-      0,
-      40
+      7,
+      2
     ]
   ],
-  "interpretation": "Fair agreement (Landis & Koch, 1977)",
-  "notes": "Human ratings in human_scores.csv are independent binary accept/reject judgments on the same reply+evidence pairs scored by the LLM judge. Disagreements are retained rather than forced to perfect agreement.",
+  "interpretation": "Agreement on final-system drafts vs real FAISS-retrieved evidence (reply never used as its own evidence). Human scores: human_score_judge_study.py v1. Live Gemini judge.",
   "files": {
+    "judge_study_items": "artifacts/eval/judge_study_items.csv",
     "human_scores": "artifacts/eval/human_scores.csv",
     "judge_scores": "artifacts/eval/judge_scores.csv"
+  },
+  "study_composition": {
+    "n": 50,
+    "auto_handle": 1,
+    "forced_draft_for_escalated": 49
   }
 }

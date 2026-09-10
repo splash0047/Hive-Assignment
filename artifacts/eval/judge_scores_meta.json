@@ -1,0 +1,5 @@
+{
+  "n": 100,
+  "provider": "GeminiProvider",
+  "note": "Judge scored final-system drafts against retrieved evidence from judge_study_items.csv"
+}

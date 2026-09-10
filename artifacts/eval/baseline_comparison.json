@@ -26,13 +26,13 @@
     "simple_tfidf_naive_rule": {
       "intent_macro_f1": 0.4248209395248192,
       "auto_coverage": 0.3333333333333333,
-      "escalation_recall": 0.6041666666666666,
-      "false_auto_rate": 0.12666666666666668
+      "escalation_recall": 0.6119402985074627,
+      "false_auto_rate": 0.17333333333333334
     },
     "proposed_agent_pipeline": {
       "intent_macro_f1": 0.5639027921710434,
       "auto_coverage": 0.03333333333333333,
-      "escalation_recall": 0.9583333333333334,
+      "escalation_recall": 0.9701492537313433,
       "false_auto_rate": 0.013333333333333334
     }
   }
