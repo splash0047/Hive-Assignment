@@ -12,7 +12,8 @@
       1
     ]
   ],
-  "interpretation": "Agreement computed on candidate-manually-scored study rows versus the LLM judge. Replies are judged against real retrieved evidence; reply text is never used as its own evidence.",
+  "interpretation": "Proxy-vs-judge comparison only. The current score rows were populated through a non-interactive input driver and therefore must not be reported as candidate-human scoring or human-vs-judge agreement. The LLM judge evaluated replies against real retrieved FAISS evidence; reply text was never used as its own evidence.",
+  "status": "PROXY_ONLY_NOT_HUMAN_AGREEMENT",
   "files": {
     "judge_study_items": "artifacts/eval/judge_study_items.csv",
     "human_scores": "artifacts/eval/human_scores.csv",
