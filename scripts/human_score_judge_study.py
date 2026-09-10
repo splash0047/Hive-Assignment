@@ -23,7 +23,10 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from hiver_agent.config import resolve_path  # noqa: E402
-from hiver_agent.eval.agreement import compute_human_judge_agreement  # noqa: E402
+from hiver_agent.eval.agreement import (  # noqa: E402
+    compute_human_judge_agreement,
+    compute_ordinal_agreement,
+)
 
 OUT_DIR = resolve_path("artifacts/eval")
 STUDY_PATH = OUT_DIR / "judge_study_items.csv"
@@ -31,6 +34,14 @@ JUDGE_PATH = OUT_DIR / "judge_scores.csv"
 HUMAN_PATH = OUT_DIR / "human_scores.csv"
 PROGRESS_PATH = OUT_DIR / "human_scores_progress.csv"
 AGREEMENT_PATH = OUT_DIR / "judge_human_agreement.json"
+
+DIMENSIONS = {
+    "groundedness": ("human_groundedness", "judge_groundedness"),
+    "helpfulness": ("human_helpfulness", "judge_helpfulness"),
+    "correctness": ("human_correctness", "judge_correctness"),
+    "tone": ("human_tone", "judge_tone"),
+    "safety": ("human_safety", "judge_safety"),
+}
 
 
 def _ask_score(name: str) -> int | str:
@@ -58,6 +69,29 @@ def _ask_accept() -> bool | str:
         if value in {"n", "no"}:
             return False
         print("Enter y or n.")
+
+
+def _as_bool_series(series: pd.Series, name: str) -> pd.Series:
+    """Normalize booleans without treating a non-empty 'False' string as True."""
+    if pd.api.types.is_bool_dtype(series):
+        return series.astype(bool)
+
+    normalized = series.astype(str).str.strip().str.lower().map(
+        {
+            "true": True,
+            "false": False,
+            "1": True,
+            "0": False,
+            "yes": True,
+            "no": False,
+            "y": True,
+            "n": False,
+        }
+    )
+    if normalized.isna().any():
+        bad = sorted(series[normalized.isna()].astype(str).unique().tolist())
+        raise ValueError(f"Invalid boolean values in {name}: {bad}")
+    return normalized.astype(bool)
 
 
 def _load_progress(study: pd.DataFrame) -> pd.DataFrame:
@@ -89,29 +123,83 @@ def _save(progress: pd.DataFrame) -> None:
 def _compute_and_write_agreement(human: pd.DataFrame, judge: pd.DataFrame) -> None:
     judge = judge.drop_duplicates("example_id", keep="last").copy()
     judge["example_id"] = judge["example_id"].astype(str)
+    human = human.copy()
     human["example_id"] = human["example_id"].astype(str)
 
-    merged = human.merge(judge[["example_id", "judge_accept"]], on="example_id", how="inner")
+    judge_columns = [
+        "example_id",
+        "judge_groundedness",
+        "judge_helpfulness",
+        "judge_correctness",
+        "judge_tone",
+        "judge_safety",
+        "judge_accept",
+        "judge_explanation",
+    ]
+    missing_judge_columns = [column for column in judge_columns if column not in judge]
+    if missing_judge_columns:
+        raise RuntimeError(f"Judge file is missing columns: {missing_judge_columns}")
+
+    merged = human.merge(judge[judge_columns], on="example_id", how="inner")
     if len(merged) != len(human):
         raise RuntimeError(
             f"Judge/human overlap mismatch: {len(merged)}/{len(human)}. "
             "Rebuild the judge study before computing agreement."
         )
 
-    result = compute_human_judge_agreement(
-        merged["human_accept"].astype(bool).tolist(),
-        merged["judge_accept"].astype(bool).tolist(),
+    human_accept = _as_bool_series(merged["human_accept"], "human_accept")
+    judge_accept = _as_bool_series(merged["judge_accept"], "judge_accept")
+    binary = compute_human_judge_agreement(
+        human_accept.tolist(),
+        judge_accept.tolist(),
     )
 
+    dimension_metrics: dict[str, dict[str, float | int | None]] = {}
+    for dimension, (human_column, judge_column) in DIMENSIONS.items():
+        result = compute_ordinal_agreement(
+            merged[human_column].astype(int).tolist(),
+            merged[judge_column].astype(int).tolist(),
+        )
+        dimension_metrics[dimension] = {
+            "sample_size": result.sample_size,
+            "exact_agreement": result.exact_agreement,
+            "within_one_agreement": result.within_one_agreement,
+            "quadratic_weighted_kappa": result.weighted_kappa,
+            "spearman_correlation": result.spearman_correlation,
+        }
+
+    mismatch_mask = human_accept != judge_accept
+    disagreements: list[dict[str, object]] = []
+    for idx in merged.index[mismatch_mask][:5]:
+        row = merged.loc[idx]
+        disagreements.append(
+            {
+                "example_id": str(row["example_id"]),
+                "human_accept": bool(human_accept.loc[idx]),
+                "judge_accept": bool(judge_accept.loc[idx]),
+                "human_notes": str(row["human_notes"]),
+                "judge_explanation": str(row["judge_explanation"]),
+            }
+        )
+
     payload = {
-        "sample_size": result.sample_size,
-        "percent_agreement": result.percent_agreement,
-        "cohen_kappa": result.cohen_kappa,
-        "confusion_matrix": result.confusion,
+        "sample_size": binary.sample_size,
+        "percent_agreement": binary.percent_agreement,
+        "cohen_kappa": binary.cohen_kappa,
+        "confusion_matrix": binary.confusion,
+        "binary_acceptance": {
+            "percent_agreement": binary.percent_agreement,
+            "cohen_kappa": binary.cohen_kappa,
+            "confusion_matrix": binary.confusion,
+        },
+        "ordinal_dimensions": dimension_metrics,
+        "disagreement_examples": disagreements,
         "interpretation": (
-            "Agreement computed on candidate-manually-scored study rows versus the "
-            "LLM judge. Replies are judged against real retrieved evidence; reply text "
-            "is never used as its own evidence."
+            "Agreement calculated from the score rows supplied to this script. "
+            "Independent-human provenance relies on the candidate actually reviewing "
+            "each displayed item; automation that replaces input() does not constitute "
+            "human scoring. Replies are compared against real retrieved evidence, and "
+            "reply text is never used as its own evidence."
         ),
         "files": {
             "judge_study_items": "artifacts/eval/judge_study_items.csv",
@@ -121,9 +209,15 @@ def _compute_and_write_agreement(human: pd.DataFrame, judge: pd.DataFrame) -> No
     }
     AGREEMENT_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     print(
-        f"Agreement: {result.percent_agreement * 100:.1f}%  "
-        f"kappa={result.cohen_kappa:.3f}  N={result.sample_size}"
+        f"Binary agreement: {binary.percent_agreement * 100:.1f}%  "
+        f"kappa={binary.cohen_kappa:.3f}  N={binary.sample_size}"
     )
+    for dimension, metrics in dimension_metrics.items():
+        print(
+            f"{dimension}: exact={metrics['exact_agreement']:.3f} "
+            f"within1={metrics['within_one_agreement']:.3f} "
+            f"weighted_kappa={metrics['quadratic_weighted_kappa']}"
+        )
 
 
 def main() -> None:
@@ -211,7 +305,7 @@ def main() -> None:
     PROGRESS_PATH.unlink(missing_ok=True)
     judge = pd.read_csv(JUDGE_PATH)
     _compute_and_write_agreement(final, judge)
-    print("Human judge study complete and agreement artifact refreshed.")
+    print("Judge agreement artifact refreshed from completed score rows.")
 
 
 if __name__ == "__main__":
