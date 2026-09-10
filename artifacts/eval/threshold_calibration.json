@@ -1,9 +1,9 @@
 {
   "best": {
-    "min_intent_confidence": 0.4,
-    "min_top_retrieval_similarity": 0.4,
+    "min_intent_confidence": 0.25,
+    "min_top_retrieval_similarity": 0.55,
     "min_confidence_margin": 0.03,
-    "coverage": 0.05,
+    "coverage": 0.14,
     "unsafe_rate": 0.0
   },
   "sweep": [
@@ -11,351 +11,351 @@
       "min_intent_confidence": 0.2,
       "min_top_retrieval_similarity": 0.4,
       "min_confidence_margin": 0.03,
-      "coverage": 0.63,
-      "unsafe_rate": 0.08
+      "coverage": 0.6,
+      "unsafe_rate": 0.14
     },
     {
       "min_intent_confidence": 0.2,
       "min_top_retrieval_similarity": 0.4,
       "min_confidence_margin": 0.05,
-      "coverage": 0.62,
-      "unsafe_rate": 0.08
-    },
-    {
-      "min_intent_confidence": 0.2,
-      "min_top_retrieval_similarity": 0.4,
-      "min_confidence_margin": 0.08,
       "coverage": 0.58,
-      "unsafe_rate": 0.08
+      "unsafe_rate": 0.14
     },
     {
       "min_intent_confidence": 0.2,
       "min_top_retrieval_similarity": 0.4,
-      "min_confidence_margin": 0.1,
+      "min_confidence_margin": 0.08,
       "coverage": 0.54,
-      "unsafe_rate": 0.08
+      "unsafe_rate": 0.14
+    },
+    {
+      "min_intent_confidence": 0.2,
+      "min_top_retrieval_similarity": 0.4,
+      "min_confidence_margin": 0.1,
+      "coverage": 0.44,
+      "unsafe_rate": 0.14
     },
     {
       "min_intent_confidence": 0.2,
       "min_top_retrieval_similarity": 0.45,
       "min_confidence_margin": 0.03,
+      "coverage": 0.6,
+      "unsafe_rate": 0.14
+    },
+    {
+      "min_intent_confidence": 0.2,
+      "min_top_retrieval_similarity": 0.45,
+      "min_confidence_margin": 0.05,
+      "coverage": 0.58,
+      "unsafe_rate": 0.14
+    },
+    {
+      "min_intent_confidence": 0.2,
+      "min_top_retrieval_similarity": 0.45,
+      "min_confidence_margin": 0.08,
       "coverage": 0.54,
-      "unsafe_rate": 0.08
-    },
-    {
-      "min_intent_confidence": 0.2,
-      "min_top_retrieval_similarity": 0.45,
-      "min_confidence_margin": 0.05,
-      "coverage": 0.53,
-      "unsafe_rate": 0.08
-    },
-    {
-      "min_intent_confidence": 0.2,
-      "min_top_retrieval_similarity": 0.45,
-      "min_confidence_margin": 0.08,
-      "coverage": 0.49,
-      "unsafe_rate": 0.08
+      "unsafe_rate": 0.14
     },
     {
       "min_intent_confidence": 0.2,
       "min_top_retrieval_similarity": 0.45,
       "min_confidence_margin": 0.1,
-      "coverage": 0.48,
-      "unsafe_rate": 0.08
-    },
-    {
-      "min_intent_confidence": 0.2,
-      "min_top_retrieval_similarity": 0.5,
-      "min_confidence_margin": 0.03,
-      "coverage": 0.45,
-      "unsafe_rate": 0.07
-    },
-    {
-      "min_intent_confidence": 0.2,
-      "min_top_retrieval_similarity": 0.5,
-      "min_confidence_margin": 0.05,
-      "coverage": 0.45,
-      "unsafe_rate": 0.07
-    },
-    {
-      "min_intent_confidence": 0.2,
-      "min_top_retrieval_similarity": 0.5,
-      "min_confidence_margin": 0.08,
-      "coverage": 0.41,
-      "unsafe_rate": 0.07
-    },
-    {
-      "min_intent_confidence": 0.2,
-      "min_top_retrieval_similarity": 0.5,
-      "min_confidence_margin": 0.1,
-      "coverage": 0.41,
-      "unsafe_rate": 0.07
-    },
-    {
-      "min_intent_confidence": 0.2,
-      "min_top_retrieval_similarity": 0.55,
-      "min_confidence_margin": 0.03,
-      "coverage": 0.35,
-      "unsafe_rate": 0.05
-    },
-    {
-      "min_intent_confidence": 0.2,
-      "min_top_retrieval_similarity": 0.55,
-      "min_confidence_margin": 0.05,
-      "coverage": 0.35,
-      "unsafe_rate": 0.05
-    },
-    {
-      "min_intent_confidence": 0.2,
-      "min_top_retrieval_similarity": 0.55,
-      "min_confidence_margin": 0.08,
-      "coverage": 0.32,
-      "unsafe_rate": 0.05
-    },
-    {
-      "min_intent_confidence": 0.2,
-      "min_top_retrieval_similarity": 0.55,
-      "min_confidence_margin": 0.1,
-      "coverage": 0.32,
-      "unsafe_rate": 0.05
-    },
-    {
-      "min_intent_confidence": 0.25,
-      "min_top_retrieval_similarity": 0.4,
-      "min_confidence_margin": 0.03,
-      "coverage": 0.49,
-      "unsafe_rate": 0.07
-    },
-    {
-      "min_intent_confidence": 0.25,
-      "min_top_retrieval_similarity": 0.4,
-      "min_confidence_margin": 0.05,
-      "coverage": 0.49,
-      "unsafe_rate": 0.07
-    },
-    {
-      "min_intent_confidence": 0.25,
-      "min_top_retrieval_similarity": 0.4,
-      "min_confidence_margin": 0.08,
-      "coverage": 0.48,
-      "unsafe_rate": 0.07
-    },
-    {
-      "min_intent_confidence": 0.25,
-      "min_top_retrieval_similarity": 0.4,
-      "min_confidence_margin": 0.1,
-      "coverage": 0.48,
-      "unsafe_rate": 0.07
-    },
-    {
-      "min_intent_confidence": 0.25,
-      "min_top_retrieval_similarity": 0.45,
-      "min_confidence_margin": 0.03,
       "coverage": 0.44,
-      "unsafe_rate": 0.07
+      "unsafe_rate": 0.14
+    },
+    {
+      "min_intent_confidence": 0.2,
+      "min_top_retrieval_similarity": 0.5,
+      "min_confidence_margin": 0.03,
+      "coverage": 0.58,
+      "unsafe_rate": 0.12
+    },
+    {
+      "min_intent_confidence": 0.2,
+      "min_top_retrieval_similarity": 0.5,
+      "min_confidence_margin": 0.05,
+      "coverage": 0.56,
+      "unsafe_rate": 0.12
+    },
+    {
+      "min_intent_confidence": 0.2,
+      "min_top_retrieval_similarity": 0.5,
+      "min_confidence_margin": 0.08,
+      "coverage": 0.52,
+      "unsafe_rate": 0.12
+    },
+    {
+      "min_intent_confidence": 0.2,
+      "min_top_retrieval_similarity": 0.5,
+      "min_confidence_margin": 0.1,
+      "coverage": 0.42,
+      "unsafe_rate": 0.12
+    },
+    {
+      "min_intent_confidence": 0.2,
+      "min_top_retrieval_similarity": 0.55,
+      "min_confidence_margin": 0.03,
+      "coverage": 0.52,
+      "unsafe_rate": 0.1
+    },
+    {
+      "min_intent_confidence": 0.2,
+      "min_top_retrieval_similarity": 0.55,
+      "min_confidence_margin": 0.05,
+      "coverage": 0.5,
+      "unsafe_rate": 0.1
+    },
+    {
+      "min_intent_confidence": 0.2,
+      "min_top_retrieval_similarity": 0.55,
+      "min_confidence_margin": 0.08,
+      "coverage": 0.48,
+      "unsafe_rate": 0.1
+    },
+    {
+      "min_intent_confidence": 0.2,
+      "min_top_retrieval_similarity": 0.55,
+      "min_confidence_margin": 0.1,
+      "coverage": 0.38,
+      "unsafe_rate": 0.1
+    },
+    {
+      "min_intent_confidence": 0.25,
+      "min_top_retrieval_similarity": 0.4,
+      "min_confidence_margin": 0.03,
+      "coverage": 0.2,
+      "unsafe_rate": 0.04
+    },
+    {
+      "min_intent_confidence": 0.25,
+      "min_top_retrieval_similarity": 0.4,
+      "min_confidence_margin": 0.05,
+      "coverage": 0.2,
+      "unsafe_rate": 0.04
+    },
+    {
+      "min_intent_confidence": 0.25,
+      "min_top_retrieval_similarity": 0.4,
+      "min_confidence_margin": 0.08,
+      "coverage": 0.2,
+      "unsafe_rate": 0.04
+    },
+    {
+      "min_intent_confidence": 0.25,
+      "min_top_retrieval_similarity": 0.4,
+      "min_confidence_margin": 0.1,
+      "coverage": 0.2,
+      "unsafe_rate": 0.04
+    },
+    {
+      "min_intent_confidence": 0.25,
+      "min_top_retrieval_similarity": 0.45,
+      "min_confidence_margin": 0.03,
+      "coverage": 0.2,
+      "unsafe_rate": 0.04
     },
     {
       "min_intent_confidence": 0.25,
       "min_top_retrieval_similarity": 0.45,
       "min_confidence_margin": 0.05,
-      "coverage": 0.44,
-      "unsafe_rate": 0.07
+      "coverage": 0.2,
+      "unsafe_rate": 0.04
     },
     {
       "min_intent_confidence": 0.25,
       "min_top_retrieval_similarity": 0.45,
       "min_confidence_margin": 0.08,
-      "coverage": 0.43,
-      "unsafe_rate": 0.07
+      "coverage": 0.2,
+      "unsafe_rate": 0.04
     },
     {
       "min_intent_confidence": 0.25,
       "min_top_retrieval_similarity": 0.45,
       "min_confidence_margin": 0.1,
-      "coverage": 0.43,
-      "unsafe_rate": 0.07
+      "coverage": 0.2,
+      "unsafe_rate": 0.04
     },
     {
       "min_intent_confidence": 0.25,
       "min_top_retrieval_similarity": 0.5,
       "min_confidence_margin": 0.03,
-      "coverage": 0.37,
-      "unsafe_rate": 0.06
+      "coverage": 0.18,
+      "unsafe_rate": 0.02
     },
     {
       "min_intent_confidence": 0.25,
       "min_top_retrieval_similarity": 0.5,
       "min_confidence_margin": 0.05,
-      "coverage": 0.37,
-      "unsafe_rate": 0.06
+      "coverage": 0.18,
+      "unsafe_rate": 0.02
     },
     {
       "min_intent_confidence": 0.25,
       "min_top_retrieval_similarity": 0.5,
       "min_confidence_margin": 0.08,
-      "coverage": 0.36,
-      "unsafe_rate": 0.06
+      "coverage": 0.18,
+      "unsafe_rate": 0.02
     },
     {
       "min_intent_confidence": 0.25,
       "min_top_retrieval_similarity": 0.5,
       "min_confidence_margin": 0.1,
-      "coverage": 0.36,
-      "unsafe_rate": 0.06
+      "coverage": 0.18,
+      "unsafe_rate": 0.02
     },
     {
       "min_intent_confidence": 0.25,
       "min_top_retrieval_similarity": 0.55,
       "min_confidence_margin": 0.03,
-      "coverage": 0.29,
-      "unsafe_rate": 0.04
+      "coverage": 0.14,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.25,
       "min_top_retrieval_similarity": 0.55,
       "min_confidence_margin": 0.05,
-      "coverage": 0.29,
-      "unsafe_rate": 0.04
+      "coverage": 0.14,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.25,
       "min_top_retrieval_similarity": 0.55,
       "min_confidence_margin": 0.08,
-      "coverage": 0.28,
-      "unsafe_rate": 0.04
+      "coverage": 0.14,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.25,
       "min_top_retrieval_similarity": 0.55,
       "min_confidence_margin": 0.1,
-      "coverage": 0.28,
-      "unsafe_rate": 0.04
+      "coverage": 0.14,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.4,
       "min_confidence_margin": 0.03,
-      "coverage": 0.24,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.4,
       "min_confidence_margin": 0.05,
-      "coverage": 0.24,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.4,
       "min_confidence_margin": 0.08,
-      "coverage": 0.24,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.4,
       "min_confidence_margin": 0.1,
-      "coverage": 0.24,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.45,
       "min_confidence_margin": 0.03,
-      "coverage": 0.21,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.45,
       "min_confidence_margin": 0.05,
-      "coverage": 0.21,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.45,
       "min_confidence_margin": 0.08,
-      "coverage": 0.21,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.45,
       "min_confidence_margin": 0.1,
-      "coverage": 0.21,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.5,
       "min_confidence_margin": 0.03,
-      "coverage": 0.17,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.5,
       "min_confidence_margin": 0.05,
-      "coverage": 0.17,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.5,
       "min_confidence_margin": 0.08,
-      "coverage": 0.17,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.5,
       "min_confidence_margin": 0.1,
-      "coverage": 0.17,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.55,
       "min_confidence_margin": 0.03,
-      "coverage": 0.13,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.55,
       "min_confidence_margin": 0.05,
-      "coverage": 0.13,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.55,
       "min_confidence_margin": 0.08,
-      "coverage": 0.13,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.3,
       "min_top_retrieval_similarity": 0.55,
       "min_confidence_margin": 0.1,
-      "coverage": 0.13,
-      "unsafe_rate": 0.03
+      "coverage": 0.06,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.35,
       "min_top_retrieval_similarity": 0.4,
       "min_confidence_margin": 0.03,
-      "coverage": 0.1,
-      "unsafe_rate": 0.01
+      "coverage": 0.0,
+      "unsafe_rate": 0.0
     },
     {
       "min_intent_confidence": 0.35,
       "min_top_retrieval_similarity": 0.4,
       "min_confidence_margin": 0.05,
-      "coverage": 0.1,
-      "unsafe_rate": 0.01
+      "coverage": 0.0,
+      "unsafe_rate": 0.0
     }
   ]
 }

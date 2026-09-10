@@ -1,201 +1,201 @@
 example_id,tweet_id,text,intent_label,escalation_label,escalation_reason,risk_tags,context_needed,split,annotator_notes
-ex_001,101,I forgot my password and the reset link is not arriving in my inbox or spam.,login_account_access,False,,,False,calibration,Password reset email delivery issue
-ex_002,102,Locked out of my account because I lost my 2FA phone number.,login_account_access,True,Requires human identity check and 2FA recovery,security,False,locked_test,2FA device lost
-ex_003,103,Can't log in on my desktop app but mobile app works fine.,login_account_access,False,,,False,calibration,Client-specific login issue
-ex_004,104,Keep getting 'Incorrect username or password' error even after resetting.,login_account_access,False,,,False,locked_test,Repeated bad credentials
-ex_005,105,How do I change the email address associated with my Spotify account?,login_account_access,False,,,False,calibration,Standard email update request
-ex_006,106,Facebook login button is giving a redirect error 500.,login_account_access,False,,,False,locked_test,Social SSO error
-ex_007,107,I am locked out and need immediate access for a party tonight please help!,login_account_access,False,,,False,calibration,Urgent account access request
-ex_008,108,My account says it's disabled. What does this mean?,login_account_access,True,Account disabled requires backend policy verification,account_status,False,locked_test,Disabled account status
-ex_009,109,Apple ID sign in is looping back to login screen.,login_account_access,False,,,False,calibration,Sign in with Apple loop
-ex_010,110,Not receiving verification code on my registered mobile number.,login_account_access,False,,,False,locked_test,SMS OTP delivery failure
-ex_011,111,Created an account via Google but want to set a standalone password.,login_account_access,False,,,False,calibration,SSO password setup
-ex_012,112,Can't sign in while traveling abroad in Japan.,login_account_access,False,,,False,locked_test,14-day travel restriction for Free accounts
-ex_013,113,"Account username is a random string of numbers, can I change it?",login_account_access,False,,,False,calibration,Auto-generated username question
-ex_014,114,Someone removed my email address and I cannot log back in.,login_account_access,True,Potential takeover / unauthorized email change,security,False,locked_test,Email hijack symptom
-ex_015,115,Captcha is broken on the web login page in Firefox.,login_account_access,False,,,False,calibration,Web captcha display bug
-ex_016,116,How do I log out of all devices remotely?,login_account_access,False,,,False,locked_test,Sign out everywhere feature
-ex_017,117,"Signed up years ago with a deleted university email, need to switch it.",login_account_access,True,Dead email address prevents self-service reset,account_recovery,False,calibration,Inaccessible registered email
-ex_018,118,Session expired error every 10 minutes on web player.,login_account_access,False,,,False,locked_test,Cookie / session timeout bug
-ex_019,201,Why was I charged $11.99 twice this month on my Mastercard?,subscription_billing,True,Double billing requires private transaction lookup,billing,False,calibration,Double charge complaint
-ex_020,202,My bank card was charged but my account still shows Spotify Free.,subscription_billing,True,Payment received without entitlement upgrade,billing,False,locked_test,Payment uncredited
-ex_021,203,Payment failed for monthly renewal with error code 03.,subscription_billing,False,,billing,False,calibration,Declined card error
-ex_022,204,How do I update my expired credit card on file?,subscription_billing,False,,,False,locked_test,Billing payment method update
-ex_023,205,Can I pay for Spotify Premium with PayPal in Canada?,subscription_billing,False,,,False,calibration,Payment method availability
-ex_024,206,Where can I download tax receipts / invoices for my accounting?,subscription_billing,False,,,False,locked_test,Invoice receipt download
-ex_025,207,I was charged in USD instead of my local currency GBP.,subscription_billing,False,,billing,False,calibration,Currency mismatch
-ex_026,208,My monthly charge increased by $1 without prior notice.,subscription_billing,False,,,False,locked_test,Price change inquiry
-ex_027,209,There is a fraudulent $10.99 charge from Spotify on my stolen debit card.,subscription_billing,True,Card theft and fraud report,fraud|security,False,calibration,Stolen card fraud
-ex_028,210,Paying through iTunes/Apple billing but want to switch to direct credit card.,subscription_billing,False,,,False,locked_test,Billing provider migration
-ex_029,211,Card got charged after free trial ended even though I thought I cancelled.,subscription_billing,True,Post-trial billing dispute,billing,False,calibration,Trial auto-renew dispute
-ex_030,212,Can I use a prepaid Visa gift card to pay for Premium?,subscription_billing,False,,,False,locked_test,Prepaid card policy
-ex_031,213,I have two charges on my Amex from Spotify UK and Spotify US.,subscription_billing,True,Cross-regional duplicate charge,billing,False,calibration,Two active accounts suspected
-ex_032,214,How does the annual subscription billing cycle work?,subscription_billing,False,,,False,locked_test,Annual plan billing question
-ex_033,215,Zip code verification failing when entering new debit card.,subscription_billing,False,,,False,calibration,AVS zip check failure
-ex_034,216,I demand a full refund or I will file a credit card chargeback immediately!,subscription_billing,True,Chargeback and dispute threat,billing|legal,False,locked_test,Chargeback threat
-ex_035,217,Mobile carrier billing with Vodafone stopped working.,subscription_billing,False,,,False,calibration,Carrier billing partner issue
-ex_036,218,Got an email saying my payment method is about to expire.,subscription_billing,False,,,False,locked_test,Payment expiration notice inquiry
-ex_037,219,Can I split the payment between two cards?,subscription_billing,False,,,False,calibration,Split payment inquiry
-ex_038,220,Why does my bill have extra sales tax added?,subscription_billing,False,,,False,locked_test,State sales tax inquiry
-ex_039,221,Pending authorization hold on my bank account for $1.,subscription_billing,False,,,False,calibration,Pre-auth hold explanation
-ex_040,222,You guys charged me 4 times in a row! Give my money back!,subscription_billing,True,Severe multiple billing error,billing,False,locked_test,Multiple duplicate transactions
-ex_041,301,How do I invite family members to my Family plan?,plan_discount_management,False,,,False,calibration,Family plan invitation steps
-ex_042,302,SheerID failed to verify my university student status for the student discount.,plan_discount_management,False,,,False,locked_test,Student discount SheerID verification
-ex_043,303,My partner and I live at the same address but Duo plan says address mismatch.,plan_discount_management,False,,,False,calibration,Duo address verification error
-ex_044,304,Can I switch from individual Premium to Premium Family without losing playlists?,plan_discount_management,False,,,False,locked_test,Plan upgrade playlist preservation
-ex_045,305,How many members can join a Spotify Family plan?,plan_discount_management,False,,,False,calibration,Family plan member limit inquiry
-ex_046,306,Kids app pin code reset for Family plan sub-account.,plan_discount_management,False,,,False,locked_test,Spotify Kids pin reset
-ex_047,307,How do I renew my student discount for another year?,plan_discount_management,False,,,False,calibration,Annual student discount re-verification
-ex_048,308,Is Hulu still included in the student plan?,plan_discount_management,False,,,False,locked_test,Student plan bundle inclusion
-ex_049,309,How do I remove an old member from our Family plan?,plan_discount_management,False,,,False,calibration,Removing family plan member
-ex_050,310,Does Premium Duo include separate accounts or one shared account?,plan_discount_management,False,,,False,locked_test,Duo separate account explanation
-ex_051,311,Invited friend to Duo but link says 'invite expired'.,plan_discount_management,False,,,False,calibration,Expired invite token
-ex_052,312,Can Family plan members live in different cities?,plan_discount_management,False,,,False,locked_test,Family plan co-residence terms
-ex_053,313,How do I downgrade from Family to Individual plan?,plan_discount_management,False,,,False,calibration,Plan downgrade instructions
-ex_054,314,High school students eligible for the student plan discount?,plan_discount_management,False,,,False,locked_test,Student eligibility criteria
-ex_055,315,Military or veteran discount available?,plan_discount_management,False,,,False,calibration,Military discount availability
-ex_056,316,Family plan invite link loops back to home page without accepting.,plan_discount_management,False,,,False,locked_test,Invite redemption glitch
-ex_057,317,What happens to remaining individual premium days when joining Family?,plan_discount_management,False,,,False,calibration,Prorated credit explanation
-ex_058,318,Duo plan address auto-complete cannot find our apartment number.,plan_discount_management,False,,,False,locked_test,Google maps address lookup issue
-ex_059,401,Spotify app keeps crashing on launch on iOS 17.2.,playback_technical_issue,False,,,False,calibration,iOS crash on startup
-ex_060,402,Songs pause after 5 seconds on every single track.,playback_technical_issue,False,,,False,locked_test,Immediate pause bug
-ex_061,403,Downloaded songs refuse to play offline when in airplane mode.,playback_technical_issue,False,,,False,calibration,Offline download playback failure
-ex_062,404,Songs skipping rapidly through entire album without playing.,playback_technical_issue,False,,,False,locked_test,Rapid song skipping glitch
-ex_063,405,How do I perform a clean reinstall of the desktop client on Windows 11?,playback_technical_issue,False,,,False,calibration,Clean reinstall instructions
-ex_064,406,Getting error message 'Spotify can't play this right now' on local files.,playback_technical_issue,False,,,False,locked_test,Local files playback error
-ex_065,407,Audio is distorted and sounds like slow motion robot voices.,playback_technical_issue,False,,,False,calibration,Audio sample rate distortion
-ex_066,408,Black screen on startup on macOS Sonoma.,playback_technical_issue,False,,,False,locked_test,Mac hardware acceleration blank screen
-ex_067,409,Volume normalizer is making all quiet acoustic songs sound muffled.,playback_technical_issue,False,,,False,calibration,Normalize volume setting
-ex_068,410,Offline downloads took up 40GB and won't delete even when toggled off.,playback_technical_issue,False,,,False,locked_test,Storage cache cleanup
-ex_069,411,Battery draining 30% per hour in background on Samsung Galaxy S23.,playback_technical_issue,False,,,False,calibration,Android background battery drain
-ex_070,412,Equalizer settings reset every time I close the app.,playback_technical_issue,False,,,False,locked_test,Equalizer persistence bug
-ex_071,413,High resolution lossless audio toggle missing in settings.,playback_technical_issue,False,,,False,calibration,HiFi lossless availability inquiry
-ex_072,414,Gapless playback not working between songs on live concert album.,playback_technical_issue,False,,,False,locked_test,Gapless playback toggle
-ex_073,415,App freezes completely when searching for any artist.,playback_technical_issue,False,,,False,calibration,Search index freeze
-ex_074,416,Songs stop playing as soon as my phone screen turns off.,playback_technical_issue,False,,,False,locked_test,OS battery optimization killing app
-ex_075,417,Web player says 'Protected content playback is not enabled' in Chrome.,playback_technical_issue,False,,,False,calibration,Widevine DRM disabled in browser
-ex_076,418,Local MP3 files synced from computer won't play on my iPhone.,playback_technical_issue,False,,,False,locked_test,Local files sync over local WiFi network
-ex_077,419,Podcasts lose playback position when switching between devices.,playback_technical_issue,False,,,False,calibration,Podcast resume timestamp sync
-ex_078,420,Playback stops randomly and says someone else is playing music.,playback_technical_issue,True,Potential unauthorized remote playback,security,False,locked_test,Concurrent playback conflict
-ex_079,421,Audio crackles when crossfade is enabled between tracks.,playback_technical_issue,False,,,False,calibration,Crossfade audio buffer glitch
-ex_080,422,Car Thing device stuck on boot logo screen.,playback_technical_issue,False,,,False,locked_test,Car Thing firmware bootloop
-ex_081,423,Downloads stuck on 'Waiting to download' on home WiFi.,playback_technical_issue,False,,,False,calibration,Download queue stalled
-ex_082,424,Smart shuffle turns itself on automatically every time I play a playlist.,playback_technical_issue,False,,,False,locked_test,Smart shuffle default behavior
-ex_083,501,Spotify Connect cannot discover my Sonos speakers on the local WiFi.,device_connectivity,False,,,False,calibration,Sonos Spotify Connect discovery
-ex_084,502,Apple CarPlay keeps disconnecting after playing one track.,device_connectivity,False,,,False,locked_test,CarPlay connection drops
-ex_085,503,Alexa Echo says 'I cannot find that on Spotify' even though linked.,device_connectivity,False,,,False,calibration,Alexa skill default music provider
-ex_086,504,Bluetooth stutter in my car stereo on Android Auto.,device_connectivity,False,,,False,locked_test,Android Auto bluetooth stutter
-ex_087,505,PS5 Spotify app gives error code CE-108255-1 on launch.,device_connectivity,False,,,False,calibration,PlayStation console crash code
-ex_088,506,Cannot cast music to Google Nest Hub / Chromecast.,device_connectivity,False,,,False,locked_test,Chromecast target unreachable
-ex_089,507,Apple Watch app won't stream music without iPhone nearby.,device_connectivity,False,,,False,calibration,Apple Watch standalone streaming/downloads
-ex_090,508,Smart TV Samsung Tizen app stuck on black loading screen.,device_connectivity,False,,,False,locked_test,Smart TV app freeze
-ex_091,509,How do I remove an old Bluetooth speaker from my Connect devices list?,device_connectivity,False,,,False,calibration,Clearing stale Spotify Connect devices
-ex_092,510,Garmin smartwatch sync with Spotify offline playlists failing.,device_connectivity,False,,,False,locked_test,Wearable sync failure
-ex_093,511,Roku player audio cutting out every 30 seconds.,device_connectivity,False,,,False,calibration,Roku TV app audio drops
-ex_094,512,Discord rich presence status is not showing what I am playing.,device_connectivity,False,,,False,locked_test,Discord account connection sync
-ex_095,513,Bose QC45 headphones volume controls not changing Spotify volume.,device_connectivity,False,,,False,calibration,Headphone hardware control sync
-ex_096,514,DJ controller Pioneer integration not connecting to Spotify.,device_connectivity,False,,,False,locked_test,DJ software third-party API deprecation
-ex_097,515,Xbox Series X background music stops when launching a game.,device_connectivity,False,,,False,calibration,Xbox background audio toggle
-ex_098,516,Siri voice command 'Play music on Spotify' plays Apple Music instead.,device_connectivity,False,,,False,locked_test,Siri default audio player setting
-ex_099,517,LG WebOS TV app asks to pair code every single day.,device_connectivity,False,,,False,calibration,Smart TV persistent auth failure
-ex_100,518,Car Thing device deprecation: will I receive a refund?,device_connectivity,True,Hardware sunsetting and financial compensation inquiry,billing,False,locked_test,Car Thing sunset refund
-ex_101,601,Why is Neil Young's discography greyed out and unplayable?,content_playlist_availability,False,,,False,calibration,Licensing / artist removal
-ex_102,602,Accidentally deleted my workout playlist with 500 songs! Can I recover it?,content_playlist_availability,False,,,False,locked_test,Playlist restore self-service
-ex_103,603,Lyrics button disappeared from the mobile player interface.,content_playlist_availability,False,,,False,calibration,Musixmatch lyrics availability/tier
-ex_104,604,Explicit songs are being censored or skipped even with explicit toggle on.,content_playlist_availability,False,,,False,locked_test,Explicit filter setting
-ex_105,605,Why does an album have clean radio edit versions instead of original?,content_playlist_availability,False,,,False,calibration,Album version selection
-ex_106,606,A song in my playlist was replaced with a cover version automatically.,content_playlist_availability,False,,,False,locked_test,Catalog re-linking behavior
-ex_107,607,Why are certain tracks unavailable in Germany compared to UK?,content_playlist_availability,False,,,False,calibration,Geographical licensing restrictions
-ex_108,608,Where did the 'Discover Weekly' playlist move in the new library UI?,content_playlist_availability,False,,,False,locked_test,Made For You hub navigation
-ex_109,609,Friend made a collaborative playlist with me but I cannot add songs.,content_playlist_availability,False,,,False,calibration,Collaborative playlist permissions
-ex_110,610,Audiobooks: why do I only have 15 hours of listening time on Premium?,content_playlist_availability,False,,,False,locked_test,Audiobook 15hr monthly allotment
-ex_111,611,"Artist uploaded wrong audio file to new single, how to report metadata error?",content_playlist_availability,False,,,False,calibration,Broken metadata reporting
-ex_112,612,Can I sort playlist songs by release date on mobile?,content_playlist_availability,False,,,False,locked_test,Playlist custom sort options
-ex_113,613,My Daily Mix playlists have not refreshed for 3 weeks.,content_playlist_availability,False,,,False,calibration,Algo playlist generation stalled
-ex_114,614,Explicit toggle is locked and greyed out in account settings.,content_playlist_availability,False,,,False,locked_test,Family plan manager restriction
-ex_115,615,How do I make my private playlist public so my friends can search it?,content_playlist_availability,False,,,False,calibration,Playlist privacy setting
-ex_116,616,Podcast episode shows 'This content is not available in your region'.,content_playlist_availability,False,,,False,locked_test,Podcast regional license
-ex_117,617,Liked Songs count is wrong by over 200 tracks.,content_playlist_availability,False,,,False,calibration,Liked songs cache sync
-ex_118,618,Can I recover a playlist that was deleted 4 months ago?,content_playlist_availability,False,,,False,locked_test,90-day restore window limitation
-ex_119,701,I want to cancel my Spotify Premium subscription right now.,cancellation_refund,False,,,False,calibration,Standard subscription cancellation
-ex_120,702,I cancelled 3 months ago but you are still billing me every month. Refund me!,cancellation_refund,True,Billing dispute after claimed cancellation,billing,False,locked_test,Post-cancellation ongoing charges
-ex_121,703,How do I cancel if I subscribed through my Apple ID subscription manager?,cancellation_refund,False,,,False,calibration,Apple in-app purchase cancellation steps
-ex_122,704,Will I lose all my created playlists if I cancel Premium and use Free?,cancellation_refund,False,,,False,locked_test,Playlist retention after downgrade
-ex_123,705,"Accidentally bought annual plan instead of monthly, can I get a refund?",cancellation_refund,True,Immediate refund request for annual purchase,billing,False,calibration,Accidental annual commitment refund
-ex_124,706,There is no 'Cancel Premium' button on my account page!,cancellation_refund,False,,,False,locked_test,Third-party partner billing (carrier/Apple)
-ex_125,707,How long does a refund take to show up in my bank account?,cancellation_refund,False,,,False,calibration,5-10 business day refund timeframe
-ex_126,708,"If I cancel today, do I get to use Premium until the end of my billing period?",cancellation_refund,False,,,False,locked_test,Access until end of billing cycle
-ex_127,709,Cancel my subscription immediately and delete my credit card information.,cancellation_refund,False,,,False,calibration,Cancel and remove payment details
-ex_128,710,"I haven't used Spotify for 6 months, can I get a refund for those months?",cancellation_refund,True,Retroactive non-usage refund exception request,billing,False,locked_test,Retroactive non-usage refund
-ex_129,711,How do I cancel my subscription with Roku billing?,cancellation_refund,False,,,False,calibration,Roku channel store cancellation
-ex_130,712,Under UK consumer law 14-day cooling off period I request full refund.,cancellation_refund,True,Statutory cooling-off legal refund claim,billing|legal,False,locked_test,Statutory 14-day refund right
-ex_131,713,My account was billed today right after I clicked cancel.,cancellation_refund,True,Timing race condition on renewal charge,billing,False,calibration,Renewal charge during cancellation
-ex_132,714,Can I pause my subscription for 2 months while I am on vacation?,cancellation_refund,False,,,False,locked_test,Subscription pause feature availability
-ex_133,715,Cancel my account and close it permanently.,cancellation_refund,False,,,False,calibration,Account closure vs subscription cancel
-ex_134,716,I was promised a refund 2 weeks ago by support and still haven't received it.,cancellation_refund,True,Delayed refund escalation,billing,False,locked_test,Unreceived refund tracking
-ex_135,717,Does cancelling Premium delete my downloaded songs?,cancellation_refund,False,,,False,calibration,Offline files expire upon downgrade
-ex_136,718,Can I reactivate my cancelled Premium subscription at any time?,cancellation_refund,False,,,False,locked_test,Reactivation instructions
-ex_137,801,"Someone hacked my account, changed the email, and is listening to weird music!",security_compromised_account,True,Account takeover and unauthorized email swap,security,False,calibration,Account takeover
-ex_138,802,Got an email saying my password was changed from an IP in Russia. Wasn't me!,security_compromised_account,True,Suspicious geographical password change,security,False,locked_test,Unauthorized password modification
-ex_139,803,Someone deleted all my playlists and replaced profile picture with scam ads.,security_compromised_account,True,Malicious vandalization of account,security,False,calibration,Account vandalism
-ex_140,804,My listening history has hundreds of French rap songs I never listened to.,security_compromised_account,True,Unauthorized background bot stream farming,security,False,locked_test,Stream farming intrusion
-ex_141,805,Stranger added themselves as manager of my Family plan and kicked me out!,security_compromised_account,True,Hostile family plan takeover,security,False,calibration,Family plan hijack
-ex_142,806,Received phishing email claiming my Spotify account is suspended. Is this real?,security_compromised_account,False,,security,False,locked_test,Phishing email verification
-ex_143,807,Someone is using my credit card to buy Spotify subscriptions for other people.,security_compromised_account,True,Third-party payment card fraud,fraud|security,False,calibration,Third-party card compromise
-ex_144,808,"My account has been compromised, please freeze it immediately!",security_compromised_account,True,Urgent freeze request,security,False,locked_test,Emergency account lock
-ex_145,809,Two factor authentication code sent to me but I didn't try to log in.,security_compromised_account,True,Credential stuffing attack detected,security,False,calibration,Unsolicited 2FA challenge
-ex_146,810,Unknown device 'Web Player Chrome Windows' active on Spotify Connect.,security_compromised_account,True,Unauthorized active session,security,False,locked_test,Rogue active session
-ex_147,811,I think my account was leaked in a data breach.,security_compromised_account,False,,security,False,calibration,Breach inquiry password advice
-ex_148,812,Someone changed my country settings and now all my songs are locked.,security_compromised_account,True,Account takeover with country change,security,False,locked_test,Unauthorized region change
-ex_149,813,My Spotify account was sold on a dark web forum! Help!,security_compromised_account,True,Dark web credential sale,security,False,calibration,Stolen account credential resale
-ex_150,814,Hackers bypassed my password reset by changing linked Facebook account.,security_compromised_account,True,SSO account compromise,security,False,locked_test,Social account hijack link
-ex_151,815,How do I know if someone else has access to my account?,security_compromised_account,False,,,False,calibration,Security audit instructions
-ex_152,816,Can I set up hardware security key (YubiKey) for Spotify login?,security_compromised_account,False,,,False,locked_test,FIDO/Hardware key feature support
-ex_153,901,How do I turn on crossfade between songs on desktop?,how_to_feature_request,False,,,False,calibration,Crossfade setting instructions
-ex_154,902,Please bring back the old heart / like button instead of the plus icon!,how_to_feature_request,False,,,False,locked_test,UI feedback / feature complaint
-ex_155,903,How can I see my Spotify Wrapped if I missed it in December?,how_to_feature_request,False,,,False,calibration,Wrapped availability explanation
-ex_156,904,How do I share a song to Instagram Stories with background artwork?,how_to_feature_request,False,,,False,locked_test,Instagram stories share feature
-ex_157,905,Can we please get folder support for organizing playlists on mobile?,how_to_feature_request,False,,,False,calibration,Mobile playlist folders feature request
-ex_158,906,How do I view friend activity sidebar on Mac desktop app?,how_to_feature_request,False,,,False,locked_test,Friend activity toggle
-ex_159,907,How do I block an artist so they never play on my radio or mixes?,how_to_feature_request,False,,,False,calibration,Don't play this artist feature
-ex_160,908,Is there a sleep timer feature so music stops after 30 minutes?,how_to_feature_request,False,,,False,locked_test,Sleep timer walkthrough
-ex_161,909,How do I download my personal listening data archive (GDPR package)?,how_to_feature_request,False,,,False,calibration,Privacy data download tool
-ex_162,910,Can I transfer my Liked Songs to another Spotify account?,how_to_feature_request,False,,,False,locked_test,Playlist transfer between accounts
-ex_163,911,How do I create a Blend playlist with my friend?,how_to_feature_request,False,,,False,calibration,Spotify Blend invite walkthrough
-ex_164,912,Where can I find the equalizer setting in iOS app?,how_to_feature_request,False,,,False,locked_test,Equalizer menu path
-ex_165,913,Can you add spatial audio or Dolby Atmos support like Apple Music?,how_to_feature_request,False,,,False,calibration,Dolby Atmos feature request
-ex_166,914,How do I change my display name on my public profile?,how_to_feature_request,False,,,False,locked_test,Profile name edit steps
-ex_167,915,How do I exclude a playlist from my taste profile so it doesn't skew Wrapped?,how_to_feature_request,False,,,False,calibration,Exclude from taste profile
-ex_168,916,Can I listen together with friends remotely in real time?,how_to_feature_request,False,,,False,locked_test,Jam / Group session feature
-ex_169,917,How do I clear my search history on mobile?,how_to_feature_request,False,,,False,calibration,Clear search cache
-ex_170,918,Is there a light mode theme available for desktop?,how_to_feature_request,False,,,False,locked_test,Dark mode / Light mode theme availability
-ex_171,1001,Is Spotify down right now? Nothing loads for anyone on Twitter!,service_outage,False,,,False,calibration,Outage status inquiry
-ex_172,1002,Getting HTTP 500 internal server error across the web player in US East.,service_outage,False,,,False,locked_test,Server error code reporting
-ex_173,1003,Is there a service disruption affecting European login servers?,service_outage,False,,,False,calibration,Regional auth disruption
-ex_174,1004,Spotify status page says all systems operational but thousands of users down!,service_outage,False,,,False,locked_test,Status page discrepancy
-ex_175,1005,"Search API seems completely down, returning error 503.",service_outage,False,,,False,calibration,503 service unavailable
-ex_176,1006,Is there an outage with Facebook login integration currently?,service_outage,False,,,False,locked_test,Third-party SSO outage
-ex_177,1007,"App logged everyone out worldwide right now, what happened?",service_outage,False,,,False,calibration,Global session drop incident
-ex_178,1008,Are payment processing servers down for credit card renewals?,service_outage,False,,,False,locked_test,Payment gateway outage
-ex_179,1009,Web player certificates expired causing security warning SSL error.,service_outage,False,,security,False,calibration,SSL cert expiration incident
-ex_180,1010,All podcast feeds throwing 504 gateway timeout.,service_outage,False,,,False,locked_test,Gateway timeout on podcasts
-ex_181,1011,Why is the backend taking 2 minutes to load my library?,service_outage,False,,,False,calibration,Backend latency / degraded performance
-ex_182,1012,"Downdetector is spiking with 50,000 reports, is engineering aware?",service_outage,False,,,False,locked_test,Outage spike awareness
-ex_183,1013,Streaming servers offline in Australia region.,service_outage,False,,,False,calibration,Regional CDN outage
-ex_184,1014,Is the desktop app experiencing an outage after today's patch?,service_outage,False,,,False,locked_test,Post-release regression incident
-ex_185,1101,Hello??? Anyone there???,other_unclear,False,,,True,calibration,Greeting without substantive inquiry
-ex_186,1102,Fix your broken app right now!!!!,other_unclear,False,,,True,locked_test,Vague complaint without details
-ex_187,1103,Why is it not working?,other_unclear,False,,,True,calibration,Zero diagnostic context
-ex_188,1104,Hey check out my new single on Spotify! Stream link here!,other_unclear,False,,,False,locked_test,Self-promotional spam
-ex_189,1105,Yo @SpotifyCares,other_unclear,False,,,True,calibration,Single mention ping
-ex_190,1106,Your customer service is the worst on earth garbage company,other_unclear,True,Extreme customer frustration requiring escalation,sentiment,False,locked_test,Aggressive feedback
-ex_191,1107,I am going to take you to small claims court for negligence!,other_unclear,True,Legal threat,legal,False,calibration,Legal threat without details
-ex_192,1108,Is Drake dropping an album at midnight tonight?,other_unclear,False,,,False,locked_test,Out-of-scope artist gossip inquiry
-ex_193,1109,Merci beaucoup pour votre aide passée!,other_unclear,False,,,False,calibration,Non-English thank you message
-ex_194,1110,Test 1 2 3 please ignore,other_unclear,False,,,False,locked_test,Test message
-ex_195,1111,???,other_unclear,False,,,True,calibration,Punctuation only
-ex_196,1112,Can someone from customer support respond immediately?,other_unclear,False,,,True,locked_test,Call for support without question
-ex_197,1113,Worst update ever roll it back,other_unclear,False,,,True,calibration,Unspecified update complaint
-ex_198,1114,How much does a Spotify stock share cost today?,other_unclear,False,,,False,locked_test,Investor / financial query out of scope
-ex_199,1115,Job opening in customer support available?,other_unclear,False,,,False,calibration,Hiring inquiry
-ex_200,1116,Help me please it won't work on my thing,other_unclear,False,,,True,locked_test,Extreme vagueness without device or issue
+ex_001,1026799,"Hey guys, having issues with the web player not working, 'play' button is just shaded out and won't play. Logged out, etc...",playback_technical_issue,False,,,False,calibration,Real TWCS Spotify tweet #1026799
+ex_002,1027808,"iPhone 7+, Dear Evan Hansen's playlist (that I have saved) won't play :(",playback_technical_issue,False,,,False,calibration,Real TWCS Spotify tweet #1027808
+ex_003,1030250,Both WiFi and 4G. Android 7.1.1. Spotify updated a few days ago. Previously it was working and I was using the offline mode of Spotify.,playback_technical_issue,False,,,False,calibration,Real TWCS Spotify tweet #1030250
+ex_004,1053969,"I have my Spotify set to offline mode, but it's playing some songs not downloaded. Help!",playback_technical_issue,False,,,False,calibration,Real TWCS Spotify tweet #1053969
+ex_005,1065091,"The app keeps crashing after I play a song too. I’m on iPhone 6, ios11 and spotify version 8.4.24, thanks RC",playback_technical_issue,False,,,False,calibration,Real TWCS Spotify tweet #1065091
+ex_006,1101334,no error messages just won't play any songs saved.,playback_technical_issue,False,,,False,calibration,Real TWCS Spotify tweet #1101334
+ex_007,1118825,"My Spotify won't play any of my albums, I've already tried logging out of my Spotify multiple times and restarting my phone.",playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1118825
+ex_008,1124669,"hey there, as of today my iPhone app keeps crashing a few moments into songs (offline/online mode, diff playlists). Any advice",playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1124669
+ex_009,1148117,My music keeps stuttering/skipping ever since I upgraded to iOS 11... tried reinstalling but it doesn’t fix it,playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1148117
+ex_010,115248,Still having issues. Tons of music just won't play. Even music I had downloaded to my mobile device.,playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #115248
+ex_011,1175720,Deleting and reinstalling the app fixed the issue. I imagine this is to do with Spotify storing offline mode and checking when user logs in,playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1175720
+ex_012,1179888,Argh @116130 @SpotifyCares keeps crashing 😭😭 send help!,playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1179888
+ex_013,1201571,&amp; this happens. it just gets stuck there &amp; it won't play my music. happens with every one of my playlists @SpotifyCares,playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1201571
+ex_014,1217758,"When I go to OFFLINE mode the downloaded songs I have will not play Doesn't happen all the time, but has happened more than once on Samsung8",playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1217758
+ex_015,1234848,"When connecting my iPhone and opening Spotify, it either won’t react and stays on black screen or plays without audio. Always have to disconnect the cable or first open Apple Music and THEN Spotify. Only then it works. Very very very annoying",playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1234848
+ex_016,1289170,My songs won't play...,playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1289170
+ex_017,1295654,None whatsoever. The music just won't play,playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1295654
+ex_018,1295666,"Even play any song from the playlist, a different playlist etc. it just won't play I've already exited and went back into the app many times",playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1295666
+ex_019,1353059,Having problems with offline mode on my Honor 7. When I use my SD card for storage after every restart all downloads are gone!,playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1353059
+ex_020,1356649,"When I use Spotify in offline mode in the car, when I choose ""Recent..."" it continously loads with no results.",playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1356649
+ex_021,139101,"3rd time in less than a month. This time it wasn't just the albums that were deleted, but also the multiple playlists I had. No update, no offline mode. Why am I even paying for ""premium"" if the service is anything but that?",playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #139101
+ex_022,1500096,"After the update of Oreo 8.0 to Sony ZX Premium system won't play tracks in my car (BMW). Bt connection is ok. Display says: ""No available track data."" Help needed...",playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1500096
+ex_023,1502184,"Hey all, I seem to be having a bit of issue with Spotify premium on my laptop. Won't play anything. Getting diff errors too",playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1502184
+ex_024,1516295,"I usually download music and then go in offline mode but sometimes I get logged out &amp; the app won't let me log in, it thinks I am offline.",playback_technical_issue,False,,,False,locked_test,Real TWCS Spotify tweet #1516295
+ex_025,1033340,help me I lost my Hulu privileges and my bank account when negative cuz y’all overcharged me the regular price not Student.😭,subscription_billing,True,Billing discrepancy requires secure account transaction lookup,financial,False,calibration,Real TWCS Spotify tweet #1033340
+ex_026,1035420,"i was charged twice. This was not a bank problem, they are two different amounts. Help me. This is getting very irritating.",subscription_billing,True,Billing discrepancy requires secure account transaction lookup,financial,False,calibration,Real TWCS Spotify tweet #1035420
+ex_027,1075705,I was also charged twice when it stated that i wasn’t being charged at all,subscription_billing,True,Billing discrepancy requires secure account transaction lookup,financial,False,calibration,Real TWCS Spotify tweet #1075705
+ex_028,1087980,I have been charged twice and a DOUBLE wrongly amount !! still not enjoying Spotify Premium. Please respond!,subscription_billing,True,Billing discrepancy requires secure account transaction lookup,financial,False,calibration,Real TWCS Spotify tweet #1087980
+ex_029,1101760,my bill was paid to apple subscriptions 11/5 and i haven't had preimuim available for 19 days. i have a receipt from apple and paypal and my bank account,subscription_billing,False,,,False,calibration,Real TWCS Spotify tweet #1101760
+ex_030,1115461,my account was charged twice!I only have one account yet I'm getting charged twice!,subscription_billing,True,Billing discrepancy requires secure account transaction lookup,financial,False,locked_test,Real TWCS Spotify tweet #1115461
+ex_031,115254,My Spotify premium still isn’t working and I was charged twice 🤧😡,subscription_billing,True,Billing discrepancy requires secure account transaction lookup,financial,False,locked_test,Real TWCS Spotify tweet #115254
+ex_032,1206296,"Hi, I've just noticed I've been charged twice this month, can you help please?",subscription_billing,True,Billing discrepancy requires secure account transaction lookup,financial,False,locked_test,Real TWCS Spotify tweet #1206296
+ex_033,1206539,Hi I've been charged twice this month can you look into it for me?,subscription_billing,True,Billing discrepancy requires secure account transaction lookup,financial,False,locked_test,Real TWCS Spotify tweet #1206539
+ex_034,1220138,"I've been charged twice this month, one of my normal student member ship and one for a full membership plz help",subscription_billing,True,Billing discrepancy requires secure account transaction lookup,financial,False,locked_test,Real TWCS Spotify tweet #1220138
+ex_035,1227412,I cant connect 2 hulu with my student spotify account and i was also overcharged last month for no reason. How can i fix this,subscription_billing,True,Billing discrepancy requires secure account transaction lookup,financial,False,locked_test,Real TWCS Spotify tweet #1227412
+ex_036,127470,I was just disconnected in a live chat right after my account was shut down to verify my payment. Someone was using my Spotify account. Now I can't log in to reconnect to live chat and verify my first receipt. What should I do?,subscription_billing,False,,,False,locked_test,Real TWCS Spotify tweet #127470
+ex_037,1299098,"Really need help, my credit card was charged twice with an hour interval of spotify (the student promo)",subscription_billing,True,Billing discrepancy requires secure account transaction lookup,financial,False,locked_test,Real TWCS Spotify tweet #1299098
+ex_038,1366571,"nah the payment is not pending, its been deducted",subscription_billing,False,,,False,locked_test,Real TWCS Spotify tweet #1366571
+ex_039,1421471,my email account suddenly got unregistered on my spotify and i cant use the premium service anymore while the invoice remains on my bill. Any solution? Need this to be solved asap.,subscription_billing,False,,,False,locked_test,Real TWCS Spotify tweet #1421471
+ex_040,143006,I have signed up for premium and the money has come out of my account. I have logged out then in but still not working. It is the right account and right email so it couldn’t of gone to the wrong account and I still haven’t received the emailed receipt. Help please,subscription_billing,False,,,False,locked_test,Real TWCS Spotify tweet #143006
+ex_041,1432057,Double charged twice. Are there anyways so I can get back the double charged money?,subscription_billing,True,Billing discrepancy requires secure account transaction lookup,financial,False,locked_test,Real TWCS Spotify tweet #1432057
+ex_042,1473905,there is a recurring charge on my bank statement that I didn’t do. Need help.,subscription_billing,True,Billing discrepancy requires secure account transaction lookup,financial,False,locked_test,Real TWCS Spotify tweet #1473905
+ex_043,1493539,I have Premium for Family and I am being charged twice (on 2 of my CCs). I don't know if I have a duplicate account. Help!,subscription_billing,True,Billing discrepancy requires secure account transaction lookup,financial,False,locked_test,Real TWCS Spotify tweet #1493539
+ex_044,155375,The email I used to purchase was __email__. I unfortunately do not have the receipt any longer!,subscription_billing,False,,,False,locked_test,Real TWCS Spotify tweet #155375
+ex_045,1023996,are you guys having software issues right now? can't log in to web player,login_account_access,False,,,False,calibration,Real TWCS Spotify tweet #1023996
+ex_046,1024762,"Guys, I can't log in! The reset password page doesn't recognise my email, but says it is attached to an account @SpotifyCares",login_account_access,False,,,False,calibration,Real TWCS Spotify tweet #1024762
+ex_047,1027721,I have premium acct. got logged out. Can't log in. email does not work.,login_account_access,False,,,False,calibration,Real TWCS Spotify tweet #1027721
+ex_048,104147,"spotify at first said no internet connection even though I have one. I cleared cache, uninstalled, reinstalled. Now I can't log in. Changed Facebook password, nothing works. Help!",login_account_access,False,,,False,calibration,Real TWCS Spotify tweet #104147
+ex_049,1062070,"I've created an account using gmail address, with ""__email__"". I can't log in, I can't reset password.",login_account_access,False,,,False,calibration,Real TWCS Spotify tweet #1062070
+ex_050,108044,- password reset does not send me an email - frustrating,login_account_access,False,,,False,locked_test,Real TWCS Spotify tweet #108044
+ex_051,1098967,Someone just changed my account e-mail address and now I am locked out of my account. How can I regain access? Account stolen.,login_account_access,True,Account lockout requires backend credentials verification,account,False,locked_test,Real TWCS Spotify tweet #1098967
+ex_052,1109019,I can't log in on my desktop or Android but can access the web app. Error 408.,login_account_access,False,,,False,locked_test,Real TWCS Spotify tweet #1109019
+ex_053,1146456,"can't log in, it says I don't have an account although I'm using the right email. I have a premium account",login_account_access,False,,,False,locked_test,Real TWCS Spotify tweet #1146456
+ex_054,1170454,password reset link is not working getting frustrated forgotten password,login_account_access,False,,,False,locked_test,Real TWCS Spotify tweet #1170454
+ex_055,1177373,I can't log in on any device and I've reset my password twice,login_account_access,False,,,False,locked_test,Real TWCS Spotify tweet #1177373
+ex_056,1209247,I can't log in to my account!,login_account_access,False,,,False,locked_test,Real TWCS Spotify tweet #1209247
+ex_057,1232913,I signed up for the $9.99 plan but I can't log in.,login_account_access,False,,,False,locked_test,Real TWCS Spotify tweet #1232913
+ex_058,128168,hi can you help? I can't log in my acc,login_account_access,False,,,False,locked_test,Real TWCS Spotify tweet #128168
+ex_059,128864,"I can't log in to my account cos my account was set to offline, I click to go online while trying to log in and it just stays on a black screen?",login_account_access,False,,,False,locked_test,Real TWCS Spotify tweet #128864
+ex_060,1321073,"Tried 2 sign up for Spotify but got told my emails are already taken, clicked forgot password, new password still can't log in",login_account_access,False,,,False,locked_test,Real TWCS Spotify tweet #1321073
+ex_061,1359522,"I have been unable to login and not receiving email for password reset. PLEASE HELP. Other issues w playback, as well. TY",login_account_access,False,,,False,locked_test,Real TWCS Spotify tweet #1359522
+ex_062,1412311,"I got a new Phone, and now the app says I am aboard and can't log in anymore while I have never left the US. Please help!",login_account_access,False,,,False,locked_test,Real TWCS Spotify tweet #1412311
+ex_063,1448187,I want to cancel my subscription but I signed up through Facebook and have since deleted it so I can't log in and cancel,login_account_access,False,,,False,locked_test,Real TWCS Spotify tweet #1448187
+ex_064,145938,Sweet. I e-mailed The swedish support two weeks ago but they haven't answered. I keep getting logged out from my account and can't log in without reinstalling the app. This deletes all my downloaded playlists. What can I do?,login_account_access,False,,,False,locked_test,Real TWCS Spotify tweet #145938
+ex_065,1016888,I cannot see or change my family plan!,plan_discount_management,False,,,False,calibration,Real TWCS Spotify tweet #1016888
+ex_066,1019555,"It's weird because I can pay the normal 9,99 subscription with paypal and Ideal, but the 50% student discount one only with credit card",plan_discount_management,False,,,False,calibration,Real TWCS Spotify tweet #1019555
+ex_067,1029045,my account was charged $10 when I should receive a student discount.,plan_discount_management,False,,,False,calibration,Real TWCS Spotify tweet #1029045
+ex_068,1029759,hey! I noticed that you guys charged me 10.79 instead of applying the student discount. why might that be?,plan_discount_management,False,,,False,calibration,Real TWCS Spotify tweet #1029759
+ex_069,1036114,"Signed up for the Student Discount. Have edu address and my college showed up in options, but says couldn’t verify...whats up?",plan_discount_management,False,,,False,locked_test,Real TWCS Spotify tweet #1036114
+ex_070,1042614,i have spotify premium and if switch to family plan to add my wife am i charged the full family price or just the difference?,plan_discount_management,False,,,False,locked_test,Real TWCS Spotify tweet #1042614
+ex_071,1043550,so my student discount has run for a year yet I’ve only just been found that out and I had no email I say it would go to £9.99 after that! and I’m in education for another 3 years so how can I get it again?,plan_discount_management,False,,,False,locked_test,Real TWCS Spotify tweet #1043550
+ex_072,1047986,Thanks. Love you. That's why I have a family plan instead of a student. You guys listen ♥️,plan_discount_management,False,,,False,locked_test,Real TWCS Spotify tweet #1047986
+ex_073,1049484,I've been charged the $4.99 and had Sheerid tell me I've been confirmed as a student to spotify. I still have no premium account.,plan_discount_management,False,,,False,locked_test,Real TWCS Spotify tweet #1049484
+ex_074,1049999,can dual enrolled students take advantage of the student discount?,plan_discount_management,False,,,False,locked_test,Real TWCS Spotify tweet #1049999
+ex_075,1051998,"I am getting a message that my payment information failed, but I signed up for the family plan with my wife and my account...",plan_discount_management,False,,,False,locked_test,Real TWCS Spotify tweet #1051998
+ex_076,106351,"my wife is trying to accept my new Spotify Family plan and she's getting the error ""undefined - Oops something went wrong, please try again."" Please advise.",plan_discount_management,False,,,False,locked_test,Real TWCS Spotify tweet #106351
+ex_077,1073368,any problem from Spotify Family Plan?,plan_discount_management,False,,,False,locked_test,Real TWCS Spotify tweet #1073368
+ex_078,1083507,"Hi, I invited my sister to join family plan but she can't. We did as advised on the web but it still didn't work? @SpotifyCares",plan_discount_management,False,,,False,locked_test,Real TWCS Spotify tweet #1083507
+ex_079,1088595,"I cant invite any of my family member , when i accept the invitation this msg pop up "" Unable to join this Family plan. Try again by clicking the ACCEPT INVITE button in your email. If that doesn't work, ask the plan owner to send another invite.""",plan_discount_management,False,,,False,locked_test,Real TWCS Spotify tweet #1088595
+ex_080,1089991,"Hey @SpotifyCares, is there any way to change a premium account to a family plan?",plan_discount_management,False,,,False,locked_test,Real TWCS Spotify tweet #1089991
+ex_081,1089997,"Hi, I have the family plan today, however, my family members aren't able to join spotify through the link.Would like some help",plan_discount_management,False,,,False,locked_test,Real TWCS Spotify tweet #1089997
+ex_082,1091043,"I have signed up and am paying for the family plan, but when I try to add family members, the screen is black. How do I fix&gt;",plan_discount_management,False,,,False,locked_test,Real TWCS Spotify tweet #1091043
+ex_083,100121,Hey @SpotifyCares any chance to use @AmazonHelp echo audio groups like it is possible to use @122986 Chromecast audio groups? Help Appreciated!,device_connectivity,False,,,False,calibration,Real TWCS Spotify tweet #100121
+ex_084,1021169,"Hi, having problems playing @SpotifyCares (Premium) on Sonos using Echo Dot. Skill activated, accounts linked etc. Any ideas?",device_connectivity,False,,,False,calibration,Real TWCS Spotify tweet #1021169
+ex_085,102223,the Spotify/Sonos link is down. Other services seem ok.,device_connectivity,False,,,False,calibration,Real TWCS Spotify tweet #102223
+ex_086,1027534,Hi @SpotifyCares I love you but your CarPlay app is AWFUL. Are you working on making it better? @115948 is looking tempting 🤒🤒🤒🤒,device_connectivity,False,,,False,calibration,Real TWCS Spotify tweet #1027534
+ex_087,1027814,"I know that. I guess that's a bit of a security flaw then. If you know which port does Connect use, I'd be thankful if you let me know.",device_connectivity,False,,,False,locked_test,Real TWCS Spotify tweet #1027814
+ex_088,1030251,"since Su I'm unable 2 login (android) Msg pops up ""U r currently set 2 offline"". Tapping ""connect"" does not help. Premium user",device_connectivity,False,,,False,locked_test,Real TWCS Spotify tweet #1030251
+ex_089,1031554,I have the student Spotify and the Hulu best plan right now is there a way to connect them,device_connectivity,False,,,False,locked_test,Real TWCS Spotify tweet #1031554
+ex_090,1032414,It's ridiculously slow. Sometimes it won't connect to the Internet even when I'm on wifi. Had no issues before the update!,device_connectivity,False,,,False,locked_test,Real TWCS Spotify tweet #1032414
+ex_091,1034388,Is it possible to let a Google Home device trigger a Spotify Connect speaker?,device_connectivity,False,,,False,locked_test,Real TWCS Spotify tweet #1034388
+ex_092,104111,Seems to be affected by my Bluetooth headphones. No issues if I play using my phone's speakers,device_connectivity,False,,,False,locked_test,Real TWCS Spotify tweet #104111
+ex_093,1043322,Hi. Song playing on mac desktop app is using connect to send to tv. Often seems to get confused / tv play different song,device_connectivity,False,,,False,locked_test,Real TWCS Spotify tweet #1043322
+ex_094,1043585,Still waiting for a response how it was possible to connect to deactivated FB acct from @SpotifyCares. #privacyfail #donttrustanyofthem,device_connectivity,False,,,False,locked_test,Real TWCS Spotify tweet #1043585
+ex_095,1044333,why is airplay free and Sonos play not?,device_connectivity,False,,,False,locked_test,Real TWCS Spotify tweet #1044333
+ex_096,1049680,I'm on Android (a Pixel specifically) and when I'm casting my phone's volume keys/media controls menus don't adjust the Chromecast volume like they used to (in or out of the actual Spotify app).,device_connectivity,False,,,False,locked_test,Real TWCS Spotify tweet #1049680
+ex_097,106345,"No streaming with Sonos possible, are you aware?",device_connectivity,False,,,False,locked_test,Real TWCS Spotify tweet #106345
+ex_098,1068074,"If I buy Amazon echo in India, would I be able to play Spotify music in that device?",device_connectivity,False,,,False,locked_test,Real TWCS Spotify tweet #1068074
+ex_099,108042,I’m trying to sync my Spotify account with my Alexa and it keeps saying I don’t have an email address associated w/ FB. I also can’t log in to my Spotify account.,device_connectivity,False,,,False,locked_test,Real TWCS Spotify tweet #108042
+ex_100,1098981,Can't connect Spotify account to Hulu for the student bundle. Pls help @SpotifyCares,device_connectivity,False,,,False,locked_test,Real TWCS Spotify tweet #1098981
+ex_101,1013938,They don’t work. Next/prev buttons are greyed out and the play button should be a pause button and doesn’t do anything,content_playlist_availability,False,,,False,calibration,Real TWCS Spotify tweet #1013938
+ex_102,1017924,"Hi JE yes I have tried all of this several times, also tried form different machines but the stuck ad's till there, play options greyed out.",content_playlist_availability,False,,,False,calibration,Real TWCS Spotify tweet #1017924
+ex_103,1060707,why is there no explicit version of still not a player by big pun @SpotifyCares,content_playlist_availability,False,,,False,calibration,Real TWCS Spotify tweet #1060707
+ex_104,1065556,"yes, same message every device/platforme, and i do not have them saved as local files. i'm using the songs from spotify directly",content_playlist_availability,False,,,False,calibration,Real TWCS Spotify tweet #1065556
+ex_105,1106527,"So if I have local files that I purchased from another place, how can these files sync to Spotify. I wish this was easier..",content_playlist_availability,False,,,False,locked_test,Real TWCS Spotify tweet #1106527
+ex_106,11169,They aren’t locally imported… We just imported her iTunes playlist in Spotify so it found identical songs. Is that why they are greyed out?,content_playlist_availability,False,,,False,locked_test,Real TWCS Spotify tweet #11169
+ex_107,1118822,I can’t get local files to work,content_playlist_availability,False,,,False,locked_test,Real TWCS Spotify tweet #1118822
+ex_108,111979,"Thank you, But I listened to every song of Taylor Swifts waiting for the album and now I know the lyrics to every song on every album. Anyway.....so basically I just have to keep checking the new releases every friday",content_playlist_availability,False,,,False,locked_test,Real TWCS Spotify tweet #111979
+ex_109,1176569,"I tried that. Track 5 is supposed to be a collaboration with @76687 , track 14 is a collaboration with Anderson Paak., Ty Dolla $ign, BJ The Chicago Kid, and Raury. They are two completely different tracks with different lyrics and music.",content_playlist_availability,False,,,False,locked_test,Real TWCS Spotify tweet #1176569
+ex_110,1188732,It's greyed out,content_playlist_availability,False,,,False,locked_test,Real TWCS Spotify tweet #1188732
+ex_111,118913,why wont the Spotify app on my phone play the local files I just synced to my new iPhone X? They worked on my last phone just fine.,content_playlist_availability,False,,,False,locked_test,Real TWCS Spotify tweet #118913
+ex_112,1197650,hi I'm wondering how to play local files from my PC on spotify on my android phone? I can't seem to sync,content_playlist_availability,False,,,False,locked_test,Real TWCS Spotify tweet #1197650
+ex_113,1220100,"Hey. Behind the lyrics doesn't work for me? I'm on latest android version playing ""Sorry"" by Justin B(works on brothers phone)",content_playlist_availability,False,,,False,locked_test,Real TWCS Spotify tweet #1220100
+ex_114,1238323,When are the lyrics coming back @SpotifyCares,content_playlist_availability,False,,,False,locked_test,Real TWCS Spotify tweet #1238323
+ex_115,1240610,No. The option for it does not appear. Not even greyed out. Nothing.,content_playlist_availability,False,,,False,locked_test,Real TWCS Spotify tweet #1240610
+ex_116,1250439,can u pls put an option to view all the lyrics for songs?,content_playlist_availability,False,,,False,locked_test,Real TWCS Spotify tweet #1250439
+ex_117,1250607,Did this and still not working :/ I've had local files work in past but can't get this,content_playlist_availability,False,,,False,locked_test,Real TWCS Spotify tweet #1250607
+ex_118,1258606,"Do you care yet,waiting for you to exclude explicit lyrics make it a valid family account 6yr have waited",content_playlist_availability,False,,,False,locked_test,Real TWCS Spotify tweet #1258606
+ex_119,1008398,The Family Plan is a big rip off. I told you the day I signed up for it to cancel the family plan. Your foreign tech support was of no value. What I gathered from dialogue and their script only one of us can be on Spotify at a time. What a joke!!,cancellation_refund,False,,,False,calibration,Real TWCS Spotify tweet #1008398; standard self-service subscription cancellation
+ex_120,1016544,"all of my saved songs were deleted, been gathering them for a year, I want my money back",cancellation_refund,True,Refund authorization requires human billing review and transaction lookup,financial,False,calibration,Real TWCS Spotify tweet #1016544
+ex_121,1021643,"Hi, I need ur help. I need to cancel my subscription to Spotify Premium, but i don't have access to the account because it was created w/ my Facebook that I don't have anymore and i can't get back. So what should I do? sorry about my english :P",cancellation_refund,False,,,False,calibration,Real TWCS Spotify tweet #1021643; standard self-service subscription cancellation
+ex_122,1043742,"I was just charged today, please walk me through what I should do so i can get my money back. Thank you!",cancellation_refund,True,Refund authorization requires human billing review and transaction lookup,financial,False,calibration,Real TWCS Spotify tweet #1043742
+ex_123,1048621,"I have two pending payments of 4.99 on my visa prepaid card, chose the wrong option twice, need refund to get to pay 9.99",cancellation_refund,True,Refund authorization requires human billing review and transaction lookup,financial,False,locked_test,Real TWCS Spotify tweet #1048621
+ex_124,1048996,my name couldn't be confirmed for spotify student but i still got charged. when do i get my money back? @SpotifyCares,cancellation_refund,True,Refund authorization requires human billing review and transaction lookup,financial,False,locked_test,Real TWCS Spotify tweet #1048996
+ex_125,1052727,Hi! Can I ask how to unsubscribe my plan in premium subp for spotify?,cancellation_refund,False,,,False,locked_test,Real TWCS Spotify tweet #1052727; standard self-service subscription cancellation
+ex_126,1068326,"I just got charged 10€ because I forgot to cancel my Premium, would it be possible to refund it and have it removed?",cancellation_refund,True,Refund authorization requires human billing review and transaction lookup,financial,False,locked_test,Real TWCS Spotify tweet #1068326
+ex_127,1072385,"need support in México, can you help? My credit card is active and working and my premium account has been cancel: gualas_alex",cancellation_refund,False,,,False,locked_test,Real TWCS Spotify tweet #1072385; standard self-service subscription cancellation
+ex_128,1087019,PLEASE HELP! I’m trying to cancel my account and there’s no contact number. Please!,cancellation_refund,False,,,False,locked_test,Real TWCS Spotify tweet #1087019; standard self-service subscription cancellation
+ex_129,1087971,Pls help. I cant log in so that i cant cancel my subscription. My email is __email__,cancellation_refund,False,,,False,locked_test,Real TWCS Spotify tweet #1087971; standard self-service subscription cancellation
+ex_130,1091046,hey how can i cancel my premium subscription if i dont know my email nor password?,cancellation_refund,False,,,False,locked_test,Real TWCS Spotify tweet #1091046; standard self-service subscription cancellation
+ex_131,1093424,I know my username and it’s attached to an old email and I can’t log in and im about to just cancel my subscription,cancellation_refund,False,,,False,locked_test,Real TWCS Spotify tweet #1093424; standard self-service subscription cancellation
+ex_132,1096235,"I can't access my Facebook account as it's been deleted but I'm still being charged for premium, how do I cancel?",cancellation_refund,False,,,False,locked_test,Real TWCS Spotify tweet #1096235; standard self-service subscription cancellation
+ex_133,1096833,I need to cancel premium from a deleted facebook linked account. I cannot log in to cancel. Please assist.,cancellation_refund,False,,,False,locked_test,Real TWCS Spotify tweet #1096833; standard self-service subscription cancellation
+ex_134,1101778,"why have you charged me £9.99 for the last two months when I'm on a student plan and was paying £4.99 previously, I want a refund asap",cancellation_refund,True,Refund authorization requires human billing review and transaction lookup,financial,False,locked_test,Real TWCS Spotify tweet #1101778
+ex_135,1105813,"My spotify unlimited was attached to a fb acc which has since been deleted, as has the email. How to cancel if I cannot log in",cancellation_refund,False,,,False,locked_test,Real TWCS Spotify tweet #1105813; standard self-service subscription cancellation
+ex_136,1117266,need to cancel my payments but cant sign in,cancellation_refund,False,,,False,locked_test,Real TWCS Spotify tweet #1117266; standard self-service subscription cancellation
+ex_137,1013194,"Hi, my Premium account just got hacked, can you please indicate how to restore service? Thanks.",security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,calibration,Real TWCS Spotify tweet #1013194
+ex_138,102218,someone hacked my account. Any help on how to change my e-mail address back?,security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,calibration,Real TWCS Spotify tweet #102218
+ex_139,1027509,hi guys my accounts been hacked. Please help,security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,calibration,Real TWCS Spotify tweet #1027509
+ex_140,1031954,"Someone else is controlling my account through Spotify Connect. Have tried ""sign out everywhere"" and changing FB password. Can still see their device listed/they keep switching music. Eek!",security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,calibration,Real TWCS Spotify tweet #1031954
+ex_141,1036109,my account's been hacked. Received an email saying my personal email had je been changed. Can you help ?,security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,calibration,Real TWCS Spotify tweet #1036109
+ex_142,1040132,hey my accounts been hacked by some dude name Joan and he's freeloading off my paid account and ruining my playlists,security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,locked_test,Real TWCS Spotify tweet #1040132
+ex_143,106328,"heeeeelp! Someone has changed my email and hacked my Spotify, now I can’t get back in 😕",security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,locked_test,Real TWCS Spotify tweet #106328
+ex_144,106349,"I need help resetting my password. I think someone hacked my account and changed it, but I was still able to log in through Facebook",security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,locked_test,Real TWCS Spotify tweet #106349
+ex_145,1085657,"shout out to @SpotifyCares for helping me with my hacked account, y'all the real MVP 👏",security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,locked_test,Real TWCS Spotify tweet #1085657
+ex_146,1095363,Spotify cares? Still no response from you. Our account has been hacked. Help / support needed please,security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,locked_test,Real TWCS Spotify tweet #1095363
+ex_147,1101288,The unauthorized device logged out. I've since changed my passwords.,security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,locked_test,Real TWCS Spotify tweet #1101288
+ex_148,1105783,"I think my account was hacked. I'm logged out on all my devices, and the email address/login no longer works. Help?",security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,locked_test,Real TWCS Spotify tweet #1105783
+ex_149,1126870,my account has been hacked and email changed. Please contact to sort asap,security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,locked_test,Real TWCS Spotify tweet #1126870
+ex_150,116575,Can you please help me? My account got hacked!,security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,locked_test,Real TWCS Spotify tweet #116575
+ex_151,1180923,why my hacked Spotify is doing this?,security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,locked_test,Real TWCS Spotify tweet #1180923
+ex_152,1188284,"Hey spotify, my account was hacked into about 30 minutes ago, and I would like to get it recovered as fast as possible.",security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,locked_test,Real TWCS Spotify tweet #1188284
+ex_153,1209312,looks like my account was hacked &amp; my playlists were deleted. Any way I can get those back?,security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,locked_test,Real TWCS Spotify tweet #1209312
+ex_154,122100,I think someone’s hacked my account and changed the email address registered so I can’t reset password. What do I need to do?,security_compromised_account,True,Account compromise or unauthorized takeover requires human identity verification,security,False,locked_test,Real TWCS Spotify tweet #122100
+ex_155,1000020,Hi how can I keep Christmas music off my discover weekly/release radar or block it completely @SpotifyCares,how_to_feature_request,False,,,False,calibration,Real TWCS Spotify tweet #1000020
+ex_156,100130,"hi there! is it possible to remove a project from spotify, but reupload a single song from the project &amp; keep the plays/streams if using same ISRC, audio file, track name, artist name?",how_to_feature_request,False,,,False,calibration,Real TWCS Spotify tweet #100130
+ex_157,1002339,I don't want my fb to be connected to my Spotify..dont wanna lose my saved songs too. How can I have new acc with my current songs,how_to_feature_request,False,,,False,calibration,Real TWCS Spotify tweet #1002339
+ex_158,1007212,Why are random usernames assigned for accounts created using email? Is it possible to actually choose a username? #frustrated,how_to_feature_request,False,,,False,calibration,Real TWCS Spotify tweet #1007212
+ex_159,1013927,on the latest iOS my lockscreen controls are gone. I tried reinstalling. How do I get that back?,how_to_feature_request,False,,,False,locked_test,Real TWCS Spotify tweet #1013927
+ex_160,1027122,Hi I would like to try a free trial but its not popping up to give me one so how do I get one?,how_to_feature_request,False,,,False,locked_test,Real TWCS Spotify tweet #1027122
+ex_161,1030265,Hi I got logged out of my account and deleted my Facebook which was how I created the account. How can I log back in?,how_to_feature_request,False,,,False,locked_test,Real TWCS Spotify tweet #1030265
+ex_162,1035812,"hi I'm currently paying £14.99 but I'm now a student, how can I apply for a student account?",how_to_feature_request,False,,,False,locked_test,Real TWCS Spotify tweet #1035812
+ex_163,1040136,is there a way to get a list of songs from last weeks Discover Weekly?,how_to_feature_request,False,,,False,locked_test,Real TWCS Spotify tweet #1040136
+ex_164,104091,Is there a way to reset my listening history? I let my son have access to my account while I was traveling out of range of Spotify. Now everything is populated with his songs and recommendations. I am opening a family account to let him have his own account now.,how_to_feature_request,False,,,False,locked_test,Real TWCS Spotify tweet #104091
+ex_165,1043138,my email address got changed NOT by me. how do i get this fixed. someone used a throwaway email - now I'm unable to login,how_to_feature_request,False,,,False,locked_test,Real TWCS Spotify tweet #1043138
+ex_166,1043543,"I am a Premium member and almost 8/10 times, a song will stop playing at 10 seconds and I will be forced to skip the song. Is there a way to fix this? I've already tried reinstalling the app several times.",how_to_feature_request,False,,,False,locked_test,Real TWCS Spotify tweet #1043543
+ex_167,1044750,Hi! I want to see the address of my account. How can I do that? Help please :),how_to_feature_request,False,,,False,locked_test,Real TWCS Spotify tweet #1044750
+ex_168,1056606,how do I remove all @146177 music from my playlists? He said I can't listen to him. 👌😂🥃#MAGA,how_to_feature_request,False,,,False,locked_test,Real TWCS Spotify tweet #1056606
+ex_169,1058228,"How can i get ahold of you guys besides social media, this is pathetic. I wanna speak with someone.",how_to_feature_request,False,,,False,locked_test,Real TWCS Spotify tweet #1058228
+ex_170,1058782,"Yo fam, I wanna give you my money but your site isn't processing my card details, how can i get this to work right?",how_to_feature_request,False,,,False,locked_test,Real TWCS Spotify tweet #1058782
+ex_171,1209314,Unacceptable you are suppose to be a global Company yet you are not. Why advertise as one only to leave many countries out. #falseadvert,feedback_complaint,True,Severe customer dissatisfaction requiring human retention/relations,complaint,False,calibration,Real TWCS Spotify tweet #1209314
+ex_172,1475975,Disappointed with @115888 as I am having issues with spotifyconnect over wifi for months... HELP! @spotifycares or @151631,feedback_complaint,True,Severe customer dissatisfaction requiring human retention/relations,complaint,False,calibration,Real TWCS Spotify tweet #1475975
+ex_173,155348,"You guys really need to take this more seriously. Should be dead easy to detect. Didn’t get any warning, the hacker was not prevented in any way. Huge amount of inconvenience for me, Spotify shrugs its shoulders and doesn’t care. Unacceptable.",feedback_complaint,True,Severe customer dissatisfaction requiring human retention/relations,complaint,False,calibration,Real TWCS Spotify tweet #155348
+ex_174,1698962,As of now Spotify Connect no longer functions on my D7050. Completely unacceptable. I also demand compensation. This is no way to run a business by treating your customers so poorly.,feedback_complaint,True,Severe customer dissatisfaction requiring human retention/relations,complaint,False,calibration,Real TWCS Spotify tweet #1698962
+ex_175,1699003,"This is totally unacceptable for a company as big as Spotify with a great product team like yours, move on.",feedback_complaint,True,Severe customer dissatisfaction requiring human retention/relations,complaint,False,locked_test,Real TWCS Spotify tweet #1699003
+ex_176,17067,your customer service is poor.... today I was advised to change the password on my hacked account ... might be a challenge don’t you think ?!,feedback_complaint,True,Severe customer dissatisfaction requiring human retention/relations,complaint,False,locked_test,Real TWCS Spotify tweet #17067
+ex_177,1970386,You have everything else they’ve done tho this is unacceptable,feedback_complaint,True,Severe customer dissatisfaction requiring human retention/relations,complaint,False,locked_test,Real TWCS Spotify tweet #1970386
+ex_178,2259593,That's unacceptable on every level. Today is the release date. I know it isn't your fault. She's a snake for this.,feedback_complaint,True,Severe customer dissatisfaction requiring human retention/relations,complaint,False,locked_test,Real TWCS Spotify tweet #2259593
+ex_179,2259710,Why did you remove the lyrics on Spotify? Love from a Norwegian who loves you but is disappointed with this,feedback_complaint,False,,,False,locked_test,Real TWCS Spotify tweet #2259710
+ex_180,235225,I am waiting for a rep to email me to let me know what the incorrect address is I entered while trying to add my 12-yr old daughter to my family account. It is unacceptable that I can't see this information. Thanks.,feedback_complaint,True,Severe customer dissatisfaction requiring human retention/relations,complaint,False,locked_test,Real TWCS Spotify tweet #235225
+ex_181,2402465,can you please change your name to @93589 because this is getting ridiculous.... unacceptable at this point.,feedback_complaint,True,Severe customer dissatisfaction requiring human retention/relations,complaint,False,locked_test,Real TWCS Spotify tweet #2402465
+ex_182,2938718,so after days of no luck im ditching Spotify. Ive been passed backwards and forwrds regarding payment help and its totally unacceptable.,feedback_complaint,True,Severe customer dissatisfaction requiring human retention/relations,complaint,False,locked_test,Real TWCS Spotify tweet #2938718
+ex_183,332908,Your desktop app is painfully slow! It's unacceptable for a service I pay for!,feedback_complaint,True,Severe customer dissatisfaction requiring human retention/relations,complaint,False,locked_test,Real TWCS Spotify tweet #332908
+ex_184,360356,"Yes, it works after I reinstall it, but the issue is that I have to keep doing this every 2 months. That is unacceptable",feedback_complaint,True,Severe customer dissatisfaction requiring human retention/relations,complaint,False,locked_test,Real TWCS Spotify tweet #360356
+ex_185,998481,I made twitter account because there is no hotline to complain to. This is unacceptable. I want a refund.,feedback_complaint,True,Severe customer dissatisfaction requiring human retention/relations,complaint,False,locked_test,Real TWCS Spotify tweet #998481
+ex_186,100136,Bring Jay-Z back,unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,calibration,Real TWCS Spotify tweet #100136
+ex_187,100145,"Thanks guys, sorted",unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,calibration,Real TWCS Spotify tweet #100145
+ex_188,100187,Really @SpotifyCares ? 😡,unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,calibration,Real TWCS Spotify tweet #100187
+ex_189,1004406,running latest versions of both,unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,calibration,Real TWCS Spotify tweet #1004406
+ex_190,1007217,"Help. Only some of my ""Songs"" are available offline on my Mac whereas all of them are available offline on my phone.",unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,calibration,Real TWCS Spotify tweet #1007217
+ex_191,1007945,I’m currently using 8.4.22,unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,locked_test,Real TWCS Spotify tweet #1007945
+ex_192,1008300,Same thing with @34965 too!,unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,locked_test,Real TWCS Spotify tweet #1008300
+ex_193,1009267,Thank you so much!,unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,locked_test,Real TWCS Spotify tweet #1009267
+ex_194,1013277,i can't sign in,unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,locked_test,Real TWCS Spotify tweet #1013277
+ex_195,1013929,"That did it, thank you!",unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,locked_test,Real TWCS Spotify tweet #1013929
+ex_196,1013933,Nothing I’ve noticed so far,unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,locked_test,Real TWCS Spotify tweet #1013933
+ex_197,1013936,"Just tried, doesn’t change anything",unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,locked_test,Real TWCS Spotify tweet #1013936
+ex_198,1013946,fix your awful broken shuffle,unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,locked_test,Real TWCS Spotify tweet #1013946
+ex_199,1014515,Thank you so much,unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,locked_test,Real TWCS Spotify tweet #1014515
+ex_200,1014996,Please answer DMs very important,unsupported_ambiguous_inquiry,True,Customer message is too ambiguous and lacks diagnostic context,ambiguous,True,locked_test,Real TWCS Spotify tweet #1014996

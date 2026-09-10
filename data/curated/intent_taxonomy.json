@@ -1,0 +1,219 @@
+{
+  "version": "v1",
+  "brand": "SpotifyCares",
+  "intents": [
+    {
+      "label": "login_account_access",
+      "description": "Trouble logging in, password reset, 2FA, email verification, or locked account.",
+      "positive_signals": [
+        "password",
+        "login",
+        "log in",
+        "reset",
+        "can't sign in",
+        "verification code",
+        "locked out"
+      ],
+      "negative_signals": [
+        "billing",
+        "charged",
+        "student discount"
+      ],
+      "example_phrases": [
+        "I forgot my password and email is not receiving reset link",
+        "Locked out of my account"
+      ]
+    },
+    {
+      "label": "subscription_billing",
+      "description": "Charges, unexpected billing, payment failed, receipt, currency, or price changes.",
+      "positive_signals": [
+        "charged",
+        "billing",
+        "credit card",
+        "bank",
+        "receipt",
+        "deducted",
+        "double charged"
+      ],
+      "negative_signals": [
+        "playback error",
+        "song missing"
+      ],
+      "example_phrases": [
+        "Why was I charged twice this month?",
+        "My card was debited but account shows Free"
+      ]
+    },
+    {
+      "label": "plan_discount_management",
+      "description": "Family plan invites, Duo plan, Student verification (SheerID), upgrading or downgrading plans.",
+      "positive_signals": [
+        "family plan",
+        "duo",
+        "student",
+        "sheerid",
+        "upgrade",
+        "invite member",
+        "address match"
+      ],
+      "negative_signals": [
+        "cancellation"
+      ],
+      "example_phrases": [
+        "How do I add my partner to Duo?",
+        "My student discount verification failed on SheerID"
+      ]
+    },
+    {
+      "label": "playback_technical_issue",
+      "description": "Songs pausing, crashing, offline downloads failing, local files, audio skipping, or error codes.",
+      "positive_signals": [
+        "crashes",
+        "skipping",
+        "pauses",
+        "won't play",
+        "download error",
+        "offline not working",
+        "blank screen"
+      ],
+      "negative_signals": [
+        "account hack",
+        "subscription price"
+      ],
+      "example_phrases": [
+        "App keeps crashing on startup on Android 14",
+        "Songs stop playing after 10 seconds"
+      ]
+    },
+    {
+      "label": "device_connectivity",
+      "description": "Bluetooth, Spotify Connect, Alexa, smart speaker, CarPlay, PlayStation, or TV app issues.",
+      "positive_signals": [
+        "connect",
+        "bluetooth",
+        "carplay",
+        "alexa",
+        "echo",
+        "ps5",
+        "tv",
+        "speaker",
+        "chromecast"
+      ],
+      "negative_signals": [
+        "refund"
+      ],
+      "example_phrases": [
+        "Spotify Connect cannot discover my Sonos speakers",
+        "CarPlay disconnects randomly"
+      ]
+    },
+    {
+      "label": "content_playlist_availability",
+      "description": "Missing songs, greyed out tracks, lyrics not showing, explicit content toggle, or playlist loss.",
+      "positive_signals": [
+        "greyed out",
+        "song missing",
+        "album not available",
+        "lyrics",
+        "lost playlist",
+        "explicit filter"
+      ],
+      "negative_signals": [
+        "credit card"
+      ],
+      "example_phrases": [
+        "Why is this album greyed out in my country?",
+        "My playlist disappeared overnight"
+      ]
+    },
+    {
+      "label": "cancellation_refund",
+      "description": "Cancelling Premium subscription, switching to Free, refund requests.",
+      "positive_signals": [
+        "cancel",
+        "cancel subscription",
+        "refund",
+        "stop renewal",
+        "money back"
+      ],
+      "negative_signals": [
+        "app crash"
+      ],
+      "example_phrases": [
+        "I want to cancel my premium and get a refund",
+        "Please cancel my auto-renew"
+      ]
+    },
+    {
+      "label": "security_compromised_account",
+      "description": "Unauthorized changes, stranger playing music on account, email changed without permission, hacked.",
+      "positive_signals": [
+        "hacked",
+        "compromised",
+        "someone else listening",
+        "email changed",
+        "unauthorized login"
+      ],
+      "negative_signals": [
+        "normal password reset"
+      ],
+      "example_phrases": [
+        "Someone in another country is using my account and changed my email",
+        "My account got hacked"
+      ]
+    },
+    {
+      "label": "how_to_feature_request",
+      "description": "Inquiries about how features work, UI navigation, feature suggestions, or feedback.",
+      "positive_signals": [
+        "how do i",
+        "where is the button",
+        "feature request",
+        "bring back",
+        "suggestion"
+      ],
+      "negative_signals": [
+        "urgent outage"
+      ],
+      "example_phrases": [
+        "How do I enable crossfade on desktop?",
+        "Can you add folder support for mobile playlists?"
+      ]
+    },
+    {
+      "label": "service_outage",
+      "description": "Widespread outage reports, server errors (500s), service down for everyone.",
+      "positive_signals": [
+        "is spotify down",
+        "server error",
+        "down for everyone",
+        "service unavailable",
+        "outage"
+      ],
+      "negative_signals": [
+        "single device Bluetooth issue"
+      ],
+      "example_phrases": [
+        "Is the service down right now? Nothing loads for anyone",
+        "Getting error 500 across web player"
+      ]
+    },
+    {
+      "label": "other_unclear",
+      "description": "Ambiguous, spam, non-English, greetings without question, or out-of-scope messages.",
+      "positive_signals": [
+        "hello",
+        "hi",
+        "hey",
+        "test",
+        "anyone there"
+      ],
+      "negative_signals": [],
+      "example_phrases": [
+        "Hello?",
+        "Yo check out my music @SpotifyCares"
+      ]
+    }
+  ]
+}

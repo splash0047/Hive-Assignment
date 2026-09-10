@@ -7,6 +7,10 @@ import logging
 import os
 from abc import ABC, abstractmethod
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 logger = logging.getLogger(__name__)
 
 
@@ -42,6 +46,63 @@ class OpenAIProvider(LLMProvider):
         return content.strip() if content else ""
 
 
+class GeminiProvider(LLMProvider):
+    """Google Gemini API provider using REST endpoint."""
+
+    def __init__(self, model: str = "gemini-flash-lite-latest", api_key: str | None = None) -> None:
+        key = api_key or os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+        if not key:
+            raise ValueError("GOOGLE_API_KEY environment variable is missing")
+        self.api_key = key
+        # Strip 'models/' prefix if present — endpoint expects bare name
+        self.model = model.removeprefix("models/")
+
+    def generate(self, prompt: str, temperature: float = 0.1, max_tokens: int = 250) -> str:
+        import time
+        import urllib.error
+        import urllib.request
+
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent?key={self.api_key}"
+        payload = {
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {
+                "temperature": temperature,
+                "maxOutputTokens": max_tokens,
+            },
+        }
+        data = json.dumps(payload).encode("utf-8")
+
+        max_retries = 5
+        wait = 5.0
+        for attempt in range(max_retries):
+            req = urllib.request.Request(
+                url, data=data, headers={"Content-Type": "application/json"}, method="POST"
+            )
+            try:
+                with urllib.request.urlopen(req, timeout=30) as resp:
+                    res = json.loads(resp.read().decode("utf-8"))
+                    candidates = res.get("candidates", [])
+                    if candidates and "content" in candidates[0]:
+                        parts = candidates[0]["content"].get("parts", [])
+                        if parts and "text" in parts[0]:
+                            return parts[0]["text"].strip()
+                    return ""
+            except urllib.error.HTTPError as e:
+                if e.code == 429 and attempt < max_retries - 1:
+                    logger.warning(
+                        f"Gemini rate limited (429), retrying in {wait:.0f}s (attempt {attempt + 1}/{max_retries})"
+                    )
+                    time.sleep(wait)
+                    wait = min(wait * 2, 60.0)
+                else:
+                    logger.error(f"Gemini API request failed: {e}")
+                    raise
+            except Exception as e:
+                logger.error(f"Gemini API request failed: {e}")
+                raise
+        return ""
+
+
 class MockLLMProvider(LLMProvider):
     """Deterministic local mock provider for offline development, CI, and testing."""
 
@@ -53,15 +114,35 @@ class MockLLMProvider(LLMProvider):
             return self.default_response
 
         if "EVALUATION RUBRIC:" in prompt or "overall_accept" in prompt:
+            # Check prompt for ungrounded or risky content
+            is_risky = any(
+                w in prompt.lower()
+                for w in ["hacked", "stolen", "unauthorized", "chargeback", "lawsuit"]
+            )
+            no_evidence = "No evidence provided." in prompt or "HISTORICAL EVIDENCE:\nNo" in prompt
+
+            if is_risky or no_evidence:
+                return json.dumps(
+                    {
+                        "groundedness": 2,
+                        "helpfulness": 2,
+                        "correctness": 2,
+                        "tone": 4,
+                        "safety": 2,
+                        "overall_accept": False,
+                        "explanation": "Response addresses risky or ungrounded topic without sufficient verification.",
+                    }
+                )
+
             return json.dumps(
                 {
-                    "groundedness": 5,
+                    "groundedness": 4,
                     "helpfulness": 4,
-                    "correctness": 5,
+                    "correctness": 4,
                     "tone": 5,
                     "safety": 5,
                     "overall_accept": True,
-                    "explanation": "Response is directly synthesized from verified historical precedent.",
+                    "explanation": "Response is grounded in retrieved Spotify support resolutions.",
                 }
             )
 
@@ -78,7 +159,7 @@ class MockLLMProvider(LLMProvider):
                 if res_lines:
                     return f"Thanks for reaching out! {res_lines[0]}"
 
-        return "Thanks for reaching out to support! We are investigating this issue. Please try restarting your app or device."
+        return "Thanks for reaching out to Spotify support! Please check your account settings at spotify.com or try restarting your device."
 
 
 def get_llm_provider(
@@ -86,12 +167,23 @@ def get_llm_provider(
     model: str | None = None,
     api_key: str | None = None,
 ) -> LLMProvider:
-    """Factory to get the appropriate LLM provider."""
-    # Check if OpenAI key is set
+    """Factory to get the appropriate LLM provider (OpenAI, Gemini, or Mock)."""
+    # 1. Check OpenAI
     openai_key = api_key or os.getenv("OPENAI_API_KEY")
-
-    if provider_name.lower() == "openai" or (provider_name.lower() == "env" and openai_key):
+    if (
+        openai_key
+        and not openai_key.startswith("sk-...")
+        and len(openai_key) > 15
+        and provider_name.lower() in ("openai", "env")
+    ):
+        logger.info("Using OpenAIProvider.")
         return OpenAIProvider(model=model or "gpt-4o-mini", api_key=openai_key)
+
+    # 2. Check Google Gemini
+    google_key = api_key or os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+    if google_key and len(google_key) > 15 and provider_name.lower() in ("gemini", "google", "env"):
+        logger.info("Using GeminiProvider (gemini-flash-lite-latest).")
+        return GeminiProvider(model=model or "gemini-flash-lite-latest", api_key=google_key)
 
     # Fallback to Mock provider for local development/CI
     logger.info("Using MockLLMProvider (no live API key configured or mock requested).")

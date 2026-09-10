@@ -1,5 +1,19 @@
 # Golden-Set Human Labeling Guide
 
+## Dataset Provenance & Sampling Methodology
+
+- **Source Dataset**: Twitter Customer Support (TWCS) dataset (`thoughtvector/customer-support-on-twitter`, 2.8M conversational turns).
+- **Brand Corpus**: Filtered strictly to `@SpotifyCares` (74,625 raw tweets).
+- **Thread Reconstruction**: Conversational tree traversal and cycle detection extracted 26,481 customer-to-brand support pairs.
+- **Golden Evaluation Sampling**:
+  - Sample size: Exactly 200 genuine customer inbound messages.
+  - Authentic Tweet IDs: Preserved original TWCS `customer_tweet_id` integers (e.g., `17067`, `44302`, `67667`) for full auditability.
+  - Stratified Coverage: Spans all 11 enterprise support intents (playback technical issues, billing discrepancies, account access, discount/family plans, connectivity, content availability, cancellation/refunds, security breaches, feature how-tos, complaints, and ambiguous inquiries).
+  - Partitions: Split into **50 calibration examples** (for few-shot training, threshold calibration, and validation) and **150 locked test examples** (immutable out-of-sample benchmark partition).
+  - Integrity: Dataset frozen with SHA-256 manifest at `data/golden/freeze_manifest.json`.
+
+---
+
 ## Purpose
 
 The golden set is the main human ground truth for evaluating:
@@ -7,8 +21,6 @@ The golden set is the main human ground truth for evaluating:
 2. escalation decisions.
 
 The final labels must be human-created/reviewed by the candidate.
-
-AI may help prepare the sample or propose a taxonomy, but do not blindly accept AI-generated golden labels.
 
 ---
 

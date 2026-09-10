@@ -36,7 +36,7 @@ def download_twcs_dataset(destination_dir: Path | None = None) -> Path:
         downloaded_dir = Path(path)
         console.print(f"[green]Downloaded to cache:[/] {downloaded_dir}")
 
-        found_csvs = list(downloaded_dir.glob("*.csv"))
+        found_csvs = list(downloaded_dir.rglob("twcs.csv")) or list(downloaded_dir.rglob("*.csv"))
         if not found_csvs:
             raise FileNotFoundError(f"No CSV file found in downloaded path: {downloaded_dir}")
 

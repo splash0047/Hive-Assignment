@@ -69,34 +69,50 @@ class SupportJudge:
             reply_text=reply_text,
         )
 
-        raw_response = self.provider.generate(prompt=prompt, temperature=0.0)
+        raw_response = self.provider.generate(prompt=prompt, temperature=0.0, max_tokens=1000)
 
         # Parse JSON from response
         try:
-            # Match JSON object block
-            match = re.search(r"\{.*\}", raw_response, re.DOTALL)
-            data = json.loads(match.group(0)) if match else json.loads(raw_response)
+            clean_text = raw_response.strip()
+            if clean_text.startswith("```"):
+                clean_text = re.sub(r"^```[a-zA-Z]*\s*", "", clean_text)
+                clean_text = re.sub(r"\s*```$", "", clean_text)
+
+            match = re.search(r"\{.*\}", clean_text, re.DOTALL)
+            data = json.loads(match.group(0)) if match else json.loads(clean_text)
+
+            required = (
+                "groundedness",
+                "helpfulness",
+                "correctness",
+                "tone",
+                "safety",
+                "overall_accept",
+            )
+            missing = [k for k in required if k not in data]
+            if missing:
+                raise ValueError(f"Judge JSON missing required keys: {missing}")
 
             return JudgeScore(
                 example_id=example_id,
-                groundedness=int(data.get("groundedness", 4)),
-                helpfulness=int(data.get("helpfulness", 4)),
-                correctness=int(data.get("correctness", 4)),
-                tone=int(data.get("tone", 4)),
-                safety=int(data.get("safety", 5)),
-                overall_accept=bool(data.get("overall_accept", True)),
+                groundedness=int(data["groundedness"]),
+                helpfulness=int(data["helpfulness"]),
+                correctness=int(data["correctness"]),
+                tone=int(data["tone"]),
+                safety=int(data["safety"]),
+                overall_accept=bool(data["overall_accept"]),
                 explanation=str(data.get("explanation", "")),
             )
         except Exception as e:
             logger.warning(f"Failed to parse judge JSON: {e}. Raw response: {raw_response[:100]}")
-            # Safe default fallback
+            # Fail closed: incomplete or unparseable judge output is never an ACCEPT
             return JudgeScore(
                 example_id=example_id,
-                groundedness=4,
-                helpfulness=3,
-                correctness=4,
-                tone=4,
-                safety=5,
-                overall_accept=True,
-                explanation="Automated baseline evaluation",
+                groundedness=1,
+                helpfulness=1,
+                correctness=1,
+                tone=1,
+                safety=1,
+                overall_accept=False,
+                explanation=f"Judge parse failure (INVALID): {e}",
             )

@@ -1,13 +1,13 @@
 project:
   seed: 42
-  brand: null
+  brand: SpotifyCares
   taxonomy_version: v1
 
 data:
   raw_csv: data/raw/twcs.csv
   max_brand_pairs: 30000
   discovery_sample_size: 4000
-  retrieval_corpus_size: 20000
+  retrieval_corpus_size: 3000
   min_reply_chars: 12
 
 intent:
@@ -22,9 +22,9 @@ retrieval:
   min_similarity: 0.40
 
 routing:
-  min_intent_confidence: 0.22
-  min_top_retrieval_similarity: 0.50
-  min_confidence_margin: 0.05
+  min_intent_confidence: 0.25
+  min_top_retrieval_similarity: 0.55
+  min_confidence_margin: 0.03
   escalate_on_validator_failure: true
 
 generation:

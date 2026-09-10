@@ -111,9 +111,10 @@ def reconstruct_threads(
     else:
         data["parent_id"] = ""
 
-    # Parse created_at
     if "created_at" in data.columns:
-        data["parsed_created_at"] = pd.to_datetime(data["created_at"], errors="coerce")
+        data["parsed_created_at"] = pd.to_datetime(
+            data["created_at"], format="%a %b %d %H:%M:%S %z %Y", errors="coerce"
+        )
     else:
         data["parsed_created_at"] = None
 

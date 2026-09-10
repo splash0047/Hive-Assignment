@@ -1,0 +1,21 @@
+{
+  "sample_size": 50,
+  "percent_agreement": 0.86,
+  "cohen_kappa": 0.4068,
+  "confusion_matrix": [
+    [
+      3,
+      7
+    ],
+    [
+      0,
+      40
+    ]
+  ],
+  "interpretation": "Fair agreement (Landis & Koch, 1977)",
+  "notes": "Human ratings in human_scores.csv are independent binary accept/reject judgments on the same reply+evidence pairs scored by the LLM judge. Disagreements are retained rather than forced to perfect agreement.",
+  "files": {
+    "human_scores": "artifacts/eval/human_scores.csv",
+    "judge_scores": "artifacts/eval/judge_scores.csv"
+  }
+}

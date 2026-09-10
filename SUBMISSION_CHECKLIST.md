@@ -4,8 +4,6 @@
 **Candidate Evaluation Audit Date**: September 2026  
 **Operating System Tested**: Windows (PowerShell)  
 **Python Runtime**: Python 3.13.1 (with Python 3.12 compatibility) via `uv`  
-**Test Suite Status**: **27 / 27 PASS (100%)**  
-**Code Quality**: **Ruff Lint 0 errors, Ruff Format 100% compliant**  
 
 ---
 
@@ -13,41 +11,44 @@
 
 | # | Requirement | Status | Evidence / Verification |
 |---|---|:---:|---|
-| **1** | **One Brand Selected and Justified** | **PASS** | `SpotifyCares` chosen based on multi-brand profiling ($45k+$ outbound volume, lowest generic DM deflection of $18.4\%$, high public resolution rate). Documented in `docs/REPORT.md`. |
-| **2** | **Runnable Pipeline** | **PASS** | Complete CLI interface via `hiver-agent` (`profile-brands`, `build-data`, `discover-intents`, `train`, `evaluate`, `demo`). |
-| **3** | **README Reproduces Headline in < 15 Min** | **PASS** | `uv run hiver-agent evaluate --fast` executes on locked test set with local mock LLM in **~20 seconds**. |
-| **4** | **150–250 Human-Labelled Golden Examples** | **PASS** | Exactly **200 examples** across all 11 intents in `data/golden/golden_eval.csv`. |
-| **5** | **Sampling & Labeling Methodology Documented** | **PASS** | Documented in `data/golden/labeling_guidelines.md` and `docs/REPORT.md`. |
-| **6** | **Calibration vs Locked Test Separation** | **PASS** | Strict 50/50 partition: 100 calibration examples vs 100 locked test examples. Calibration partition used for threshold tuning; zero leakage to test partition. |
-| **7** | **Trivial Baseline** | **PASS** | `MajorityClassBaseline` evaluated on locked test split: $12.0\%$ accuracy, $0.0195$ Macro-F1. |
-| **8** | **Simple Baseline** | **PASS** | `TfidfLogisticBaseline` evaluated on locked test split: $36.0\%$ accuracy, $0.3489$ Macro-F1. |
-| **9** | **Final System** | **PASS** | `SentenceEmbeddingClassifier` (`all-MiniLM-L6-v2` + LogReg) evaluated on locked test split: **$67.0\%$ accuracy, $0.6712$ Macro-F1** ($+32.2\%$ absolute Macro-F1 gain over TF-IDF). |
-| **10** | **Automated Intent Metrics** | **PASS** | Accuracy, Macro-F1, Weighted-F1, and per-class reports computed with 2,000 bootstrap resamples. |
-| **11** | **Automated Escalation Metrics** | **PASS** | Accuracy, Precision, Recall, and F1 computed with 95% bootstrap confidence intervals. |
-| **12** | **Retrieval / Evidence Metrics** | **PASS** | FAISS exact cosine inner-product similarity scores, top-k ranking, and evidence citation IDs tracked in every `AgentOutput`. |
-| **13** | **LLM-as-Judge Rubric** | **PASS** | Multi-dimensional rubric (Groundedness, Helpfulness, Correctness, Tone, Safety, and structured `overall_accept` boolean) in `eval/judge.py`. |
-| **14** | **Human-vs-Judge Agreement Evidence** | **PASS** | Cohen's kappa ($\kappa = 1.0$) and percent agreement calculated in `eval/agreement.py` and reported in `docs/REPORT.md`. |
-| **15** | **Five Real Failure Modes** | **PASS** | Top 5 real failure modes with root causes, impacts, and mitigations documented in `docs/FAILURE_ANALYSIS.md`. |
-| **16** | **Mandatory Misleading Headline Number Section** | **PASS** | Explicitly detailed in Section 5 of `docs/REPORT.md` (coverage bias, offline proxy limits, historical policy drift, single-turn limits). |
-| **17** | **One-More-Week Section** | **PASS** | Prioritized future roadmap (active learning, cross-encoder reranker, multi-turn state machine, temporal drift audit) in Section 6 of `docs/REPORT.md`. |
-| **18** | **10–15 Item Decision Log** | **PASS** | Exactly 15 non-trivial decisions in `docs/DECISION_LOG.md` detailing alternatives, rationale, and trade-offs. |
-| **19** | **Dataset / Model / Code Citations** | **PASS** | Comprehensive citations for TWCS, sentence-transformers, FAISS, PyTorch, and scikit-learn included in README and technical report. |
-| **20** | **No Secrets Committed** | **PASS** | `.env` ignored via `.gitignore`; `.env.example` contains dummy placeholders only; zero credentials in git history. |
-| **21** | **No Full Raw Dataset Committed** | **PASS** | `data/raw/` is excluded via `.gitignore`; only curated lightweight Parquet and golden evaluation files are tracked. |
-| **22** | **Clean Setup & Tests Pass** | **PASS** | Fresh `uv sync` verified; `pytest -q` passes **27/27 tests (100%)**; `ruff check .` has 0 errors; `ruff format --check .` 100% compliant. |
-| **23** | **Report $\le 6$ Pages** | **PASS** | `docs/REPORT.md` is structured into concise, professional sections strictly within length targets. |
-| **24** | **Repository Ready for Final Submission** | **PASS** | All source code, configs, schemas, tests, scripts, and documentation staged and ready. |
+| **1** | **One Brand Selected and Justified** | **PASS** | `SpotifyCares` chosen based on multi-brand profiling (high public resolution rate, lower DM deflection). Documented in `docs/REPORT.md`. |
+| **2** | **Runnable Pipeline** | **PASS** | Complete CLI via `hiver-agent` (`profile-brands`, `build-data`, `discover-intents`, `train`, `evaluate`, `demo`). |
+| **3** | **README Reproduces Headline Honestly** | **PASS** | Headline metrics match `artifacts/eval/baseline_comparison.json`. `evaluate --fast` is documented as an offline **smoke** path (MockLLM, first 30 locked_test rows), not the headline. |
+| **4** | **150–250 Human-Labelled Golden Examples** | **PASS** | Exactly **200** real TWCS examples in `data/golden/golden_eval.csv` (real tweet IDs). |
+| **5** | **Sampling & Labeling Methodology Documented** | **PASS** | `data/golden/labeling_guidelines.md` and `docs/REPORT.md`. |
+| **6** | **Calibration vs Locked Test Separation** | **PASS** | **50 calibration / 150 locked test** (`freeze_manifest.json`). Thresholds tuned only on calibration. |
+| **7** | **Trivial Baseline** | **PASS** | Majority class: 12.0% accuracy, 0.0195 Macro-F1 on locked test. |
+| **8** | **Simple Baseline** | **PASS** | TF-IDF + LogReg: 48.0% accuracy, 0.4248 Macro-F1; end-to-end naive rule also reported. |
+| **9** | **Final System** | **PASS** | MiniLM + LogReg: **60.7%** accuracy, **0.5639** Macro-F1 on locked test. |
+| **10** | **Automated Intent Metrics** | **PASS** | Accuracy, Macro-F1, Weighted-F1 with bootstrap CIs. |
+| **11** | **Automated Escalation Metrics** | **PASS** | Coverage, escalation recall, false-auto rate with CIs. |
+| **12** | **Retrieval / Evidence Metrics** | **PASS** | FAISS cosine scores and evidence IDs in every `AgentOutput` / eval CSV. |
+| **13** | **LLM-as-Judge Rubric** | **PASS** | Multi-dimensional rubric in `eval/judge.py`; parse failures fail closed. |
+| **14** | **Human-vs-Judge Agreement Evidence** | **PASS** | `artifacts/eval/{human_scores,judge_scores,judge_human_agreement}.json|csv` — **86%** agreement, **κ = 0.407** (N=50). |
+| **15** | **Five Real Failure Modes** | **PASS** | Top 5 modes with real TWCS examples in `docs/FAILURE_ANALYSIS.md`, cross-checked against `eval_detailed_results.csv`. |
+| **16** | **Misleading Headline Number Section** | **PASS** | Section 5 of `docs/REPORT.md`. |
+| **17** | **One-More-Week Section** | **PASS** | Section 6 of `docs/REPORT.md`. |
+| **18** | **10–15 Item Decision Log** | **PASS** | Exactly 15 decisions in `docs/DECISION_LOG.md`. |
+| **19** | **Dataset / Model / Code Citations** | **PASS** | References in `README.md` and `docs/REPORT.md` (TWCS, MiniLM, FAISS, κ). |
+| **20** | **No Secrets Committed** | **PASS** | `.env` gitignored; `.env.example` placeholders only. |
+| **21** | **No Full Raw Dataset Committed** | **PASS** | `data/raw/` gitignored; curated Parquet + golden CSV tracked. |
+| **22** | **Clean Setup & Tests Pass** | **PASS** | `uv sync`; `pytest`; `ruff check` / `ruff format --check`. |
+| **23** | **Report ≤ 6 Pages** | **PASS** | `docs/REPORT.md` structured within length targets. |
+| **24** | **Repository Ready for Final Submission** | **PASS** | Real TWCS grounding + frozen evaluation artifacts aligned with docs. |
 
 ---
 
-## Headline Performance Verification
+## Headline Performance Verification (Locked Test, N=150)
 
 ```text
 ======================= FINAL LOCKED-TEST BENCHMARK =======================
-Auto-Handle Rate (Coverage) : 50.0%  (95% CI: [33.3%, 70.0%])
-Intent Accuracy             : 86.7%  (95% CI: [73.3%, 96.7%])
-Escalation Recall (Safety)  : 100.0% (95% CI: [100.0%, 100.0%])
-Grounded Acceptance Rate    : 100.0% (95% CI: [100.0%, 100.0%])
-Unsafe Auto-Handle Rate     : 0.0%   (95% CI: [0.0%, 0.0%])
+Auto-Handle Rate (Coverage) : 3.3%
+Intent Accuracy             : 60.7%
+Intent Macro-F1             : 0.564
+Escalation Recall (Safety)  : 95.8%
+Grounded Acceptance Rate    : 80.0%   (of auto-handled replies)
+Unsafe Auto-Handle Rate     : 1.3%
+Judge–Human Agreement       : 86.0% (kappa = 0.407, N=50)
 ===========================================================================
+Source: artifacts/eval/baseline_comparison.json + judge_human_agreement.json
 ```

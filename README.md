@@ -4,7 +4,11 @@ AI customer support agent for **SpotifyCares** built for the Hiver SDE Intern ta
 
 ## Headline Result
 
-> **100.0% acceptable auto-handled replies at 50.0% coverage on a locked, human-labeled test partition with 0.0% unsafe automated responses.**
+> **3.3% auto-handle coverage on the locked human-labeled test partition (N=150), with 95.8% escalation recall and 1.3% unsafe auto-handle rate.**  
+> Intent Macro-F1: **0.564** (MiniLM) vs **0.425** (TF-IDF) vs **0.019** (majority).  
+> Judge–human binary agreement: **86%** (Cohen's κ = **0.41**, N=50).
+
+These numbers come from committed artifacts under `artifacts/eval/` on real TWCS SpotifyCares tweets — not from the offline mock smoke path.
 
 ---
 
@@ -37,19 +41,30 @@ uv sync
 uv run ruff check .
 uv run ruff format --check .
 
-# 4. Run full test suite (27 passing unit tests)
+# 4. Run full test suite
 uv run pytest -q
 ```
 
-### Reproduce Headline Evaluation Results (< 1 Minute)
+### Offline Smoke Check (not the headline)
 ```bash
-# Fast evaluation path on the locked test set (uses local deterministic mock LLM provider; no API keys required)
+# Fast path: first 30 locked_test rows + MockLLM. Verifies the pipeline runs.
+# It does NOT reproduce submission metrics — those are frozen in artifacts/eval/.
 uv run hiver-agent evaluate --fast
+```
+
+### Inspect Frozen Headline Metrics
+```bash
+# Locked-test system vs baselines (intent + end-to-end)
+type artifacts\eval\baseline_comparison.json   # Windows
+# cat artifacts/eval/baseline_comparison.json  # macOS/Linux
+
+# Judge vs human agreement
+type artifacts\eval\judge_human_agreement.json
 ```
 
 ### Run Real-Time Interactive Demo
 ```bash
-# Example 1: Clear inquiry with strong historical precedent (auto-handled)
+# Example 1: Clear inquiry with strong historical precedent
 uv run hiver-agent demo "I forgot my password and the reset link is not arriving in my inbox or spam."
 
 # Example 2: Critical security risk (immediately escalated for safety)
@@ -63,21 +78,37 @@ uv run hiver-agent demo "Why won't it work?"
 
 ## Evaluation Benchmark Summary
 
-### Intent Classifier Benchmark (Locked Test Partition, $N=100$)
-| Architecture | Accuracy | Macro-F1 | Weighted-F1 | Latency |
-|---|---:|---:|---:|---:|
-| **Trivial Majority Class** | 12.0% | 0.0195 | 0.0257 | $<0.1$ ms |
-| **Simple Baseline (TF-IDF + LogReg)** | 36.0% | 0.3489 | 0.3496 | $0.8$ ms |
-| **Final System (MiniLM + LogReg)** | **67.0%** | **0.6712** | **0.6663** | $12.4$ ms |
+Frozen on the **locked test partition (N=150)**. Source: `artifacts/eval/baseline_comparison.json` and `docs/REPORT.md`.
 
-### Full Pipeline Performance (2,000 Bootstrap Resamples)
-| Metric | Score | 95% Confidence Interval |
-|---|---:|:---:|
-| **Auto-Handle Rate (Coverage)** | **50.0%** | **[33.3%, 70.0%]** |
-| **Intent Accuracy** | **86.7%** | **[73.3%, 96.7%]** |
-| **Escalation Recall (Safety)** | **100.0%** | **[100.0%, 100.0%]** |
-| **Grounded Acceptance Rate** | **100.0%** | **[100.0%, 100.0%]** |
-| **Unsafe Auto-Handle Rate** | **0.0%** | **[0.0%, 0.0%]** |
+### Intent Classifier Benchmark
+| Architecture | Accuracy | Macro-F1 | Weighted-F1 |
+|---|---:|---:|---:|
+| **Trivial Majority Class** | 12.0% | 0.0195 | 0.0257 |
+| **Simple Baseline (TF-IDF + LogReg)** | 48.0% | 0.4248 | 0.4523 |
+| **Final System (MiniLM + LogReg)** | **60.7%** | **0.5639** | **0.5836** |
+
+### End-to-End System Comparison
+| System | Intent Macro-F1 | Auto Coverage | Escalation Recall | False Auto Rate |
+|---|---:|---:|---:|---:|
+| Trivial: always escalate | 0.019 | 0.0% | 100.0% | 0.0% |
+| Simple: TF-IDF + naive rule | 0.425 | 33.3% | 60.4% | 12.7% |
+| Proposed: MiniLM + FAISS + safety gate | **0.564** | **3.3%** | **95.8%** | **1.3%** |
+
+### Headline System Metrics (Locked Test, N=150)
+| Metric | Score |
+|---|---:|
+| Auto-Handle Rate (Coverage) | **3.3%** |
+| Intent Accuracy | **60.7%** |
+| Escalation Recall (Safety) | **95.8%** |
+| Grounded Acceptance Rate (auto-handled only) | **80.0%** |
+| Unsafe Auto-Handle Rate | **1.3%** |
+
+### Judge Calibration
+| Metric | Value |
+|---|---:|
+| Sample size | 50 |
+| Binary agreement | 86.0% |
+| Cohen's κ | 0.407 |
 
 ---
 
@@ -92,13 +123,13 @@ uv run python scripts/download_data.py
 # 2. Profile top candidate brands across volume, deflection, and resolution quality
 uv run hiver-agent profile-brands --top-n 10
 
-# 3. Build curated brand pairs and historical retrieval corpus
+# 3. Build curated brand pairs and historical retrieval corpus (real TWCS pairs)
 uv run python scripts/build_curated_data.py
 
-# 4. Generate and freeze 200-example golden evaluation dataset
+# 4. Generate and freeze 200-example golden evaluation dataset (real tweet IDs)
 uv run python scripts/generate_golden_eval.py
 
-# 5. Evaluate baseline classifiers against final model
+# 5. Evaluate baseline classifiers / systems against final model
 uv run python scripts/evaluate_baselines.py
 
 # 6. Calibrate routing thresholds on calibration partition
@@ -107,9 +138,25 @@ uv run python scripts/calibrate_thresholds.py
 # 7. Train final classifier and build FAISS vector index
 uv run hiver-agent train
 
-# 8. Run full evaluation suite
+# 8. Run full locked-test evaluation (requires OPENAI_API_KEY or GOOGLE_API_KEY for live judge)
 uv run hiver-agent evaluate
+
+# 9. Recompute judge–human agreement from committed score CSVs
+uv run python scripts/evaluate_judge_agreement.py
 ```
+
+---
+
+## Data Provenance
+
+| Artifact | Contents | Provenance |
+|---|---|---|
+| `data/curated/brand_pairs.parquet` | 26,480 SpotifyCares support pairs | Reconstructed from TWCS via `in_response_to_tweet_id` |
+| `data/curated/historical_corpus.parquet` | 3,000 retrieval pairs (seed=42) | Subsample of real brand pairs, generic DM handoffs excluded |
+| `data/curated/intent_taxonomy.json` | 11-intent taxonomy | Clustering + manual merge; see `docs/REPORT.md` |
+| `data/golden/golden_eval.csv` | 200 labeled examples (50 calib / 150 locked test) | Real TWCS tweet IDs; freeze hash in `freeze_manifest.json` |
+
+Raw TWCS (`data/raw/twcs.csv`) is gitignored (~493 MB). Download with `scripts/download_data.py`.
 
 ---
 
@@ -117,76 +164,21 @@ uv run hiver-agent evaluate
 
 ```text
 hiver-support-agent/
-├── AGENTS.md                  # Development instructions & explainability constraints
-├── README.md                  # Project overview, reproduction, and benchmarks
-├── pyproject.toml             # Python configuration and pinned dependencies
+├── AGENTS.md
+├── README.md
+├── pyproject.toml
 ├── configs/
-│   ├── default.yaml           # Pipeline hyperparameters & calibrated thresholds
-│   └── fast_eval.yaml         # Fast offline evaluation overrides
+│   ├── default.yaml
+│   └── fast_eval.yaml
 ├── data/
-│   ├── curated/
-│   │   ├── brand_pairs.parquet        # Cleaned support pairs
-│   │   ├── historical_corpus.parquet  # Retrieval corpus
-│   │   ├── manifest.json              # SHA-256 integrity manifest
-│   │   └── intent_taxonomy.json       # Discovered 11-intent taxonomy
-│   └── golden/
-│       ├── golden_eval.csv            # 200 labeled examples (50% calib / 50% test)
-│       ├── freeze_manifest.json       # Immutable evaluation audit hash
-│       └── labeling_guidelines.md     # Annotation instructions and boundary definitions
-├── src/hiver_agent/
-│   ├── cli.py                 # Typer CLI entrypoint
-│   ├── config.py              # Configuration manager & seed controller
-│   ├── schemas.py             # Data schemas (SupportPair, GoldenExample, AgentOutput)
-│   ├── data/
-│   │   ├── load.py            # CSV & Parquet loaders
-│   │   ├── threads.py         # Thread reconstruction & cycle detection
-│   │   ├── clean.py           # Text normalization & deflection detection
-│   │   ├── sample.py          # Deterministic sampling & manifest generation
-│   │   └── brand_profile.py   # Multi-brand profiler
-│   ├── intents/
-│   │   ├── taxonomy.py        # Taxonomy definitions & loader
-│   │   ├── discover.py        # Unsupervised KMeans clustering
-│   │   ├── baseline.py        # Majority & TF-IDF baselines
-│   │   └── classifier.py      # SentenceTransformers + Logistic Regression
-│   ├── retrieval/
-│   │   ├── index.py           # FAISS IndexFlatIP wrapper
-│   │   ├── retrieve.py        # Dense semantic search with leakage prevention
-│   │   └── build.py           # FAISS index persistence
-│   ├── routing/
-│   │   ├── risk.py            # Safety, legal, fraud, and ambiguity regex detectors
-│   │   └── escalate.py        # Multi-tiered deterministic decision policy
-│   ├── generation/
-│   │   ├── prompts.py         # Grounded prompt templates
-│   │   ├── validate.py        # Response length, quality, and placeholder checks
-│   │   ├── provider.py        # LLM adapter (OpenAI + deterministic local mock)
-│   │   └── draft.py           # End-to-end agent decision pipeline
-│   └── eval/
-│       ├── metrics.py         # Full metrics with 2,000 bootstrap resamples
-│       ├── judge.py           # LLM-as-judge multi-dimensional rubric
-│       ├── agreement.py       # Inter-annotator Cohen's kappa
-│       └── runner.py          # Evaluation runner & Rich table formatter
-├── scripts/
-│   ├── download_data.py       # TWCS dataset downloader
-│   ├── build_curated_data.py  # Historical retrieval corpus builder
-│   ├── generate_golden_eval.py# 200-example golden set generator & freezer
-│   ├── freeze_eval.py         # Golden set validator & hash manifest freezer
-│   ├── evaluate_baselines.py  # Baseline comparative benchmark
-│   └── calibrate_thresholds.py# Threshold calibration sweep on calibration split
+│   ├── curated/          # Real TWCS pairs, corpus, taxonomy, manifest
+│   └── golden/           # Frozen 200-example golden set + labeling notes
+├── src/hiver_agent/      # CLI, data, intents, retrieval, routing, generation, eval
+├── scripts/              # Download, build, evaluate, calibrate helpers
 ├── tests/
-│   ├── test_config.py         # Configuration & seed reproducibility tests
-│   ├── test_schemas.py        # Serialization & schema validation tests
-│   ├── test_cleaning.py       # Text cleaning & generic handoff tests
-│   ├── test_threads.py        # Thread reconstruction & edge case tests
-│   ├── test_retrieval.py      # FAISS indexing & leakage prevention tests
-│   ├── test_escalation.py     # Risk detection & escalation rule tests
-│   └── test_metrics.py        # Bootstrap metrics & agreement tests
-├── docs/
-│   ├── REPORT.md              # Complete technical report
-│   ├── DECISION_LOG.md        # 15 architectural and empirical trade-offs
-│   ├── FAILURE_ANALYSIS.md    # Top 5 failure modes and edge case mitigations
-│   └── TECH_SPEC.md           # Engineering technical specification
-└── .github/workflows/
-    └── ci.yml                 # Automated CI workflow
+├── docs/                 # REPORT, DECISION_LOG, FAILURE_ANALYSIS, TECH_SPEC
+├── artifacts/eval/       # Frozen metrics, detailed CSV, judge/human scores
+└── .github/workflows/ci.yml
 ```
 
 ---
@@ -195,6 +187,18 @@ hiver-support-agent/
 
 Every component is deliberately explainable for live code review:
 - **No black-box AutoML**: TF-IDF + Logistic Regression is used as an interpretable baseline; SentenceTransformers embeddings provide a transparent linear decision boundary.
-- **No black-box agent loops**: Escalation is determined by clear Python boolean rules and calibrated confidence margins, avoiding opaque "agent decides" loops.
-- **Zero cloud infrastructure dependencies**: FAISS runs locally in-process with cosine similarity.
-- **Traceable citations**: Every auto-handled response explicitly logs the exact historical `pair_id` items used to ground the output.
+- **No black-box agent loops**: Escalation is determined by clear Python boolean rules and calibrated confidence margins.
+- **Zero cloud infrastructure dependencies for retrieval**: FAISS runs locally in-process with cosine similarity.
+- **Traceable citations**: Every auto-handled response logs the historical `pair_id` items used as grounding.
+
+---
+
+## References & Acknowledgements
+
+- **TWCS dataset**: Customer Support on Twitter — [Kaggle / thoughtvector](https://www.kaggle.com/datasets/thoughtvector/customer-support-on-twitter)
+- **Sentence-BERT / MiniLM**: Reimers & Gurevych (2019), *Sentence-BERT*; `sentence-transformers/all-MiniLM-L6-v2`
+- **FAISS**: Johnson et al., Facebook AI Similarity Search (`IndexFlatIP`)
+- **Agreement statistic**: Cohen's κ; Landis & Koch (1977) interpretation bands
+- **Stack**: scikit-learn, pandas, Typer, Rich, uv
+
+Borrowed ideas (not code copies): selective prediction / abstention for coverage–risk trade-offs; LLM-as-judge rubrics for groundedness/safety; historical retrieval-augmented drafting for support replies.

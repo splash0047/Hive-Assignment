@@ -39,3 +39,11 @@ def test_human_judge_agreement():
     divergent_judge = [True, False, False, True, True]
     res_partial = compute_human_judge_agreement(human, divergent_judge)
     assert res_partial.percent_agreement < 1.0
+
+    import pytest
+
+    with pytest.raises(ValueError, match="empty"):
+        compute_human_judge_agreement([], [])
+
+    with pytest.raises(ValueError, match="undefined"):
+        compute_human_judge_agreement([True, True, True], [True, True, True])

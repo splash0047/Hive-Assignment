@@ -37,7 +37,9 @@ def compute_human_judge_agreement(
 
     n = len(human_labels)
     if n == 0:
-        return AgreementResult(percent_agreement=1.0, cohen_kappa=1.0, sample_size=0, confusion=[])
+        raise ValueError(
+            "Cannot compute agreement on an empty set of labels (sample size must be > 0)."
+        )
 
     h = np.array(human_labels)
     j = np.array(judge_labels)
@@ -45,10 +47,15 @@ def compute_human_judge_agreement(
     agree_count = int(np.sum(h == j))
     pct = agree_count / n
 
-    try:
-        kappa = float(cohen_kappa_score(h, j))
-    except Exception:
-        kappa = 1.0 if pct == 1.0 else 0.0
+    # sklearn returns NaN when only one class is present (undefined chance agreement).
+    # Never invent κ=1.0 for empty, single-class, or failed computations.
+    kappa_raw = float(cohen_kappa_score(h, j))
+    if np.isnan(kappa_raw):
+        raise ValueError(
+            "Cohen's kappa is undefined for this label distribution "
+            "(need variation in both human and judge labels)."
+        )
+    kappa = kappa_raw
 
     cm = confusion_matrix(h, j).tolist()
 

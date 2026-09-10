@@ -2,19 +2,29 @@
   "metadata": {
     "brand": "SpotifyCares",
     "seed": 42,
-    "total_pairs": 43,
-    "corpus_pairs": 43
+    "total_pairs": 26480,
+    "corpus_pairs": 3000,
+    "stats": {
+      "total_input_rows": 74625,
+      "total_unique_tweets": 74625,
+      "total_threads_identified": 29935,
+      "threads_with_brand_reply": 18535,
+      "usable_pairs_extracted": 26481,
+      "cycles_detected": 0,
+      "missing_parent_count": 16432,
+      "orphan_brand_replies": 0
+    }
   },
   "files": {
     "brand_pairs": {
       "path": "data\\curated\\brand_pairs.parquet",
-      "sha256": "c573a078d65662e924c96c976ba640d7cd867dbcc01f45804fc6946f52474776",
-      "size_bytes": 14565
+      "sha256": "de83e220a7ed70a5f750439452e78780fc0f8c582e32e0e6d5417712e335b05a",
+      "size_bytes": 4515479
     },
     "historical_corpus": {
       "path": "data\\curated\\historical_corpus.parquet",
-      "sha256": "c573a078d65662e924c96c976ba640d7cd867dbcc01f45804fc6946f52474776",
-      "size_bytes": 14565
+      "sha256": "be7c1bcb20adac59c4a41df3a050ee1361bff927722fa54295208252a65b7de5",
+      "size_bytes": 562102
     }
   }
 }

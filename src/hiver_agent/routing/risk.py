@@ -12,6 +12,8 @@ SECURITY_PATTERNS = [
     r"\bcompromis(ed|e)\b",
     r"\bunauthori[sz]ed\b",
     r"\bsomeone\s+(else|is)\s+(using|listening|logged)\b",
+    r"\bsomeone\s+(else\s+)?(removed|changed)\s+(my\s+)?(email|password)\b",
+    r"\b(account|email|password)\s+takeover\b",
     r"\bstolen\b",
     r"\bbreach\b",
     r"\bstranger\b",

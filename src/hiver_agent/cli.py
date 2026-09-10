@@ -141,7 +141,12 @@ def train(
 def evaluate(
     config: str | None = typer.Option(None, help="Config file path"),
     fast: bool = typer.Option(False, "--fast", help="Use fast evaluation with frozen artifacts"),
-    rerun_llm: bool = typer.Option(False, "--rerun-llm", help="Rerun LLM generation/judge"),
+    rerun_llm: bool = typer.Option(
+        False, "--rerun-llm", help="Rerun LLM generation/judge with live provider"
+    ),
+    split: str = typer.Option(
+        "locked_test", help="Partition to evaluate: locked_test, calibration, or all"
+    ),
 ) -> None:
     """Run the full evaluation harness."""
     import pandas as pd
@@ -157,7 +162,9 @@ def evaluate(
 
     cfg = _get_config(config, fast=fast)
     set_seed(cfg.project.seed)
-    console.print(f"[bold green]Running evaluation (fast={fast}, rerun_llm={rerun_llm})[/]")
+    console.print(
+        f"[bold green]Running evaluation (split={split}, fast={fast}, rerun_llm={rerun_llm})[/]"
+    )
 
     # 1. Load Golden Examples
     golden_csv = resolve_path("data/golden/golden_eval.csv")
@@ -166,8 +173,17 @@ def evaluate(
         return
 
     df_gold = pd.read_csv(golden_csv)
+    if split != "all":
+        df_gold = df_gold[df_gold["split"] == split].copy()
+
     if fast:
-        # In fast mode, run on subset of test partition
+        # Smoke path only: first 30 of the *already filtered* partition.
+        # Headline numbers must come from full locked_test + live/cached judge scores
+        # in artifacts/eval — never from this truncated mock run.
+        console.print(
+            "[yellow]Fast smoke mode: evaluating first 30 rows of "
+            f"split={split} with MockLLM (not the submission headline).[/]"
+        )
         df_gold = df_gold.head(30)
 
     examples: list[GoldenExample] = []

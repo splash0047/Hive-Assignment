@@ -11,9 +11,10 @@ def test_load_default_config():
     cfg = load_config()
     assert isinstance(cfg, AppConfig)
     assert cfg.project.seed == 42
+    assert cfg.project.brand == "SpotifyCares"
     assert cfg.intent.embedding_model == "sentence-transformers/all-MiniLM-L6-v2"
     assert cfg.retrieval.top_k == 6
-    assert cfg.routing.min_intent_confidence == 0.22
+    assert cfg.routing.min_intent_confidence == 0.25
 
 
 def test_config_overrides():
@@ -21,7 +22,7 @@ def test_config_overrides():
     assert cfg.project.seed == 123
     assert cfg.retrieval.top_k == 10
     # Other values should remain defaults
-    assert cfg.routing.min_intent_confidence == 0.22
+    assert cfg.routing.min_intent_confidence == 0.25
 
 
 def test_config_hash():
