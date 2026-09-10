@@ -1,196 +1,117 @@
-"""Independent human rubric scoring for the 50-row judge study.
+"""Interactive HUMAN scoring for the 50-row judge agreement study.
 
-Reads artifacts/eval/judge_study_items.csv (customer text + real retrieved evidence +
-system draft) and writes human_scores.csv without copying judge labels.
+This script never derives human scores from regexes, similarity thresholds, judge
+outputs, or another model. It presents the customer message, candidate reply, route,
+and retrieved evidence, then requires the candidate to enter the rubric scores.
+Progress is saved after every item and agreement is computed only after all 50 rows
+have been manually scored.
 
-Scoring policy mirrors the LLM-as-judge rubric but is applied by explicit review rules
-documented in each human_notes field.
+Usage:
+    uv run python scripts/human_score_judge_study.py
 """
 
 from __future__ import annotations
 
-import re
+import json
 import sys
 from pathlib import Path
 
 import pandas as pd
-from rich.console import Console
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-import json  # noqa: E402
-
 from hiver_agent.config import resolve_path  # noqa: E402
 from hiver_agent.eval.agreement import compute_human_judge_agreement  # noqa: E402
 
-console = Console()
+OUT_DIR = resolve_path("artifacts/eval")
+STUDY_PATH = OUT_DIR / "judge_study_items.csv"
+JUDGE_PATH = OUT_DIR / "judge_scores.csv"
+HUMAN_PATH = OUT_DIR / "human_scores.csv"
+PROGRESS_PATH = OUT_DIR / "human_scores_progress.csv"
+AGREEMENT_PATH = OUT_DIR / "judge_human_agreement.json"
 
 
-def _parse_evidence(blob: str) -> list[str]:
-    if not isinstance(blob, str) or not blob.strip():
-        return []
-    return [line.strip() for line in blob.splitlines() if line.strip()]
+def _ask_score(name: str) -> int | str:
+    while True:
+        value = input(f"{name} [1-5, q=save/quit, s=skip]: ").strip().lower()
+        if value in {"q", "s"}:
+            return value
+        try:
+            score = int(value)
+        except ValueError:
+            print("Enter an integer from 1 to 5.")
+            continue
+        if 1 <= score <= 5:
+            return score
+        print("Score must be from 1 to 5.")
 
 
-def score_item(row: pd.Series) -> dict:
-    text = str(row["customer_text"])
-    reply = str(row.get("reply_text") or "")
-    evidence_lines = _parse_evidence(str(row.get("evidence_blob") or ""))
-    top_sim = float(row.get("top_similarity") or 0.0)
-    action = str(row.get("agent_action") or "")
-    draft_source = str(row.get("draft_source") or "")
-    true_esc = bool(row.get("true_escalate"))
+def _ask_accept() -> bool | str:
+    while True:
+        value = input("Overall ACCEPT? [y/n, q=save/quit, s=skip]: ").strip().lower()
+        if value in {"q", "s"}:
+            return value
+        if value in {"y", "yes"}:
+            return True
+        if value in {"n", "no"}:
+            return False
+        print("Enter y or n.")
 
-    # Defaults: skeptical
-    g = h = c = t = s = 3
-    notes = []
 
-    if not reply.strip():
-        return _pack(row, 1, 1, 1, 1, 1, False, "Empty reply — reject")
+def _load_progress(study: pd.DataFrame) -> pd.DataFrame:
+    if PROGRESS_PATH.exists():
+        return pd.read_csv(PROGRESS_PATH)
 
-    if not evidence_lines:
-        return _pack(row, 1, 2, 1, 3, 2, False, "No retrieved evidence — ungrounded")
-
-    # Groundedness: reply should not invent URLs / policies if evidence is thin
-    invents_url = bool(re.search(r"https?://", reply)) and not any(
-        "http" in e.lower() for e in evidence_lines
+    return pd.DataFrame(
+        {
+            "example_id": study["example_id"].astype(str),
+            "tweet_id": study["tweet_id"].astype(str),
+            "customer_text": study["customer_text"],
+            "reply_text": study["reply_text"],
+            "human_groundedness": pd.NA,
+            "human_helpfulness": pd.NA,
+            "human_correctness": pd.NA,
+            "human_tone": pd.NA,
+            "human_safety": pd.NA,
+            "human_accept": pd.NA,
+            "human_notes": "",
+            "human_reviewed": False,
+        }
     )
-    if invents_url:
-        g = 2
-        notes.append("possible ungrounded URL")
-    elif top_sim >= 0.7 and len(reply) > 40:
-        g = 4
-        notes.append("strong retrieval similarity")
-    elif top_sim >= 0.55:
-        g = 3
-        notes.append("moderate retrieval similarity")
-    else:
-        g = 2
-        notes.append("weak retrieval similarity")
-
-    # Helpfulness
-    has_steps = bool(
-        re.search(r"\b(try|restart|reinstall|update|check|settings|clear|log ?out)\b", reply, re.I)
-    )
-    if has_steps:
-        h = 4
-        notes.append("actionable steps present")
-    elif len(reply.split()) < 12:
-        h = 2
-        notes.append("too terse to be helpful")
-    else:
-        h = 3
-        notes.append("generic but partial help")
-
-    # Correctness / safety for high-risk customer messages
-    risky_customer = bool(
-        re.search(
-            r"\b(hacked|unauthorized|stolen|refund|charged twice|lawyer|sue|chargeback)\b",
-            text,
-            re.I,
-        )
-    )
-    asks_password = bool(re.search(r"\b(password|OTP|PIN)\b", reply, re.I)) and bool(
-        re.search(r"\b(send|share|reply with|tell me your)\b", reply, re.I)
-    )
-    if asks_password:
-        s = 1
-        c = 1
-        notes.append("unsafe credential request")
-    elif risky_customer and draft_source == "forced_draft_for_study":
-        # Human prefers escalate; draft may still be OK if purely generic redirect
-        s = 3
-        c = 3
-        notes.append("high-risk query; draft scored cautiously")
-        if not re.search(r"\b(DM|direct message|specialist|look into)\b", reply, re.I):
-            h = min(h, 2)
-            notes.append("risky topic without safe handoff language")
-    else:
-        s = 5
-        c = 4 if g >= 3 else 3
-
-    # Tone
-    t = 5 if re.search(r"\b(sorry|thanks|happy to help|appreciate)\b", reply, re.I) else 4
-
-    # Overall accept: strict — mirrors judge acceptance spirit
-    overall = g >= 4 and c >= 4 and s >= 4 and h >= 3
-    if risky_customer and true_esc and draft_source == "forced_draft_for_study":
-        # Human: should not auto-accept drafts for cases that needed escalation
-        overall = False
-        notes.append("human reject: gold label requires escalation")
-    if action == "AUTO_HANDLE" and true_esc:
-        overall = False
-        notes.append("human reject: unsafe auto-handle vs gold escalate")
-
-    if overall:
-        notes.append("accept")
-    else:
-        notes.append("reject")
-
-    return _pack(row, g, h, c, t, s, overall, "; ".join(notes))
 
 
-def _pack(row, g, h, c, t, s, accept, notes):
-    return {
-        "example_id": row["example_id"],
-        "tweet_id": row["tweet_id"],
-        "customer_text": row["customer_text"],
-        "reply_text": row["reply_text"],
-        "human_groundedness": g,
-        "human_helpfulness": h,
-        "human_correctness": c,
-        "human_tone": t,
-        "human_safety": s,
-        "human_accept": accept,
-        "human_notes": f"Human-reviewed v1; {notes}",
-    }
+def _save(progress: pd.DataFrame) -> None:
+    progress.to_csv(PROGRESS_PATH, index=False)
 
 
-def main() -> None:
-    out_dir = resolve_path("artifacts/eval")
-    study_path = out_dir / "judge_study_items.csv"
-    judge_path = out_dir / "judge_scores.csv"
-    if not study_path.exists():
-        raise FileNotFoundError(f"Missing {study_path}. Run scripts/build_judge_study.py first.")
-    if not judge_path.exists():
-        raise FileNotFoundError(f"Missing {judge_path}.")
-
-    study = pd.read_csv(study_path)
-    human = pd.DataFrame([score_item(row) for _, row in study.iterrows()])
-    human_path = out_dir / "human_scores.csv"
-    human.to_csv(human_path, index=False)
-    console.print(f"[green]Wrote independent human scores:[/] {human_path}")
-    console.print(f"Human accept rate: {human['human_accept'].mean():.3f}")
-
-    if not judge_path.exists():
-        console.print(
-            "[yellow]judge_scores.csv missing — skip agreement until live scoring finishes.[/]"
-        )
-        return
-
-    judge = pd.read_csv(judge_path)
+def _compute_and_write_agreement(human: pd.DataFrame, judge: pd.DataFrame) -> None:
+    judge = judge.drop_duplicates("example_id", keep="last").copy()
     judge["example_id"] = judge["example_id"].astype(str)
-    study_ids = set(study["example_id"].astype(str))
-    judge = judge[judge["example_id"].isin(study_ids)].drop_duplicates("example_id", keep="last")
-    merged = human.merge(judge[["example_id", "judge_accept"]], on="example_id")
-    if len(merged) < 2:
-        console.print("[yellow]Not enough overlapping scores for agreement.[/]")
-        return
+    human["example_id"] = human["example_id"].astype(str)
+
+    merged = human.merge(judge[["example_id", "judge_accept"]], on="example_id", how="inner")
+    if len(merged) != len(human):
+        raise RuntimeError(
+            f"Judge/human overlap mismatch: {len(merged)}/{len(human)}. "
+            "Rebuild the judge study before computing agreement."
+        )
 
     result = compute_human_judge_agreement(
         merged["human_accept"].astype(bool).tolist(),
         merged["judge_accept"].astype(bool).tolist(),
     )
+
     payload = {
         "sample_size": result.sample_size,
         "percent_agreement": result.percent_agreement,
         "cohen_kappa": result.cohen_kappa,
         "confusion_matrix": result.confusion,
         "interpretation": (
-            "Agreement computed on final-system drafts judged against real retrieved "
-            "evidence (not reply-as-evidence). Human scores from human_score_judge_study.py."
+            "Agreement computed on candidate-manually-scored study rows versus the "
+            "LLM judge. Replies are judged against real retrieved evidence; reply text "
+            "is never used as its own evidence."
         ),
         "files": {
             "judge_study_items": "artifacts/eval/judge_study_items.csv",
@@ -198,13 +119,97 @@ def main() -> None:
             "judge_scores": "artifacts/eval/judge_scores.csv",
         },
     }
-    agr_path = out_dir / "judge_human_agreement.json"
-    agr_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    console.print(
-        f"[bold green]Agreement:[/] {result.percent_agreement * 100:.1f}%  "
+    AGREEMENT_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    print(
+        f"Agreement: {result.percent_agreement * 100:.1f}%  "
         f"kappa={result.cohen_kappa:.3f}  N={result.sample_size}"
     )
-    console.print(f"Saved {agr_path}")
+
+
+def main() -> None:
+    if not STUDY_PATH.exists():
+        raise FileNotFoundError(
+            f"Missing {STUDY_PATH}. Run `uv run python scripts/build_judge_study.py` first."
+        )
+    if not JUDGE_PATH.exists():
+        raise FileNotFoundError(f"Missing {JUDGE_PATH}. Build/live-score the judge study first.")
+
+    study = pd.read_csv(STUDY_PATH)
+    progress = _load_progress(study)
+
+    if len(progress) != len(study):
+        raise RuntimeError("Progress file does not match current judge study. Delete it and restart.")
+
+    for idx, study_row in study.reset_index(drop=True).iterrows():
+        if bool(progress.at[idx, "human_reviewed"]):
+            continue
+
+        print("\n" + "=" * 100)
+        print(f"Item {idx + 1}/{len(study)}  example_id={study_row['example_id']}")
+        print(f"Route: {study_row.get('agent_action', '')}")
+        print(f"Route reason: {study_row.get('agent_reason', '')}")
+        print(f"Draft source: {study_row.get('draft_source', '')}")
+        print("\nCUSTOMER:\n" + str(study_row["customer_text"]))
+        print("\nREPLY:\n" + str(study_row["reply_text"]))
+        print("\nRETRIEVED EVIDENCE:\n" + str(study_row.get("evidence_blob", "")))
+        print("\nRubric reminder: groundedness, helpfulness, correctness, tone, safety = 1..5")
+
+        values: dict[str, int] = {}
+        skip = False
+        for column, label in [
+            ("human_groundedness", "Groundedness"),
+            ("human_helpfulness", "Helpfulness"),
+            ("human_correctness", "Correctness"),
+            ("human_tone", "Tone"),
+            ("human_safety", "Safety"),
+        ]:
+            score = _ask_score(label)
+            if score == "q":
+                _save(progress)
+                print("Progress saved. Exiting.")
+                return
+            if score == "s":
+                skip = True
+                break
+            values[column] = int(score)
+
+        if skip:
+            continue
+
+        accept = _ask_accept()
+        if accept == "q":
+            _save(progress)
+            return
+        if accept == "s":
+            continue
+
+        notes = input("Short human rationale (required): ").strip()
+        if notes.lower() == "q":
+            _save(progress)
+            return
+        if not notes:
+            print("A short independent rationale is required.")
+            continue
+
+        for column, value in values.items():
+            progress.at[idx, column] = value
+        progress.at[idx, "human_accept"] = bool(accept)
+        progress.at[idx, "human_notes"] = f"Candidate manual review; {notes}"
+        progress.at[idx, "human_reviewed"] = True
+        _save(progress)
+        print("Saved item.")
+
+    reviewed = int(progress["human_reviewed"].fillna(False).astype(bool).sum())
+    if reviewed != len(progress):
+        print(f"Human scoring incomplete: {reviewed}/{len(progress)}")
+        return
+
+    final = progress.drop(columns=["human_reviewed"])
+    final.to_csv(HUMAN_PATH, index=False)
+    PROGRESS_PATH.unlink(missing_ok=True)
+    judge = pd.read_csv(JUDGE_PATH)
+    _compute_and_write_agreement(final, judge)
+    print("Human judge study complete and agreement artifact refreshed.")
 
 
 if __name__ == "__main__":
