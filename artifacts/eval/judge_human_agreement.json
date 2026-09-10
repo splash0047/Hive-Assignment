@@ -1,26 +1,21 @@
 {
   "sample_size": 50,
-  "percent_agreement": 0.76,
-  "cohen_kappa": 0.1098,
+  "percent_agreement": 0.78,
+  "cohen_kappa": 0.0283,
   "confusion_matrix": [
     [
-      36,
-      5
+      38,
+      6
     ],
     [
-      7,
-      2
+      5,
+      1
     ]
   ],
-  "interpretation": "Agreement on final-system drafts vs real FAISS-retrieved evidence (reply never used as its own evidence). Human scores: human_score_judge_study.py v1. Live Gemini judge.",
+  "interpretation": "Agreement computed on candidate-manually-scored study rows versus the LLM judge. Replies are judged against real retrieved evidence; reply text is never used as its own evidence.",
   "files": {
     "judge_study_items": "artifacts/eval/judge_study_items.csv",
     "human_scores": "artifacts/eval/human_scores.csv",
     "judge_scores": "artifacts/eval/judge_scores.csv"
-  },
-  "study_composition": {
-    "n": 50,
-    "auto_handle": 1,
-    "forced_draft_for_escalated": 49
   }
 }
