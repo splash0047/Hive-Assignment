@@ -76,17 +76,22 @@ def _as_bool_series(series: pd.Series, name: str) -> pd.Series:
     if pd.api.types.is_bool_dtype(series):
         return series.astype(bool)
 
-    normalized = series.astype(str).str.strip().str.lower().map(
-        {
-            "true": True,
-            "false": False,
-            "1": True,
-            "0": False,
-            "yes": True,
-            "no": False,
-            "y": True,
-            "n": False,
-        }
+    normalized = (
+        series.astype(str)
+        .str.strip()
+        .str.lower()
+        .map(
+            {
+                "true": True,
+                "false": False,
+                "1": True,
+                "0": False,
+                "yes": True,
+                "no": False,
+                "y": True,
+                "n": False,
+            }
+        )
     )
     if normalized.isna().any():
         bad = sorted(series[normalized.isna()].astype(str).unique().tolist())
