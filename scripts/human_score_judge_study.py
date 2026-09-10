@@ -138,7 +138,9 @@ def main() -> None:
     progress = _load_progress(study)
 
     if len(progress) != len(study):
-        raise RuntimeError("Progress file does not match current judge study. Delete it and restart.")
+        raise RuntimeError(
+            "Progress file does not match current judge study. Delete it and restart."
+        )
 
     for idx, study_row in study.reset_index(drop=True).iterrows():
         if bool(progress.at[idx, "human_reviewed"]):
