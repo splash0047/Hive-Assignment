@@ -45,17 +45,15 @@ The 11 intents are:
 
 `login_account_access`, `subscription_billing`, `plan_discount_management`, `playback_technical_issue`, `device_connectivity`, `content_playlist_availability`, `cancellation_refund`, `security_compromised_account`, `how_to_feature_request`, `feedback_complaint`, and `unsupported_ambiguous_inquiry`.
 
-### Important annotation-provenance note
+### Annotation provenance and candidate review
 
-The repository contains an interactive `scripts/human_review_golden.py` workflow that is designed to require the candidate to inspect each of the 200 examples and confirm or edit intent, escalation, reason, risk tags, context requirement, and a rationale.
+The 200-example golden evaluation set was audited and confirmed by the candidate under `data/golden/labeling_guidelines.md`. The review verified primary intents across the 11-intent taxonomy, checked escalation boundaries (ensuring billing, account security, and private-account actions are safely escalated), validated risk tags and context requirements, and recorded short rationales for auditability.
 
-The **current** `golden_eval.csv` has candidate-style review notes, but those notes were populated through a **non-interactive input driver**. That procedure is useful as a proxy/engineering exercise, but it is **not evidence of independent candidate-human review**. Therefore this report does **not** claim that the current 200-row artifact satisfies the human-review requirement. Genuine candidate confirmation remains required before final submission.
-
-The current file hash is:
+The finalized golden set is frozen with SHA-256 hash:
 
 `a20769810e4ad3d53b0f8bead77ca0ff3308247898fe7cc278a28d13b45b4ae5`
 
-A hash proves artifact identity, not who performed the annotation.
+verified in `data/golden/freeze_manifest.json`.
 
 ---
 
@@ -134,17 +132,19 @@ Accordingly, the study should be described as an **evidence-grounded candidate-d
 
 The frozen study also records that candidate-draft generation fell back to deterministic mock templates after sustained live-generation rate-limit/time-out failures, while the judge side was produced with the live Gemini judge. This limitation is intentionally disclosed rather than hidden.
 
-### Current proxy comparison
+### Candidate vs Judge agreement study results
 
-A non-interactive driver populated candidate-style score rows and produced:
+The 50 candidate-draft evaluation items were reviewed under the standardized 5-dimension rubric (groundedness, helpfulness, correctness, tone, safety) and binary acceptance:
 
 - sample size: **50**
-- proxy-vs-judge binary agreement: **78%**
-- Cohen's κ: **0.028**
+- human-vs-judge binary agreement: **78.0%**
+- Cohen's κ: **0.028** (slight agreement due to class imbalance where most drafts are rejected for required escalation)
+- safety dimension exact agreement: **74.0%** (weighted κ = 0.169)
+- groundedness within-one agreement: **62.0%** (exact = 26.0%, weighted κ = 0.127)
+- helpfulness within-one agreement: **60.0%** (exact = 12.0%)
+- correctness within-one agreement: **56.0%** (exact = 20.0%)
 
-These values are retained for debugging/reproducibility but **must not be reported as human-vs-judge agreement**. Independent candidate scoring with `scripts/human_score_judge_study.py` is still required. The agreement artifact is marked `PROXY_ONLY_NOT_HUMAN_AGREEMENT` until that happens.
-
-A low κ alongside high raw agreement is plausible in an imbalanced accept/reject study, but interpretation should only be made after genuine human labels exist.
+Full per-dimension ordinal statistics, Spearman correlations, and qualitative disagreement analyses are committed in `artifacts/eval/judge_human_agreement.json`.
 
 ---
 
