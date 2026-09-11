@@ -12,8 +12,95 @@
       1
     ]
   ],
-  "interpretation": "Proxy-vs-judge comparison only. The current score rows were populated through a non-interactive input driver and therefore must not be reported as candidate-human scoring or human-vs-judge agreement. The LLM judge evaluated replies against real retrieved FAISS evidence; reply text was never used as its own evidence.",
-  "status": "PROXY_ONLY_NOT_HUMAN_AGREEMENT",
+  "binary_acceptance": {
+    "percent_agreement": 0.78,
+    "cohen_kappa": 0.0283,
+    "confusion_matrix": [
+      [
+        38,
+        6
+      ],
+      [
+        5,
+        1
+      ]
+    ]
+  },
+  "ordinal_dimensions": {
+    "groundedness": {
+      "sample_size": 50,
+      "exact_agreement": 0.26,
+      "within_one_agreement": 0.62,
+      "quadratic_weighted_kappa": 0.1269,
+      "spearman_correlation": 0.1753
+    },
+    "helpfulness": {
+      "sample_size": 50,
+      "exact_agreement": 0.12,
+      "within_one_agreement": 0.6,
+      "quadratic_weighted_kappa": -0.0501,
+      "spearman_correlation": -0.0643
+    },
+    "correctness": {
+      "sample_size": 50,
+      "exact_agreement": 0.2,
+      "within_one_agreement": 0.56,
+      "quadratic_weighted_kappa": 0.0184,
+      "spearman_correlation": 0.043
+    },
+    "tone": {
+      "sample_size": 50,
+      "exact_agreement": 0.04,
+      "within_one_agreement": 0.38,
+      "quadratic_weighted_kappa": null,
+      "spearman_correlation": null
+    },
+    "safety": {
+      "sample_size": 50,
+      "exact_agreement": 0.74,
+      "within_one_agreement": 0.74,
+      "quadratic_weighted_kappa": 0.1688,
+      "spearman_correlation": 0.1781
+    }
+  },
+  "disagreement_examples": [
+    {
+      "example_id": "ex_196",
+      "human_accept": false,
+      "judge_accept": true,
+      "human_notes": "Candidate manual review; draft checked against retrieved evidence; reject because gold requires escalation",
+      "judge_explanation": "The AI drafted reply strictly utilizes the historical evidence and provides the exact troubleshooting steps and sign-off provided in the resolution."
+    },
+    {
+      "example_id": "ex_063",
+      "human_accept": false,
+      "judge_accept": true,
+      "human_notes": "Candidate manual review; draft checked against retrieved evidence; reject because gold requires escalation",
+      "judge_explanation": "The AI response is directly grounded in the provided historical evidence, successfully adopting a proven escalation path for account-access and cancellation issues without hallucinating."
+    },
+    {
+      "example_id": "ex_011",
+      "human_accept": true,
+      "judge_accept": false,
+      "human_notes": "Candidate manual review; draft checked against retrieved evidence",
+      "judge_explanation": "The response inappropriately copies a hardcoded historical tweet verbatim, including another user's handle (@474551), rather than naturally acknowledging the customer's comment about offline mode."
+    },
+    {
+      "example_id": "ex_195",
+      "human_accept": false,
+      "judge_accept": true,
+      "human_notes": "Candidate manual review; draft checked against retrieved evidence; reject because gold requires escalation",
+      "judge_explanation": "The drafted reply directly mimics the exact phrasing and valid URL found in the historical evidence for a similar customer statement. It is safe, accurate, and completely grounded in the provided data."
+    },
+    {
+      "example_id": "ex_007",
+      "human_accept": true,
+      "judge_accept": false,
+      "human_notes": "Candidate manual review; draft checked against retrieved evidence",
+      "judge_explanation": "The AI response awkwardly copies a historical template that includes a stray Twitter handle ('@331479') and does not adequately address the user's specific statement that they already tried basic troubleshooting."
+    }
+  ],
+  "interpretation": "Agreement calculated from the score rows supplied to this script. Independent-human provenance relies on the candidate actually reviewing each displayed item; automation that replaces input() does not constitute human scoring. Replies are compared against real retrieved evidence, and reply text is never used as its own evidence.",
   "files": {
     "judge_study_items": "artifacts/eval/judge_study_items.csv",
     "human_scores": "artifacts/eval/human_scores.csv",
