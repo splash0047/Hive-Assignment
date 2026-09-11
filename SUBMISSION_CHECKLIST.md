@@ -19,22 +19,20 @@
 | **6** | **Calibration vs Locked Test Separation** | **PASS** | 50 / 150 in `freeze_manifest.json`; thresholds are tuned only on calibration. |
 | **7** | **Trivial Baseline** | **PASS** | Majority: 12.0% acc / 0.0195 Macro-F1. |
 | **8** | **Simple Baseline** | **PASS** | TF-IDF + LogReg + naive rule end-to-end metrics in `baseline_comparison.json`. |
-| **9** | **Final System** | **PASS** | MiniLM 60.7% / 0.564 Macro-F1; currently frozen pipeline coverage 3.3%, escalation recall 97.0%. Recompute after final human labels if any labels change. |
+| **9** | **Final System** | **PASS** | MiniLM 60.7% / 0.564 Macro-F1; frozen pipeline coverage 3.3%, escalation recall 97.0%, false-auto rate 1.3%. |
 | **10–13** | **Automated metrics + judge rubric** | **PASS** | Metrics + fail-closed judge parser. Agreement tooling reports binary agreement plus per-dimension exact agreement, within-one-point agreement, quadratic-weighted κ, Spearman correlation, and qualitative disagreement examples. |
-| **14** | **Human-vs-Judge Agreement Evidence** | **PASS** | `judge_study_items.csv` (N=50) evaluated with real FAISS evidence. Candidate human scores recorded in `artifacts/eval/human_scores.csv`. Agreement metrics computed in `artifacts/eval/judge_human_agreement.json` (78.0% agreement, Cohen's κ=0.028, per-dimension ordinal agreement, and qualitative disagreement analysis). |
+| **14** | **Human-vs-Judge Agreement Evidence** | **PASS** | `judge_study_items.csv` (N=50) evaluated with real FAISS evidence. Candidate human scores recorded in `artifacts/eval/human_scores.csv`. Agreement metrics computed in `artifacts/eval/judge_human_agreement.json` (78.0% agreement, Cohen's κ=0.0283, per-dimension ordinal agreement, and qualitative disagreement analysis). |
 | **15** | **Five Real Failure Modes** | **PASS** | `docs/FAILURE_ANALYSIS.md`. |
 | **16–18** | **Misleading headline / one-more-week / decision log** | **PASS** | REPORT §§5–7; decision log present. |
 | **19** | **Citations** | **PASS** | README + REPORT references. |
 | **20–21** | **No secrets / no raw TWCS** | **PASS** | `.env` ignored; raw dataset not committed; resumable manual-review progress files are gitignored. |
-| **22** | **Tests + CI** | **PASS** | PR head `f3be030` passed GitHub Actions on Python 3.12: Ruff lint passed, Ruff format reported all 73 files formatted, and `pytest -q` passed all 30 tests. |
+| **22** | **Tests + CI** | **PASS** | Latest `main` CI at `fd7363a` passed on Python 3.12: Ruff lint passed, Ruff format reported all 73 files formatted, and `pytest -q` passed all 30 tests. |
 | **23** | **Report length** | **PASS** | `docs/REPORT.md` remains concise. |
-| **24** | **Repository Ready for Final Submission** | **PASS** | All engineering, CI, testing, linting, manual golden evaluation audit, and judge study agreement requirements complete. Ready to merge to `main` for final submission. |
+| **24** | **Repository Ready for Final Submission** | **PASS** | Engineering, CI, testing, linting, manual golden evaluation audit, and judge-study agreement requirements are complete and merged to `main`. |
 
 ---
 
 ## Currently Frozen Automated Benchmark
-
-The model/system benchmark below remains the committed locked-test result. It should be regenerated if genuine candidate review changes any golden labels.
 
 ```text
 ======================= CURRENT FROZEN BENCHMARK ==========================
@@ -48,4 +46,4 @@ Current golden file SHA-256 : a20769810e4ad3d53b0f8bead77ca0ff3308247898fe7cc278
 Reproduce: uv run hiver-agent reproduce
 ```
 
-The current golden file SHA-256 (`a20769810e4ad3d53b0f8bead77ca0ff3308247898fe7cc278a28d13b45b4ae5`) is confirmed via candidate audit and locked in `data/golden/freeze_manifest.json`. The candidate-vs-judge study (N=50) records 78.0% binary agreement (κ=0.028) with full ordinal dimensional breakdowns in `artifacts/eval/judge_human_agreement.json`.
+The current golden file SHA-256 (`a20769810e4ad3d53b0f8bead77ca0ff3308247898fe7cc278a28d13b45b4ae5`) is confirmed via candidate audit and locked in `data/golden/freeze_manifest.json`. The candidate-vs-judge study (N=50) records 78.0% binary agreement (κ=0.0283) with full ordinal dimensional breakdowns in `artifacts/eval/judge_human_agreement.json`.
