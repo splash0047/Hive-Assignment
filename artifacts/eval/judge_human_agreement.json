@@ -1,26 +1,22 @@
 {
   "sample_size": 50,
-  "percent_agreement": 0.76,
-  "cohen_kappa": 0.1098,
+  "percent_agreement": 0.78,
+  "cohen_kappa": 0.0283,
   "confusion_matrix": [
     [
-      36,
-      5
+      38,
+      6
     ],
     [
-      7,
-      2
+      5,
+      1
     ]
   ],
-  "interpretation": "Agreement on final-system drafts vs real FAISS-retrieved evidence (reply never used as its own evidence). Human scores: human_score_judge_study.py v1. Live Gemini judge.",
+  "interpretation": "Proxy-vs-judge comparison only. The current score rows were populated through a non-interactive input driver and therefore must not be reported as candidate-human scoring or human-vs-judge agreement. The LLM judge evaluated replies against real retrieved FAISS evidence; reply text was never used as its own evidence.",
+  "status": "PROXY_ONLY_NOT_HUMAN_AGREEMENT",
   "files": {
     "judge_study_items": "artifacts/eval/judge_study_items.csv",
     "human_scores": "artifacts/eval/human_scores.csv",
     "judge_scores": "artifacts/eval/judge_scores.csv"
-  },
-  "study_composition": {
-    "n": 50,
-    "auto_handle": 1,
-    "forced_draft_for_escalated": 49
   }
 }
