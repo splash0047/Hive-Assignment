@@ -7,9 +7,9 @@ AI customer support agent for **SpotifyCares** built for the Hiver SDE Intern ta
 > **3.3% auto-handle coverage on the locked test partition (N=150), with 97.0% escalation recall and 1.3% unsafe auto-handle rate.**  
 > Intent Macro-F1: **0.564** (MiniLM) vs **0.425** (TF-IDF) vs **0.019** (majority).
 
-These numbers come from committed artifacts under `artifacts/eval/` on real TWCS SpotifyCares tweets. They are **provisional until the candidate completes the final manual review of all 200 golden labels**. If any labels change, the frozen metrics must be regenerated.
+These numbers come from committed artifacts under `artifacts/eval/` on real TWCS SpotifyCares tweets. The 200-example golden set has completed candidate review and is frozen at SHA-256 `a20769810e4ad3d53b0f8bead77ca0ff3308247898fe7cc278a28d13b45b4ae5`.
 
-A 50-row judge study with real FAISS evidence is also committed, but its judge-human agreement must not be presented as final until the candidate manually completes `scripts/human_score_judge_study.py`.
+The 50-row judge study with real FAISS evidence has also completed candidate scoring. The committed human-vs-judge result is **78.0% binary agreement (Cohen's κ = 0.0283, N=50)**, with per-dimension ordinal agreement and disagreement examples in `artifacts/eval/judge_human_agreement.json`.
 
 ---
 
@@ -76,27 +76,18 @@ Current committed benchmark on the locked test partition (N=150):
 | Simple: TF-IDF + naive rule | 0.425 | 33.3% | 61.2% | 17.3% |
 | Proposed: MiniLM + FAISS + safety gate | **0.564** | **3.3%** | **97.0%** | **1.3%** |
 
-These values must be regenerated if final candidate review changes golden labels.
+The finalized golden artifact is frozen and committed; if a future annotation revision changes that artifact, the dependent metrics should be regenerated.
 
 ---
 
-## Required Final Candidate Review
+## Completed Candidate Evaluation
 
-Two steps intentionally require a human candidate and are not automated:
+The two provenance-sensitive evaluation steps are complete and retained in the repository:
 
-1. **Golden labels** — run:
-   ```bash
-   uv run python scripts/human_review_golden.py
-   ```
-   The script shows each of the 200 real TWCS examples and requires the candidate to confirm or edit intent, escalation, reason, risk tags, context flag, and a short rationale. It saves progress after every row and re-freezes the golden set only after all 200 are confirmed.
+1. **Golden labels** — 200 real TWCS examples were reviewed across intent, escalation, escalation reason, risk tags, context flag, and short rationale. The finalized artifact is `data/golden/golden_eval.csv`, with the freeze recorded in `data/golden/freeze_manifest.json`.
+2. **Judge-human study** — 50 evidence-grounded candidate-draft items were scored on Groundedness, Helpfulness, Correctness, Tone, Safety, ACCEPT/REJECT, and a rationale. Final candidate scores are in `artifacts/eval/human_scores.csv`, with agreement metrics in `artifacts/eval/judge_human_agreement.json`.
 
-2. **Judge-human study** — after the judge study exists, run:
-   ```bash
-   uv run python scripts/human_score_judge_study.py
-   ```
-   The script displays the customer message, system/candidate draft, route decision, and real retrieved evidence. The candidate must manually enter Groundedness, Helpfulness, Correctness, Tone, Safety, ACCEPT/REJECT, and a rationale for all 50 items. Agreement is recomputed only after completion.
-
-No script is allowed to label these two artifacts automatically and call them "human-reviewed".
+The repository keeps the interactive review scripts for auditability and reproducibility; they should only be rerun if intentionally creating a new reviewed artifact version.
 
 ---
 
@@ -154,7 +145,7 @@ uv run hiver-agent reproduce
 | `data/curated/brand_pairs.parquet` | 26,480 SpotifyCares support pairs | Reconstructed from TWCS via `in_response_to_tweet_id` |
 | `data/curated/historical_corpus.parquet` | 3,000 retrieval pairs (seed=42) | Subsample of real brand pairs, generic DM handoffs excluded |
 | `data/curated/intent_taxonomy.json` | 11-intent taxonomy v2 | Matches golden-set labels exactly |
-| `data/golden/golden_eval.csv` | 200 real TWCS examples, 50 calibration / 150 locked test | Candidate review required before final submission |
+| `data/golden/golden_eval.csv` | 200 real TWCS examples, 50 calibration / 150 locked test | Candidate-reviewed and frozen; SHA-256 recorded in `freeze_manifest.json` |
 
 Raw TWCS (`data/raw/twcs.csv`) is gitignored. Secrets remain outside Git.
 
